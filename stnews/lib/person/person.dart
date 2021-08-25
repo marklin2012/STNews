@@ -6,7 +6,7 @@ import 'package:stnews/person/person_collect/person_collect_page.dart';
 import 'package:stnews/person/person_home/person_home_page.dart';
 import 'package:stnews/person/person_info/person_info_page.dart';
 import 'package:stnews/person/person_like/person_like_page.dart';
-import 'package:stnews/person/person_notification/person_noti_page.dart';
+import 'package:stnews/person/person_notice/person_notice_page.dart';
 import 'package:stnews/person/person_setting/person_setting_page.dart';
 import 'package:stnews/person/subview/person_tile.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -108,7 +108,7 @@ class _PersonPageState extends State<PersonPage> {
         break;
       case 3:
         // 去消息中心
-        STRouters.push(context, PersonNotiPage());
+        STRouters.push(context, PersonNoticePage());
         break;
       case 4:
         // 去设置
