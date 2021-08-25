@@ -1,0 +1,18 @@
+{"reslut": {
+    "message": "SUCCESS",
+    "data": {
+      "id": "1",    
+      "username": "harry",
+      "password": "123456",
+      "avatar": "",
+      "nickname": "haha",
+      "sex": 0,
+      "followers": "11",
+      "favourites": "5",
+      "mobile": "136 1245 5432",
+      "deleted": false,
+      "areacode": "+86"
+    },
+    "code": 200
+  }
+}
