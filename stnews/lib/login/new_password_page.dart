@@ -76,8 +76,8 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
             children: [
               SizedBox(height: _spaceFix34),
               Text('设置新密码',
-                  style:
-                      TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500)),
+                  style: TextStyle(
+                      fontSize: FONTSIZE28, fontWeight: FONTWEIGHT500)),
               SizedBox(height: _spaceFix46),
               STInput.password(
                 controller: _firstCon,
@@ -94,8 +94,8 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
                 text: "确定",
                 textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500),
+                    fontSize: FONTSIZE18,
+                    fontWeight: FONTWEIGHT500),
                 mainAxisSize: MainAxisSize.max,
                 onTap: _sureAction,
               )

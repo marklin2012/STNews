@@ -54,7 +54,8 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
             child: STButton(
               type: STButtonType.text,
               text: '保存',
-              textStyle: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w400),
+              textStyle:
+                  TextStyle(fontSize: FONTSIZE17, fontWeight: FONTWEIGHT400),
               onTap: _saveAction,
             ),
           ),
@@ -87,7 +88,8 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
               children: [
                 Text(
                   '男',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
                 ),
                 if (isSelectedMan) Icon(STIcons.commonly_selected),
               ],
@@ -110,7 +112,8 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
               children: [
                 Text(
                   '女',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
                 ),
                 if (!isSelectedMan) Icon(STIcons.commonly_selected),
               ],
@@ -150,8 +153,8 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
                 '昵称限制4-16个字符',
                 style: TextStyle(
                     color: Color(0xFF555555),
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400),
+                    fontSize: FONTSIZE14,
+                    fontWeight: FONTWEIGHT400),
               ),
             ],
           )

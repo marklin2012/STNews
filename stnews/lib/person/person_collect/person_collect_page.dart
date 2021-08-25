@@ -59,8 +59,8 @@ class _PersonCollectPageState extends State<PersonCollectPage> {
               type: STButtonType.text,
               text: _isManage ? '管理' : '完成',
               textStyle: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w400,
+                  fontSize: FONTSIZE17,
+                  fontWeight: FONTWEIGHT400,
                   color: Colors.black),
               onTap: () {
                 _isManage = !_isManage;
@@ -148,8 +148,8 @@ class _PersonCollectPageState extends State<PersonCollectPage> {
                       : Icon(Icons.check_box_outlined),
                   text: !_isSelectAll ? '全选' : '取消全选',
                   textStyle: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
+                      fontSize: FONTSIZE16,
+                      fontWeight: FONTWEIGHT400,
                       color: Colors.black),
                   backgroundColor: Colors.transparent,
                   onTap: _selectAllBtnAction,
@@ -157,8 +157,8 @@ class _PersonCollectPageState extends State<PersonCollectPage> {
                 STButton(
                   text: '删除',
                   textStyle: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w400,
+                      fontSize: FONTSIZE16,
+                      fontWeight: FONTWEIGHT400,
                       color: Theme.of(context).primaryColor),
                   onTap: _deletBtnAction,
                 ),

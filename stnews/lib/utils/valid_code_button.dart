@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/st_button/st_button.dart';
+import 'package:stnews/utils/st_routers.dart';
 
 class ValidCodeButton extends StatefulWidget {
   const ValidCodeButton({
@@ -11,8 +12,8 @@ class ValidCodeButton extends StatefulWidget {
     this.countDownStr = '重新获取',
     this.style = const TextStyle(
       color: Colors.white,
-      fontSize: 14.0,
-      fontWeight: FontWeight.w400,
+      fontSize: FONTSIZE14,
+      fontWeight: FONTWEIGHT400,
     ),
     this.countDown = 10,
   }) : super(key: key);

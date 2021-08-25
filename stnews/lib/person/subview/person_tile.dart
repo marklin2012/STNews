@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/st_routers.dart';
 
 /// data 固定格式
 /// icon 是图标 如果为空即没有图标
@@ -41,7 +42,7 @@ class PersonTile extends StatelessWidget {
       );
     } else if (hasSubTitle != null) {
       subWidget = Text(hasSubTitle,
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300));
+          style: TextStyle(fontSize: FONTSIZE16, fontWeight: FontWeight.w300));
     }
 
     final iconData = data['icon'];
@@ -66,8 +67,8 @@ class PersonTile extends StatelessWidget {
                   if (iconData != null) SizedBox(width: 14),
                   Text(
                     data['title'],
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
                   ),
                 ]),
             Row(children: [

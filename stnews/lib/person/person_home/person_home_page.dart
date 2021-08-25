@@ -64,7 +64,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                     title: Text(
                       '用户123456',
                       style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.w500),
+                          fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
                     ),
                   ),
                   Container(
@@ -125,11 +125,11 @@ class _PersonHomePageState extends State<PersonHomePage> {
         SizedBox(width: 8.0),
         Text(
           title,
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500),
         ),
         Text(
           unit,
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: FONTSIZE14, fontWeight: FONTWEIGHT400),
         ),
       ],
     );

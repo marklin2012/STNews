@@ -9,6 +9,7 @@ import 'package:stnews/login/area_code_page.dart';
 import 'package:stnews/login/find_password_page.dart';
 import 'package:stnews/login/phone_input.dart';
 import 'package:stnews/login/webview_page.dart';
+import 'package:stnews/tabbar/tabbar.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/valid_code_button.dart';
 
@@ -97,8 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                     text: '登录',
                     textStyle: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500),
+                        fontSize: FONTSIZE18,
+                        fontWeight: FONTWEIGHT500),
                     disabled: _loginDisable,
                     onTap: _loginAction,
                   ),
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       text: '忘记密码',
                       type: STButtonType.text,
                       textStyle: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.w400),
+                          fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
                       onTap: () {
                         STRouters.push(context, FindPasswordPage());
                       },
@@ -123,7 +124,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _loginAction() {}
+  void _loginAction() {
+    STRouters.push(context, TabbarPage());
+  }
 
   Widget _buildTitle() {
     return Column(
@@ -133,7 +136,8 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(_isCodeLogin ? '手机验证码登录' : '手机密码登录',
-                style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500)),
+                style:
+                    TextStyle(fontSize: FONTSIZE28, fontWeight: FONTWEIGHT500)),
             STButton(
               type: STButtonType.text,
               text: _isCodeLogin ? '密码登录' : '验证码登录',
@@ -149,8 +153,8 @@ class _LoginPageState extends State<LoginPage> {
             '首次登录即自动注册',
             style: TextStyle(
                 color: Color(0xff888888),
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400),
+                fontSize: FONTSIZE14,
+                fontWeight: FONTWEIGHT400),
           ),
       ],
     );
@@ -198,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Text(
           '登录即代表同意',
-          style: TextStyle(fontSize: 12.0, color: Color(0xff888888)),
+          style: TextStyle(fontSize: FONTSIZE12, color: Color(0xff888888)),
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 4.0),
@@ -209,9 +213,9 @@ class _LoginPageState extends State<LoginPage> {
             type: STButtonType.text,
             text: '用户协议',
             textStyle: TextStyle(
-                fontSize: 12.0,
+                fontSize: FONTSIZE12,
                 color: Colors.black,
-                fontWeight: FontWeight.w400),
+                fontWeight: FONTWEIGHT400),
             onTap: () {
               STRouters.push(
                 context,
@@ -224,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         Text(
           '和',
-          style: TextStyle(fontSize: 12.0, color: Color(0xff888888)),
+          style: TextStyle(fontSize: FONTSIZE12, color: Color(0xff888888)),
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 4.0),
@@ -235,9 +239,9 @@ class _LoginPageState extends State<LoginPage> {
             type: STButtonType.text,
             text: '隐私政策',
             textStyle: TextStyle(
-                fontSize: 12.0,
+                fontSize: FONTSIZE12,
                 color: Colors.black,
-                fontWeight: FontWeight.w400),
+                fontWeight: FONTWEIGHT400),
             onTap: () {
               STRouters.push(
                 context,

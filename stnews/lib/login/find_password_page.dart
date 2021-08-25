@@ -82,8 +82,8 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
             children: [
               SizedBox(height: _spaceFix34),
               Text('找回登录密码',
-                  style:
-                      TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500)),
+                  style: TextStyle(
+                      fontSize: FONTSIZE28, fontWeight: FONTWEIGHT500)),
               SizedBox(height: _spaceFix46),
               PhoneInput(
                 areaStr: _selectedArea.values.first,
@@ -112,8 +112,8 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
                 text: "下一步",
                 textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w500),
+                    fontSize: FONTSIZE18,
+                    fontWeight: FONTWEIGHT500),
                 mainAxisSize: MainAxisSize.max,
                 onTap: () {
                   STRouters.push(context, NewPassWordPage());

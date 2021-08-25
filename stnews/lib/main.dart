@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           elevation: 0.1,
         ),
       ),
-      home: _configPage(true),
+      home: _configPage(false),
     );
   }
 
