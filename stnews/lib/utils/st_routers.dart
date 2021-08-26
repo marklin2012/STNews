@@ -38,4 +38,5 @@ const FONTSIZE14 = 14.0;
 const FONTSIZE16 = 16.0;
 const FONTSIZE17 = 17.0;
 const FONTSIZE18 = 18.0;
+const FONTSIZE22 = 22.0;
 const FONTSIZE28 = 28.0;

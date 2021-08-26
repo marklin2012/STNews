@@ -49,7 +49,7 @@ class STHttps {
       Options options = new Options(
         sendTimeout: HttpsUtils.Timeout_Send,
         receiveTimeout: HttpsUtils.Timeout_Receive,
-        contentType: "application/json; charset=utf-8",
+        contentType: Headers.formUrlEncodedContentType,
       );
       debugPrint("==========start============");
       debugPrint("$_url");

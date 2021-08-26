@@ -9,13 +9,13 @@ class ValidCodeButton extends StatefulWidget {
   const ValidCodeButton({
     Key? key,
     required this.baseStr,
-    this.countDownStr = '重新获取',
+    this.countDownStr = '秒后重发',
     this.style = const TextStyle(
       color: Colors.white,
       fontSize: FONTSIZE14,
       fontWeight: FONTWEIGHT400,
     ),
-    this.countDown = 10,
+    this.countDown = 30,
   }) : super(key: key);
 
   final String baseStr;
@@ -70,8 +70,7 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
     _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
       if (_currentTime != 0) {
         _currentTime--;
-        _btnValueNoti!.value =
-            widget.countDownStr + "(" + _currentTime.toString() + ")";
+        _btnValueNoti!.value = _currentTime.toString() + widget.countDownStr;
       } else {
         _btnValueNoti!.value = widget.baseStr;
         _btnDisabled = !_btnDisabled;

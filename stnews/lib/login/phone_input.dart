@@ -13,6 +13,7 @@ class PhoneInput extends StatelessWidget {
     required this.controller,
     this.inputType,
     this.inputFormatters,
+    this.placeholder = '输入手机号',
   }) : super(key: key);
 
   final String areaStr;
@@ -20,6 +21,7 @@ class PhoneInput extends StatelessWidget {
   final TextEditingController controller;
   final TextInputType? inputType;
   final List<TextInputFormatter>? inputFormatters;
+  final String? placeholder;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,7 @@ class PhoneInput extends StatelessWidget {
           ],
         ),
       ),
+      placeholder: placeholder,
       controller: controller,
       inputType: _inputType,
       inputFormatters: _inputFormatters,
