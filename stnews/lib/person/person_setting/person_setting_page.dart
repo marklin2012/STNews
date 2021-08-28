@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/person/person_setting/about_me/about_me_page.dart';
 import 'package:stnews/person/person_setting/account_security_page.dart';
+import 'package:stnews/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
 import 'package:stnews/person/person_setting/message_setting_page.dart';
 import 'package:stnews/person/subview/person_tile.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -142,6 +143,7 @@ class PersonSetingPage extends StatelessWidget {
         break;
       case 2:
         //反馈与建议
+        STRouters.push(context, FeedbackSuggestionPage());
         break;
       case 3:
         //关于我们

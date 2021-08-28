@@ -44,6 +44,7 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
   void dispose() {
     _timer?.cancel();
     _timer = null;
+    _btnValueNoti?.dispose();
     super.dispose();
   }
 

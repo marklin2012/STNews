@@ -1,0 +1,232 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/st_routers.dart';
+
+const _textStyle = TextStyle(
+  color: Color(0xFF555555),
+  fontSize: FONTSIZE14,
+  fontWeight: FONTWEIGHT400,
+);
+
+const _placeholderTextStyle = TextStyle(
+  color: Color(0xFFBBBBBB),
+  fontSize: FONTSIZE16,
+  fontWeight: FONTWEIGHT400,
+);
+
+class FeedbackSuggestionPage extends StatefulWidget {
+  const FeedbackSuggestionPage({Key? key}) : super(key: key);
+
+  @override
+  _FeedbackSuggestionPageState createState() => _FeedbackSuggestionPageState();
+}
+
+class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
+  late TextEditingController _feedbackCon;
+  late TextEditingController _contactCon;
+  late ValueNotifier<String> _countNoti;
+  late List<String> _images;
+
+  @override
+  void initState() {
+    super.initState();
+    final _countStr = '0/100';
+    _countNoti = ValueNotifier(_countStr);
+    _feedbackCon = TextEditingController()
+      ..addListener(() {
+        _countNoti.value = '${_feedbackCon.text.length}' + '/100';
+      });
+    _contactCon = TextEditingController();
+    // _images = ['0', '1', '2', '3', '4'];
+    _images = [];
+  }
+
+  @override
+  void dispose() {
+    _feedbackCon.dispose();
+    _contactCon.dispose();
+    _countNoti.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: STButton.icon(
+          icon: Icon(STIcons.direction_leftoutlined),
+          backgroundColor: Colors.transparent,
+          onTap: () {
+            STRouters.pop(context);
+          },
+        ),
+        title: Text('反馈与建议'),
+      ),
+      body: _buildCustomW(),
+    );
+  }
+
+  Widget _buildCustomW() {
+    return Container(
+      margin: EdgeInsets.only(top: 32),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '问题和建议',
+                      style: _textStyle,
+                    ),
+                    ValueListenableBuilder(
+                        valueListenable: _countNoti,
+                        builder: (
+                          context,
+                          String value,
+                          child,
+                        ) {
+                          return Text(
+                            value,
+                            style: _textStyle,
+                          );
+                        }),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Container(
+                  height: 130,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: TextField(
+                    controller: _feedbackCon,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: '请输入你的问题和建议，感谢你的支持～',
+                      hintStyle: _placeholderTextStyle,
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(100),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+                Text(
+                  '图片（可提供问题截图）',
+                  style: _textStyle,
+                ),
+                SizedBox(height: 8),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
+              height: _getGridViewHeight(),
+              padding: EdgeInsets.all(8.0),
+              child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4, mainAxisSpacing: 5, crossAxisSpacing: 5),
+                itemBuilder: (context, index) {
+                  if (index == _images.length) {
+                    return _getAddBtn();
+                  }
+                  return Container(
+                    height: 80,
+                    color: Colors.primaries[index % Colors.primaries.length],
+                  );
+                },
+                itemCount: _images.length + 1,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 24),
+                Text(
+                  '联系方式',
+                  style: _textStyle,
+                ),
+                SizedBox(height: 8),
+                Container(
+                  height: 48,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      borderRadius: BorderRadius.all(Radius.circular(8.0))),
+                  child: TextField(
+                    controller: _contactCon,
+                    decoration: InputDecoration(
+                      hintText: '留下联系方式，更可能解决问题',
+                      hintStyle: _placeholderTextStyle,
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(20),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 68),
+                STButton(
+                  text: '提交',
+                  textStyle: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: FONTSIZE18,
+                    fontWeight: FONTWEIGHT500,
+                  ),
+                  mainAxisSize: MainAxisSize.max,
+                  onTap: () {},
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  double _getGridViewHeight() {
+    double _rows = (_images.length + 1.0) / 4.0;
+    int _ceil = _rows.ceil();
+    final _height = _ceil * 80.0 + (_ceil - 1) * 5.0 + 16.0;
+    return _height;
+  }
+
+  Widget _getAddBtn() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        debugPrint('添加照片');
+      },
+      child: DottedBorder(
+        borderType: BorderType.RRect,
+        radius: Radius.circular(4.0),
+        color: Color(0xFFC4C5C7),
+        dashPattern: [4, 3],
+        child: Container(
+          width: 80,
+          height: 80,
+          child: Icon(
+            Icons.add,
+            size: 40,
+          ),
+        ),
+      ),
+    );
+  }
+}
