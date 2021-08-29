@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/https/https.dart';
 
 import 'package:stnews/login/area_code_page.dart';
 import 'package:stnews/login/find_password_page.dart';
 import 'package:stnews/login/phone_input.dart';
 import 'package:stnews/login/webview_page.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/tabbar/tabbar.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/valid_code_button.dart';
@@ -125,7 +125,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loginAction() {
-    STRouters.push(context, TabbarPage());
+    // STRouters.push(context, TabbarPage());
+    httpTest();
   }
 
   Widget _buildTitle() {
@@ -260,11 +261,14 @@ class _LoginPageState extends State<LoginPage> {
     // getData(callBack: (String? code, dynamic result, String? error) {
     //   debugPrint('code:$code' + 'result:$result' + 'error:$error');
     // });
-    getData(
-      url: 'test/add_user',
-      callBack: (String? code, dynamic result, String? error) {
-        debugPrint('code:$code' + 'result:$result' + 'error:$error');
-      },
-    );
+    // getData(
+    //   url: 'test/add_user',
+    //   callBack: (String? code, dynamic result, String? error) {
+    //     debugPrint('code:$code' + 'result:$result' + 'error:$error');
+    //   },
+    // );
+
+    Api.initAPI();
+    Api.loginWithPin(mobile: '12345678900', pin: '000000');
   }
 }

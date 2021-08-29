@@ -29,7 +29,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^4.0.0
   saturn:
-    path: /Users/chenming/Desktop/Saturn
+    path: /Users/marklin/code/flutter/saturn
+    # path: /Users/chenming/Desktop/Saturn
     # git:
     #   url: 'https://github.com/marklin2012/saturn.git'
 

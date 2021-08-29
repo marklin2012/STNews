@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:stnews/login/login_page.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/tabbar/tabbar.dart';
 
 void main() {
+  // init API dio
+  Api.initAPI();
+
   runApp(MyApp());
 }
 
