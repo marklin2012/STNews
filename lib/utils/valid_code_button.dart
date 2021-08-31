@@ -1,14 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:saturn/saturn.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/st_button/st_button.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class ValidCodeButton extends StatefulWidget {
   const ValidCodeButton({
     Key? key,
     required this.baseStr,
+    this.mobile = '12345677123',
     this.countDownStr = '秒后重发',
     this.style = const TextStyle(
       color: Colors.white,
@@ -22,6 +25,7 @@ class ValidCodeButton extends StatefulWidget {
   final String countDownStr;
   final TextStyle style;
   final int countDown;
+  final String mobile;
 
   @override
   _ValidCodeButtonState createState() => _ValidCodeButtonState();
@@ -63,22 +67,28 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
     );
   }
 
-  void _countDown() {
-    _btnDisabled = !_btnDisabled;
-    setState(() {});
-    _timer?.cancel();
-    _timer = null;
-    _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
-      if (_currentTime != 0) {
-        _currentTime--;
-        _btnValueNoti!.value = _currentTime.toString() + widget.countDownStr;
-      } else {
-        _btnValueNoti!.value = widget.baseStr;
-        _btnDisabled = !_btnDisabled;
-        _timer?.cancel();
-        _timer = null;
-        _currentTime = widget.countDown;
-      }
-    });
+  void _countDown() async {
+    final _mobile = widget.mobile.replaceAll(' ', '');
+    final result = await Api.getCheckCode(mobile: _mobile);
+    if (result.success) {
+      _btnDisabled = !_btnDisabled;
+      setState(() {});
+      _timer?.cancel();
+      _timer = null;
+      _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+        if (_currentTime != 0) {
+          _currentTime--;
+          _btnValueNoti!.value = _currentTime.toString() + widget.countDownStr;
+        } else {
+          _btnValueNoti!.value = widget.baseStr;
+          _btnDisabled = !_btnDisabled;
+          _timer?.cancel();
+          _timer = null;
+          _currentTime = widget.countDown;
+        }
+      });
+    } else {
+      STToast.show(context: context, message: result.message);
+    }
   }
 }

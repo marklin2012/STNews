@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/login/model/profile_changenotifier.dart';
+import 'package:stnews/login/model/user.dart';
 import 'package:stnews/person/person_collect/person_collect_page.dart';
 import 'package:stnews/person/person_home/person_home_page.dart';
 import 'package:stnews/person/person_info/person_info_page.dart';
@@ -49,10 +52,15 @@ class _PersonPageState extends State<PersonPage> {
                     ),
                   ),
                 ),
-                title: Text(
-                  '用户123456',
-                  style: TextStyle(
-                      fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
+                title: ChangeNotifierProvider<UserModel>(
+                  create: (_) => UserModel(),
+                  builder: (context, widget) {
+                    return Text(
+                      context.watch<UserModel>().user?.nickname ?? '登录/注册',
+                      style: TextStyle(
+                          fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
+                    );
+                  },
                 ),
                 trailing: Icon(
                   STIcons.direction_rightoutlined,

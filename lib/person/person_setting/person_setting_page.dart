@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/login/login_page.dart';
 import 'package:stnews/person/person_setting/about_me/about_me_page.dart';
 import 'package:stnews/person/person_setting/account_security_page.dart';
 import 'package:stnews/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
@@ -100,7 +101,7 @@ class PersonSetingPage extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.of(context1).pop();
                             },
                           ),
                           CupertinoDialogAction(
@@ -114,7 +115,7 @@ class PersonSetingPage extends StatelessWidget {
                             ),
                             onPressed: () {
                               Navigator.of(context1).pop();
-                              STRouters.pop(context);
+                              STRouters.push(context, LoginPage());
                             },
                           ),
                         ],

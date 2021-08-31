@@ -20,11 +20,11 @@ class _PersonHomePageState extends State<PersonHomePage> {
   void initState() {
     super.initState();
     _lists = [
-      NewsModel('0', 'title0', 'author0', 'image0'),
-      NewsModel('1', 'title1', 'author1', 'image1'),
-      NewsModel('2', 'title2', 'author2', 'image2'),
-      NewsModel('3', 'title3', 'author3', 'image3'),
-      NewsModel('4', 'title4', 'author4', 'image4'),
+      NewsModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+      NewsModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+      NewsModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
+      NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
+      NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
   }
 
@@ -95,8 +95,8 @@ class _PersonHomePageState extends State<PersonHomePage> {
                 return Container(
                   height: 92,
                   child: ListTile(
-                    title: Text(_model.title),
-                    subtitle: Text(_model.author),
+                    title: Text(_model.title!),
+                    subtitle: Text(_model.author!),
                     trailing: Container(
                       width: 102,
                       height: 76,

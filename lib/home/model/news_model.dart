@@ -1,15 +1,15 @@
 class NewsModel {
-  String id;
-  String title;
-  String author;
-  String image;
-  bool selected;
+  String? id;
+  String? title;
+  String? author;
+  String? image;
+  bool? selected;
 
-  NewsModel(
+  NewsModel({
     this.id,
     this.title,
     this.author,
-    this.image, {
+    this.image,
     this.selected = false,
   });
 }

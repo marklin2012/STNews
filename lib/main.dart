@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stnews/common/global.dart';
 
 import 'package:stnews/login/login_page.dart';
 import 'package:stnews/service/api.dart';
@@ -8,7 +10,11 @@ void main() {
   // init API dio
   Api.initAPI();
 
-  runApp(MyApp());
+  /// 处理报错
+  /// 不设置的话会出现错误Unhandled Exception: Null Check Operator Used On A Null Value
+  SharedPreferences.setMockInitialValues({});
+
+  Global.init().then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,15 +35,14 @@ class MyApp extends StatelessWidget {
           elevation: 0.1,
         ),
       ),
-      home: _configPage(false),
+      home: _configPage(),
     );
   }
 
-  Widget _configPage(bool isLogin) {
-    // 未登录
-    if (!isLogin) {
-      return LoginPage();
+  Widget _configPage() {
+    if (Global.profile.isLogin != null && Global.profile.isLogin!) {
+      return TabbarPage();
     }
-    return TabbarPage();
+    return LoginPage();
   }
 }

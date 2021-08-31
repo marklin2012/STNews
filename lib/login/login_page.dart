@@ -3,12 +3,17 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/common/global.dart';
 
 import 'package:stnews/login/area_code_page.dart';
 import 'package:stnews/login/find_password_page.dart';
+import 'package:stnews/login/model/profile.dart';
+import 'package:stnews/login/model/user.dart';
 import 'package:stnews/login/phone_input.dart';
 import 'package:stnews/login/webview_page.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
+import 'package:stnews/sharedpreferences/shared_pref.dart';
 import 'package:stnews/tabbar/tabbar.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/valid_code_button.dart';
@@ -39,8 +44,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _phoneCon.addListener(() {
-      if ((_phoneCon.text.isNotEmpty && _codeCon.text.isNotEmpty) ||
-          (_phoneCon.text.isNotEmpty && _passwordCon.text.isNotEmpty)) {
+      if ((_phoneCon.text.length > 7 && _codeCon.text.length == 6) ||
+          (_phoneCon.text.length > 7 && _passwordCon.text.isNotEmpty)) {
         _loginDisable = false;
       } else {
         _loginDisable = true;
@@ -48,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {});
     });
     _codeCon.addListener(() {
-      if (_phoneCon.text.isNotEmpty && _codeCon.text.isNotEmpty) {
+      if (_phoneCon.text.length > 7 && _codeCon.text.length == 6) {
         _loginDisable = false;
       } else {
         _loginDisable = true;
@@ -56,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {});
     });
     _passwordCon.addListener(() {
-      if (_phoneCon.text.isNotEmpty && _passwordCon.text.isNotEmpty) {
+      if (_phoneCon.text.length > 7 && _passwordCon.text.isNotEmpty) {
         _loginDisable = false;
       } else {
         _loginDisable = true;
@@ -75,7 +80,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // httpTest();
     return Scaffold(
       body: BlankPutKeyborad(
         child: Container(
@@ -125,8 +129,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _loginAction() {
-    // STRouters.push(context, TabbarPage());
-    httpTest();
+    _requestHttp();
   }
 
   Widget _buildTitle() {
@@ -185,7 +188,10 @@ class _LoginPageState extends State<LoginPage> {
             controller: _codeCon,
             inputType: TextInputType.number,
             inputFormatters: [LengthLimitingTextInputFormatter(6)],
-            suffixIcon: ValidCodeButton(baseStr: '获取验证码'),
+            suffixIcon: ValidCodeButton(
+              baseStr: '获取验证码',
+              mobile: _phoneCon.text,
+            ),
           ),
         if (!_isCodeLogin)
           STInput.password(
@@ -257,18 +263,29 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void httpTest() {
-    // getData(callBack: (String? code, dynamic result, String? error) {
-    //   debugPrint('code:$code' + 'result:$result' + 'error:$error');
-    // });
-    // getData(
-    //   url: 'test/add_user',
-    //   callBack: (String? code, dynamic result, String? error) {
-    //     debugPrint('code:$code' + 'result:$result' + 'error:$error');
-    //   },
-    // );
-
-    Api.initAPI();
-    Api.loginWithPin(mobile: '12345678900', pin: '000000');
+  void _requestHttp() async {
+    ResultData _resultData;
+    if (_isCodeLogin) {
+      /// pin固定为：'000000'
+      _resultData =
+          await Api.loginWithPin(mobile: _phoneCon.text, pin: _codeCon.text);
+    } else {
+      _resultData = await Api.loginWithPassword(
+          mobile: _phoneCon.text, password: _passwordCon.text);
+    }
+    if (_resultData.success) {
+      final token = _resultData.data['token'];
+      final user = _resultData.data['user'];
+      final _profile = Profile(
+        user: User.fromJson(user),
+        token: token,
+        isLogin: true,
+      );
+      Global.profile = _profile;
+      Global.saveProfile();
+      STRouters.push(context, TabbarPage());
+    } else {
+      STToast.show(context: context, message: _resultData.message);
+    }
   }
 }

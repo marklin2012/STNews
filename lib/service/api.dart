@@ -40,7 +40,7 @@ String _formatError(DioError e) {
   }
 }
 
-Future<dynamic> _get(String url,
+Future<ResultData> _get(String url,
     {Map<String, dynamic>? data,
     Options? options,
     CancelToken? cancelToken}) async {
@@ -50,13 +50,13 @@ Future<dynamic> _get(String url,
     debugPrint('get success---------${response.statusCode}');
     debugPrint('get success---------${response.data}');
     if (response.statusCode == 200) {
-      final int code = response.data['code'] as int;
       return ResultData(
-          code: code,
+          code: response.data['code'] as int,
           message: response.data['message'],
           data: response.data['data'],
           success: true);
     }
+    return ResultData.error('请求失败');
   } on DioError catch (error) {
     debugPrint('get error -------- $error');
 
@@ -116,9 +116,16 @@ class Api {
     };
   }
 
+  static Future<ResultData> getCheckCode({String? mobile}) =>
+      _get('/checkcode', data: {'mobile': mobile});
+
   static Future<ResultData> loginWithPin({String? mobile, String? pin}) =>
       _post('/login/pin', data: {
         'mobile': mobile,
         'pin': pin,
       });
+
+  static Future<ResultData> loginWithPassword(
+          {String? mobile, String? password}) =>
+      _post('/login/password', data: {'mobile': mobile, 'password': password});
 }

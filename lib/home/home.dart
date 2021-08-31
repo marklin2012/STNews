@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:stnews/common/global.dart';
 import 'package:stnews/home/model/news_model.dart';
 
 import 'package:stnews/home/subview/page_view.dart';
@@ -23,11 +24,11 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _controller = EasyRefreshController();
     _lists = [
-      NewsModel('0', 'title0', 'author0', 'image0'),
-      NewsModel('1', 'title1', 'author1', 'image1'),
-      NewsModel('2', 'title2', 'author2', 'image2'),
-      NewsModel('3', 'title3', 'author3', 'image3'),
-      NewsModel('4', 'title4', 'author4', 'image4'),
+      NewsModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+      NewsModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+      NewsModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
+      NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
+      NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
   }
 
@@ -71,11 +72,16 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           await Future.delayed(Duration(seconds: 2), () {
             _lists = [
-              NewsModel('0', 'title0', 'author0', 'image0'),
-              NewsModel('1', 'title1', 'author1', 'image1'),
-              NewsModel('2', 'title2', 'author2', 'image2'),
-              NewsModel('3', 'title3', 'author3', 'image3'),
-              NewsModel('4', 'title4', 'author4', 'image4'),
+              NewsModel(
+                  id: '0', title: 'title0', author: 'author0', image: 'image0'),
+              NewsModel(
+                  id: '1', title: 'title1', author: 'author1', image: 'image1'),
+              NewsModel(
+                  id: '2', title: 'title2', author: 'author2', image: 'image2'),
+              NewsModel(
+                  id: '3', title: 'title3', author: 'author3', image: 'image3'),
+              NewsModel(
+                  id: '4', title: 'title4', author: 'author4', image: 'image4'),
             ];
             setState(() {});
             _controller.finishRefresh();
@@ -101,8 +107,8 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     height: 92,
                     child: ListTile(
-                      title: Text(_model.title),
-                      subtitle: Text(_model.author),
+                      title: Text(_model.title!),
+                      subtitle: Text(_model.author!),
                       trailing: Container(
                         width: 102,
                         height: 76,
@@ -126,10 +132,14 @@ class _HomePageState extends State<HomePage> {
 
   void _getNewsData() {
     final _lastM = _lists.last;
-    final _lastIndex = int.parse(_lastM.id);
+    final _lastIndex = int.parse(_lastM.id!);
     for (var i = _lastIndex + 1; i < _lastIndex + 10; i++) {
-      final _newM = NewsModel(i.toString(), 'title' + i.toString(),
-          'author' + i.toString(), 'image' + i.toString());
+      final _newM = NewsModel(
+        id: i.toString(),
+        title: 'title' + i.toString(),
+        author: 'author' + i.toString(),
+        image: 'image' + i.toString(),
+      );
       _lists.add(_newM);
     }
     setState(() {});
