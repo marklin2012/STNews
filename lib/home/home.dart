@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:stnews/common/global.dart';
-import 'package:stnews/home/model/news_model.dart';
 
+import 'package:stnews/home/model/news_model.dart';
 import 'package:stnews/home/subview/page_view.dart';
 
 class HomePage extends StatefulWidget {

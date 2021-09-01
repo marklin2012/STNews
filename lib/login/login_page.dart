@@ -1,14 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/common/global.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:stnews/login/area_code_page.dart';
 import 'package:stnews/login/find_password_page.dart';
-import 'package:stnews/login/model/profile.dart';
-import 'package:stnews/login/model/user.dart';
+import 'package:stnews/login/model/user_manager.dart';
+import 'package:stnews/login/model/user_model.dart';
 import 'package:stnews/login/phone_input.dart';
 import 'package:stnews/login/webview_page.dart';
 import 'package:stnews/service/api.dart';
@@ -275,15 +277,15 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (_resultData.success) {
       final token = _resultData.data['token'];
-      final user = _resultData.data['user'];
-      final _profile = Profile(
-        user: User.fromJson(user),
-        token: token,
-        isLogin: true,
-      );
-      Global.profile = _profile;
-      Global.saveProfile();
-      STRouters.push(context, TabbarPage());
+      Map<String, dynamic> user = _resultData.data['user'];
+      // String jsonStringUser = jsonEncode(user);
+      // debugPrint('jsonStruser: $jsonStringUser');
+      SharedPref.saveToken(token).then((_) {
+        SharedPref.saveUsers(user).then((_) {
+          UserManager.shared!.setTpkenAndUser(token, UserModel.fromJson(user));
+          STRouters.push(context, TabbarPage());
+        });
+      });
     } else {
       STToast.show(context: context, message: _resultData.message);
     }

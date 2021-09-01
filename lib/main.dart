@@ -1,24 +1,49 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stnews/common/global.dart';
 
 import 'package:stnews/login/login_page.dart';
+import 'package:stnews/login/model/user_manager.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/sharedpreferences/shared_pref.dart';
 import 'package:stnews/tabbar/tabbar.dart';
 
 void main() {
   // init API dio
   Api.initAPI();
 
-  /// 处理报错
-  /// 不设置的话会出现错误Unhandled Exception: Null Check Operator Used On A Null Value
-  SharedPreferences.setMockInitialValues({});
+  // ignore: invalid_use_of_visible_for_testing_member
+  // SharedPreferences.setMockInitialValues({});
+  SharedPreferences.setMockInitialValues({
+    'token':
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjMgNDU2NyIsImlhdCI6MTYzMDUwNTEzN30.SCtRhjDnjzKS9W_fUf7oFvMAWq8LFtgv-kizP9iBovw',
+    'user':
+        '{"_id":"612e2506573ba7d30affe47c","mobile":"123 4567","__v":0,"nickname":"用户567 506","sex":0}'
+  });
 
-  Global.init().then((_) => runApp(MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: UserManager.shared!),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
+  Future<bool> _futrueIsLogin() async {
+    String? token = await SharedPref.getToken();
+    if (token != null) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,14 +60,15 @@ class MyApp extends StatelessWidget {
           elevation: 0.1,
         ),
       ),
-      home: _configPage(),
+      home: FutureBuilder(
+          future: _futrueIsLogin(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final _isLogin = snapshot.data as bool;
+              if (_isLogin) return TabbarPage();
+            }
+            return LoginPage();
+          }),
     );
-  }
-
-  Widget _configPage() {
-    if (Global.profile.isLogin != null && Global.profile.isLogin!) {
-      return TabbarPage();
-    }
-    return LoginPage();
   }
 }

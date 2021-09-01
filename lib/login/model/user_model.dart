@@ -1,4 +1,4 @@
-class User {
+class UserModel {
   String? id;
   String? username;
   String? password;
@@ -11,7 +11,7 @@ class User {
   int? followers;
   int? favourites;
 
-  User({
+  UserModel({
     this.id,
     this.username,
     this.password,
@@ -25,7 +25,7 @@ class User {
     this.favourites,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     username = json['username'];
     password = json['password'];

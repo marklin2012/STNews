@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/login/model/user_manager.dart';
 import 'package:stnews/person/person_info/change_info_page.dart';
 import 'package:stnews/person/subview/news_action_sheet.dart';
 import 'package:stnews/person/subview/person_tile.dart';
@@ -19,8 +20,11 @@ class PersonInfoPage extends StatefulWidget {
 class _PersonInfoPageState extends State<PersonInfoPage> {
   List<Map> _datas = [
     {'title': '头像', 'isHead': ''},
-    {'title': '昵称', 'isSubTitle': '特仑苏纯牛奶'},
-    {'title': '性别', 'isSubTitle': '女'},
+    {'title': '昵称', 'isSubTitle': UserManager.shared!.user.nickname ?? ''},
+    {
+      'title': '性别',
+      'isSubTitle': UserManager.shared!.user.sex == 0 ? '女' : '男'
+    },
   ];
 
   @override

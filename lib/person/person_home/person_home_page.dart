@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/home/model/news_model.dart';
+import 'package:stnews/login/model/user_manager.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonHomePage extends StatefulWidget {
@@ -43,49 +45,59 @@ class _PersonHomePageState extends State<PersonHomePage> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Container(
-              margin: const EdgeInsets.only(top: 12.0),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: GestureDetector(
-                      onTap: () {
-                        // 去头像设置
-                      },
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).accentColor,
+            child: Consumer<UserManager>(
+              builder: (context, userManager, child) {
+                return Container(
+                  margin: const EdgeInsets.only(top: 12.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: GestureDetector(
+                          onTap: () {
+                            // 去头像设置
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          userManager.user.nickname ?? '',
+                          style: TextStyle(
+                              fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
                         ),
                       ),
-                    ),
-                    title: Text(
-                      '用户123456',
-                      style: TextStyle(
-                          fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
-                    ),
-                  ),
-                  Container(
-                    color: Theme.of(context).backgroundColor,
-                    margin: EdgeInsets.symmetric(vertical: 12.0),
-                    height: 44,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _iconAndText(Icons.favorite, '99', '关注'),
-                        Container(
-                          width: 1,
-                          height: 28,
-                          color: Color(0xFFDFE2E7),
+                      Container(
+                        color: Theme.of(context).backgroundColor,
+                        margin: EdgeInsets.symmetric(vertical: 12.0),
+                        height: 44,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _iconAndText(
+                                Icons.favorite,
+                                (userManager.user.favourites ?? 0).toString(),
+                                '关注'),
+                            Container(
+                              width: 1,
+                              height: 28,
+                              color: Color(0xFFDFE2E7),
+                            ),
+                            _iconAndText(
+                                Icons.favorite_outline,
+                                (userManager.user.followers ?? 0).toString(),
+                                '粉丝'),
+                          ],
                         ),
-                        _iconAndText(Icons.favorite_outline, '1399', '粉丝'),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
           SliverList(
