@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stnews/pages/login/login_page.dart';
+import 'package:stnews/pages/tabbar.dart';
 
-import 'package:stnews/login/login_page.dart';
-import 'package:stnews/login/model/user_manager.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
-import 'package:stnews/sharedpreferences/shared_pref.dart';
-import 'package:stnews/tabbar/tabbar.dart';
+import 'package:stnews/utils/shared_pref.dart';
 
 void main() {
   // init API dio
@@ -26,7 +26,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: UserManager.shared),
+        ChangeNotifierProvider.value(value: UserProvider.shared),
       ],
       child: MyApp(),
     ),
