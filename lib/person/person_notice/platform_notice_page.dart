@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/login/webview_page.dart';
 import 'package:stnews/person/person_notice/model/notice_model.dart';
