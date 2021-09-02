@@ -19,8 +19,9 @@ class UserManager extends ChangeNotifier {
   UserManager._() {
     SharedPref.getToken().then((token) {
       if (token != null) {
-        SharedPref.getUsers()
-            .then((user) => _userModel = UserModel.fromJson(user));
+        SharedPref.getUsers().then((localUser) {
+          _userModel = UserModel.fromJson(localUser);
+        });
       }
     });
   }
@@ -45,44 +46,36 @@ class UserManager extends ChangeNotifier {
   }) async {
     if (username != null) {
       _userModel.username = username;
-      notifyListeners();
     }
 
     if (avatar != null) {
       _userModel.avatar = avatar;
-      notifyListeners();
     }
 
     if (nickname != null) {
       _userModel.nickname = nickname;
-      notifyListeners();
     }
 
     if (sex != null) {
       _userModel.sex = sex;
-      notifyListeners();
     }
 
     if (mobile != null) {
       _userModel.mobile = mobile;
-      notifyListeners();
     }
 
     if (email != null) {
       _userModel.email = email;
-      notifyListeners();
     }
 
     if (followers != null) {
       _userModel.followers = followers;
-      notifyListeners();
     }
 
     if (favourites != null) {
       _userModel.favourites = favourites;
-      notifyListeners();
     }
-
+    notifyListeners();
     return SharedPref.saveUsers(_userModel.toJson());
   }
 }
