@@ -277,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
       Map<String, dynamic> user = _resultData.data['user'];
       SharedPref.saveToken(token).then((_) {
         SharedPref.saveUsers(user).then((_) {
-          UserManager.shared!.user = UserModel.fromJson(user);
+          UserManager.shared.user = UserModel.fromJson(user);
           STRouters.push(context, TabbarPage());
         });
       });

@@ -7,11 +7,11 @@ class UserManager extends ChangeNotifier {
 
   UserModel get user => _userModel;
 
-  static UserManager? _shared;
+  static late UserManager _shared;
 
-  static UserManager? get shared => UserManager._shardManager();
+  static UserManager get shared => UserManager._shardManager();
 
-  static UserManager? _shardManager() {
+  static UserManager _shardManager() {
     _shared = UserManager._();
     return _shared;
   }
