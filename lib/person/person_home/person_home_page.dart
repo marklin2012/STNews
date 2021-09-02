@@ -6,6 +6,8 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/home/model/news_model.dart';
 import 'package:stnews/login/model/user_manager.dart';
+import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/st_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonHomePage extends StatefulWidget {
@@ -28,6 +30,11 @@ class _PersonHomePageState extends State<PersonHomePage> {
       NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
       NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
+    _getFavouritesData();
+  }
+
+  void _getFavouritesData() {
+    Api.getFavourite().then((result) {});
   }
 
   @override
@@ -52,18 +59,15 @@ class _PersonHomePageState extends State<PersonHomePage> {
                   child: Column(
                     children: [
                       ListTile(
-                        leading: GestureDetector(
-                          onTap: () {
-                            // 去头像设置
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Theme.of(context).accentColor,
-                            ),
+                        leading: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).accentColor,
                           ),
+                          child: STImage.loadingImage(
+                              imageUrl: userManager.user.avatar),
                         ),
                         title: Text(
                           userManager.user.nickname ?? '',
@@ -79,18 +83,22 @@ class _PersonHomePageState extends State<PersonHomePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _iconAndText(
-                                Icons.favorite,
-                                (userManager.user.favourites ?? 0).toString(),
-                                '关注'),
+                                icon: Icons.favorite,
+                                title: (userManager.user.favourites ?? 0)
+                                    .toString(),
+                                unit: '关注',
+                                onTap: () {}),
                             Container(
                               width: 1,
                               height: 28,
                               color: Color(0xFFDFE2E7),
                             ),
                             _iconAndText(
-                                Icons.favorite_outline,
-                                (userManager.user.followers ?? 0).toString(),
-                                '粉丝'),
+                                icon: Icons.favorite_outline,
+                                title: (userManager.user.followers ?? 0)
+                                    .toString(),
+                                unit: '粉丝',
+                                onTap: () {}),
                           ],
                         ),
                       )
@@ -129,21 +137,32 @@ class _PersonHomePageState extends State<PersonHomePage> {
     );
   }
 
-  Widget _iconAndText(IconData icon, String title, String unit) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 24),
-        SizedBox(width: 8.0),
-        Text(
-          title,
-          style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500),
-        ),
-        Text(
-          unit,
-          style: TextStyle(fontSize: FONTSIZE14, fontWeight: FONTWEIGHT400),
-        ),
-      ],
+  Widget _iconAndText({
+    IconData? icon,
+    String? title,
+    String? unit,
+    void Function()? onTap,
+  }) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) Icon(icon, size: 24),
+          SizedBox(width: 8.0),
+          if (title != null)
+            Text(
+              title,
+              style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500),
+            ),
+          if (unit != null)
+            Text(
+              unit,
+              style: TextStyle(fontSize: FONTSIZE14, fontWeight: FONTWEIGHT400),
+            ),
+        ],
+      ),
     );
   }
 }

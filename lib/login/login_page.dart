@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:stnews/login/area_code_page.dart';
 import 'package:stnews/login/find_password_page.dart';
@@ -278,11 +275,9 @@ class _LoginPageState extends State<LoginPage> {
     if (_resultData.success) {
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
-      // String jsonStringUser = jsonEncode(user);
-      // debugPrint('jsonStruser: $jsonStringUser');
       SharedPref.saveToken(token).then((_) {
         SharedPref.saveUsers(user).then((_) {
-          UserManager.shared!.setTpkenAndUser(token, UserModel.fromJson(user));
+          UserManager.shared!.user = UserModel.fromJson(user);
           STRouters.push(context, TabbarPage());
         });
       });

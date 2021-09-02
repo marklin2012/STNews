@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/login/model/user_manager.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class ChangeInfoPage extends StatefulWidget {
@@ -65,7 +68,25 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
     );
   }
 
-  void _saveAction() {}
+  void _saveAction() {
+    if (_isChangeSex) {
+      // 修改性别
+    } else {
+      // 修改昵称
+      if (_controller.text.length < 4) {
+        STToast.show(context: context, message: '输入的昵称少于4个字符');
+        return;
+      }
+      Api.updateUserInfo(nickname: _controller.text).then((resultData) {
+        if (resultData.success) {
+          UserManager.shared!.changeUser(nickname: _controller.text);
+          STRouters.pop(context);
+        } else {
+          STToast.show(context: context, message: resultData.message);
+        }
+      });
+    }
+  }
 
   Widget _getSubWidget() {
     return Container(
@@ -141,6 +162,9 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
               border: Border.all(color: Color(0xFFC4C5C7)),
             ),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(16),
+            ],
           ),
           SizedBox(height: 8.0),
           Row(

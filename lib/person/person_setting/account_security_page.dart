@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/login/model/user_manager.dart';
 import 'package:stnews/person/person_setting/change_mobile/change_mobile_page.dart';
 import 'package:stnews/person/person_setting/edit_password_page.dart';
 import 'package:stnews/person/subview/person_tile.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
-const _datas = [
-  {'title': '手机号', 'isSubTitle': '187******68'},
-  {'title': '登录密码'}
-];
-
+// ignore: must_be_immutable
 class AccountSecurityPage extends StatelessWidget {
-  const AccountSecurityPage({Key? key}) : super(key: key);
+  AccountSecurityPage({Key? key}) : super(key: key);
+
+  List _datas = [
+    {'title': '手机号', 'isSubTitle': ''},
+    {'title': '登录密码'}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -29,24 +35,31 @@ class AccountSecurityPage extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.only(top: 24.0),
         height: 52.0 * _datas.length - 4.0,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemExtent: 52.0,
-          itemCount: _datas.length,
-          itemBuilder: (context, index) {
-            final _map = _datas[index];
-            return Container(
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.only(bottom: 4.0),
-              child: PersonTile(
-                data: _map,
-                onTap: () {
-                  _goNextPage(context, index);
-                },
-              ),
-            );
-          },
-        ),
+        child: Consumer<UserManager>(builder: (context, userManager, child) {
+          return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            itemExtent: 52.0,
+            itemCount: _datas.length,
+            itemBuilder: (context, index) {
+              var _map = _datas[index];
+              if (index == 0) {
+                var _mobile = STString.removeSpaceAndSecurity(
+                    userManager.user.mobile ?? '');
+                _map['isSubTitle'] = _mobile;
+              }
+              return Container(
+                color: Theme.of(context).primaryColor,
+                padding: EdgeInsets.only(bottom: 4.0),
+                child: PersonTile(
+                  data: _map,
+                  onTap: () {
+                    _goNextPage(context, index);
+                  },
+                ),
+              );
+            },
+          );
+        }),
       ),
     );
   }

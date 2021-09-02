@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class EditPasswordPage extends StatefulWidget {
@@ -89,6 +93,9 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
               ),
               placeholder: '请输入新密码',
               controller: _confirmCon,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(16),
+              ],
             ),
             SizedBox(height: 12),
             Text(
@@ -109,11 +116,28 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
               ),
               radius: 8.0,
               mainAxisSize: MainAxisSize.max,
-              onTap: () {},
+              onTap: _changePassword,
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _changePassword() {
+    if (_newCon.text.isEmpty) {
+      STToast.show(context: context, message: '请输入新密码');
+    } else if (_confirmCon.text.isEmpty) {
+      STToast.show(context: context, message: '请确认密码');
+    } else if (_newCon.text != _confirmCon.text) {
+      STToast.show(context: context, message: '两次密码输入不一致');
+    } else {
+      Api.setPassword(_newCon.text).then((reslutData) {
+        if (reslutData.success) {
+          debugPrint('密码修改成功');
+          STRouters.pop(context);
+        }
+      });
+    }
   }
 }

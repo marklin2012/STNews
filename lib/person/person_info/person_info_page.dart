@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -20,11 +21,8 @@ class PersonInfoPage extends StatefulWidget {
 class _PersonInfoPageState extends State<PersonInfoPage> {
   List<Map> _datas = [
     {'title': '头像', 'isHead': ''},
-    {'title': '昵称', 'isSubTitle': UserManager.shared!.user.nickname ?? ''},
-    {
-      'title': '性别',
-      'isSubTitle': UserManager.shared!.user.sex == 0 ? '女' : '男'
-    },
+    {'title': '昵称', 'isSubTitle': ''},
+    {'title': '性别', 'isSubTitle': ''},
   ];
 
   @override
@@ -42,21 +40,32 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
       ),
       body: Container(
         height: 52.0 * _datas.length - 4.0,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemExtent: 52.0,
-          itemCount: _datas.length,
-          itemBuilder: (context, index) {
-            final _map = _datas[index];
-            return Container(
-              color: Theme.of(context).primaryColor,
-              padding: EdgeInsets.only(bottom: 4.0),
-              child: PersonTile(
-                data: _map,
-                onTap: () {
-                  _goNextPage(index);
-                },
-              ),
+        child: Consumer<UserManager>(
+          builder: (context, userManager, child) {
+            return ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              itemExtent: 52.0,
+              itemCount: _datas.length,
+              itemBuilder: (context, index) {
+                final _map = _datas[index];
+                if (index == 0) {
+                  _map['isHead'] = userManager.user.avatar ?? '';
+                } else if (index == 1) {
+                  _map['isSubTitle'] = userManager.user.nickname;
+                } else if (index == 2) {
+                  _map['isSubTitle'] = userManager.user.sex == 1 ? '男' : '女';
+                }
+                return Container(
+                  color: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: PersonTile(
+                    data: _map,
+                    onTap: () {
+                      _goNextPage(index);
+                    },
+                  ),
+                );
+              },
             );
           },
         ),

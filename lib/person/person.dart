@@ -12,6 +12,7 @@ import 'package:stnews/person/person_like/person_like_page.dart';
 import 'package:stnews/person/person_notice/person_notice_page.dart';
 import 'package:stnews/person/person_setting/person_setting_page.dart';
 import 'package:stnews/person/subview/person_tile.dart';
+import 'package:stnews/utils/st_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonPage extends StatefulWidget {
@@ -38,37 +39,39 @@ class _PersonPageState extends State<PersonPage> {
           margin: const EdgeInsets.only(top: 44.0),
           child: Column(
             children: [
-              ListTile(
-                leading: GestureDetector(
-                  onTap: () {
-                    // 去头像设置
-                  },
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).accentColor,
+              Consumer<UserManager>(builder: (context, userManager, child) {
+                return ListTile(
+                  leading: GestureDetector(
+                    onTap: () {
+                      // 查看头像
+                    },
+                    child: Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      child: STImage.loadingImage(
+                        imageUrl: userManager.user.avatar,
+                      ),
                     ),
                   ),
-                ),
-                title: Consumer<UserManager>(
-                    builder: (context, userManager, child) {
-                  return Text(
+                  title: Text(
                     userManager.user.nickname ?? '登录/注册',
                     style: TextStyle(
                         fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
-                  );
-                }),
-                trailing: Icon(
-                  STIcons.direction_rightoutlined,
-                  size: 16,
-                ),
-                onTap: () {
-                  // 去个人信息
-                  STRouters.push(context, PersonInfoPage());
-                },
-              ),
+                  ),
+                  trailing: Icon(
+                    STIcons.direction_rightoutlined,
+                    size: 16,
+                  ),
+                  onTap: () {
+                    // 去个人信息
+                    STRouters.push(context, PersonInfoPage());
+                  },
+                );
+              }),
               SizedBox(height: 50),
               Container(
                 height: 52.0 * _datas.length - 4.0,

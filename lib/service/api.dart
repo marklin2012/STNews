@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
@@ -13,10 +12,7 @@ const String BaseUrl = 'http://localhost:7001/';
 
 Dio dio = Dio();
 
-/**
- * error 统一处理
- */
-
+/// error 统一处理
 String _formatError(DioError e) {
   switch (e.type) {
     case DioErrorType.connectTimeout:
@@ -96,6 +92,38 @@ Future<ResultData> _post(String url,
   }
 }
 
+Future<ResultData> _put(String url,
+    {Map<String, dynamic>? data,
+    Options? options,
+    CancelToken? cancelToken}) async {
+  try {
+    final Response response = await dio.put(url,
+        data: data, options: options, cancelToken: cancelToken);
+    debugPrint('requestUri ------- ${response.realUri}');
+    debugPrint('requestHeader-------${response.headers}');
+    debugPrint('post success---------${response.statusCode}');
+    debugPrint('post success---------${response.data}');
+    if (response.statusCode == 200) {
+      var mapData;
+      if (response.data is String) {
+        mapData = json.decode(response.data);
+      } else {
+        mapData = response.data;
+      }
+      return ResultData(
+        success: true,
+        data: mapData['data'],
+        message: mapData['message'].toString(),
+        code: mapData['code'] as int,
+      );
+    }
+    return ResultData.error('请求异常');
+  } on DioError catch (error) {
+    debugPrint('post error -------- $error');
+    return ResultData.error(_formatError(error));
+  }
+}
+
 class Api {
   // 初始化
   static void initAPI() {
@@ -116,16 +144,49 @@ class Api {
     };
   }
 
+  /// 获取验证码
   static Future<ResultData> getCheckCode({String? mobile}) =>
       _get('/checkcode', data: {'mobile': mobile});
 
+  /// 验证码登陆
   static Future<ResultData> loginWithPin({String? mobile, String? pin}) =>
       _post('/login/pin', data: {
         'mobile': mobile,
         'pin': pin,
       });
 
+  /// 密码登陆
   static Future<ResultData> loginWithPassword(
           {String? mobile, String? password}) =>
       _post('/login/password', data: {'mobile': mobile, 'password': password});
+
+  /// 更新用户资料
+  static Future<ResultData> updateUserInfo(
+      {int? sex, String? nickname, String? headImage}) {
+    Map<String, dynamic> _data = {};
+    if (sex != null) {
+      String _sex = '';
+      if (sex == 1) {
+        _sex = '男';
+      } else if (sex == 2) {
+        _sex = '女';
+      }
+      _data['sex'] = _sex;
+    }
+    if (nickname != null) {
+      _data['nickname'] = nickname;
+    }
+    if (headImage != null) {
+      _data['head_image'] = headImage;
+    }
+    return _put('/user/update', data: _data);
+  }
+
+  /// 设置密码
+  static Future<ResultData> setPassword(String password) =>
+      _post('/user/password',
+          data: {'password': password, 're_password': password});
+
+  /// 获取自己关注的用户
+  static Future<ResultData> getFavourite() => _get('/user/favourite');
 }

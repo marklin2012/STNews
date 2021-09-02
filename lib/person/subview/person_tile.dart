@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/st_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 /// data 固定格式
@@ -37,8 +38,9 @@ class PersonTile extends StatelessWidget {
         width: 32,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).accentColor,
+          color: Colors.blue,
         ),
+        child: STImage.loadingImage(imageUrl: hasHead),
       );
     } else if (hasSubTitle != null) {
       subWidget = Text(hasSubTitle,

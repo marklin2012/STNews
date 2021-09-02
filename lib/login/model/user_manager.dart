@@ -16,26 +16,18 @@ class UserManager extends ChangeNotifier {
     return _shared;
   }
 
-  String _token = '';
-
   UserManager._() {
     SharedPref.getToken().then((token) {
       if (token != null) {
-        _token = token;
         SharedPref.getUsers()
             .then((user) => _userModel = UserModel.fromJson(user));
       }
     });
   }
 
-  setTpkenAndUser(String? token, UserModel? userModel) {
-    if (token != null) {
-      _token = token;
-    }
+  set user(UserModel? userModel) {
     if (userModel != null) {
       _userModel = userModel;
-    }
-    if (token != null || userModel != null) {
       notifyListeners();
     }
   }
@@ -52,45 +44,45 @@ class UserManager extends ChangeNotifier {
     int? favourites,
   }) async {
     if (username != null) {
-      user.username = username;
+      _userModel.username = username;
       notifyListeners();
     }
 
     if (avatar != null) {
-      user.avatar = avatar;
+      _userModel.avatar = avatar;
       notifyListeners();
     }
 
     if (nickname != null) {
-      user.nickname = nickname;
+      _userModel.nickname = nickname;
       notifyListeners();
     }
 
     if (sex != null) {
-      user.sex = sex;
+      _userModel.sex = sex;
       notifyListeners();
     }
 
     if (mobile != null) {
-      user.mobile = mobile;
+      _userModel.mobile = mobile;
       notifyListeners();
     }
 
     if (email != null) {
-      user.email = email;
+      _userModel.email = email;
       notifyListeners();
     }
 
     if (followers != null) {
-      user.followers = followers;
+      _userModel.followers = followers;
       notifyListeners();
     }
 
     if (favourites != null) {
-      user.favourites = favourites;
+      _userModel.favourites = favourites;
       notifyListeners();
     }
 
-    return SharedPref.saveUsers(user.toJson());
+    return SharedPref.saveUsers(_userModel.toJson());
   }
 }

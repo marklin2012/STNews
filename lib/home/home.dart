@@ -6,6 +6,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 import 'package:stnews/home/model/news_model.dart';
 import 'package:stnews/home/subview/page_view.dart';
+import 'package:stnews/service/api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -44,7 +45,10 @@ class _HomePageState extends State<HomePage> {
         leading: STButton.icon(
             backgroundColor: Colors.transparent,
             icon: Icon(STIcons.commonly_search),
-            onTap: () {}),
+            onTap: () {
+              Api.setAuthHeader(
+                  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjMgNDU2NyIsImlhdCI6MTYzMDUwNTEzN30.SCtRhjDnjzKS9W_fUf7oFvMAWq8LFtgv-kizP9iBovw');
+            }),
         title: Text('资讯'),
       ),
       body: EasyRefresh(
