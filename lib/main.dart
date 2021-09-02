@@ -26,7 +26,9 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: UserManager.shared!),
+        ChangeNotifierProvider(
+          create: (context) => UserManager.shared,
+        )
       ],
       child: MyApp(),
     ),

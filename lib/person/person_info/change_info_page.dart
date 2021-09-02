@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -77,14 +78,18 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         STToast.show(context: context, message: '输入的昵称少于4个字符');
         return;
       }
-      Api.updateUserInfo(nickname: _controller.text).then((resultData) {
-        if (resultData.success) {
-          UserManager.shared!.changeUser(nickname: _controller.text);
-          STRouters.pop(context);
-        } else {
-          STToast.show(context: context, message: resultData.message);
-        }
-      });
+      Provider.of<UserManager>(context, listen: false)
+          .changeUser(nickname: _controller.text);
+      // UserManager.shared!.changeUser(nickname: _controller.text);
+      STRouters.pop(context);
+      // Api.updateUserInfo(nickname: _controller.text).then((resultData) {
+      //   if (resultData.success) {
+
+      //     STRouters.pop(context);
+      //   } else {
+      //     STToast.show(context: context, message: resultData.message);
+      //   }
+      // });
     }
   }
 
