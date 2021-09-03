@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_collect_page.dart';
 import 'package:stnews/pages/person/person_home_page.dart';
 import 'package:stnews/pages/person/person_info/person_info_page.dart';
+import 'package:stnews/pages/person/person_info/show_avatar_page.dart';
 import 'package:stnews/pages/person/person_like_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
@@ -45,16 +46,20 @@ class _PersonPageState extends State<PersonPage> {
                   leading: GestureDetector(
                     onTap: () {
                       // 查看头像
+                      STRouters.push(context, ShowAvatarPage());
                     },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).accentColor,
-                      ),
-                      child: STCaCheImage.loadingImage(
-                        imageUrl: userProvider.user.avatar,
+                    child: Hero(
+                      tag: ShowAvatarPage.HeroTag,
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        child: STCaCheImage.loadingImage(
+                          imageUrl: userProvider.user.avatar,
+                        ),
                       ),
                     ),
                   ),

@@ -30,11 +30,7 @@ class NewsActionSheetAction extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         decoration: decoration ?? BoxDecoration(),
-        padding: padding ??
-            const EdgeInsets.symmetric(
-              vertical: 16.0,
-              horizontal: 10.0,
-            ),
+        padding: padding ?? EdgeInsets.zero,
         child: DefaultTextStyle(
           style: textStyle ?? NewsTextStyle.style16NormalWhite,
           child: child,
@@ -46,9 +42,14 @@ class NewsActionSheetAction extends StatelessWidget {
 }
 
 class NewsActionSheet extends StatefulWidget {
-  const NewsActionSheet(
-      {Key? key, this.title, this.message, this.acitons, this.closeable})
-      : super(key: key);
+  const NewsActionSheet({
+    Key? key,
+    this.title,
+    this.message,
+    this.acitons,
+    this.closeable,
+    this.backgroundColor,
+  }) : super(key: key);
 
   final String? title;
 
@@ -58,18 +59,22 @@ class NewsActionSheet extends StatefulWidget {
 
   final bool? closeable;
 
+  final Color? backgroundColor;
+
   static void show({
     required BuildContext context,
     String? title,
     String? message,
     List<Widget>? actions,
     bool closeable = true,
+    Color? backgroundCoplor,
   }) {
     final actionSheet = NewsActionSheet(
       title: title,
       message: message,
       acitons: actions,
       closeable: closeable,
+      backgroundColor: backgroundCoplor,
     );
     showModalBottomSheet(
       context: context,
@@ -144,23 +149,26 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
               color: Colors.transparent,
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: Container(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).padding.bottom),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24)),
-                color: Colors.white,
+                color: widget.backgroundColor ?? Colors.white,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: _lists,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

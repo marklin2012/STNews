@@ -102,6 +102,12 @@ class NewsTextStyle {
     color: Colors.black,
   );
 
+  static const TextStyle style17BoldBlack = TextStyle(
+    fontSize: FONTSIZE17,
+    fontWeight: FONTWEIGHT500,
+    color: Colors.black,
+  );
+
   static const TextStyle style18BoldSecBlue = TextStyle(
     fontSize: FONTSIZE18,
     fontWeight: FONTWEIGHT500,

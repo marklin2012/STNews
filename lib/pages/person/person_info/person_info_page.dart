@@ -95,25 +95,35 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
           actions: [
             NewsActionSheetAction(
               onPressed: _openGallery,
-              child: Text(
-                '从相册选择图片',
-                style: NewsTextStyle.style16NormalBlack,
+              child: Container(
+                height: 50,
+                alignment: Alignment.center,
+                child: Text(
+                  '从相册选择图片',
+                  style: NewsTextStyle.style16NormalBlack,
+                ),
               ),
               decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: Color(0xFFEFF3F9))),
               ),
             ),
             NewsActionSheetAction(
-                onPressed: _useCamera,
+              onPressed: _useCamera,
+              child: Container(
+                height: 50,
+                alignment: Alignment.center,
                 child: Text(
                   '拍照',
                   style: NewsTextStyle.style16NormalBlack,
-                )),
+                ),
+              ),
+            ),
             NewsActionSheetAction(
                 onPressed: () {
                   STRouters.pop(context);
                 },
                 child: Container(
+                  height: 50,
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
                   decoration: BoxDecoration(
                     color: Theme.of(context).backgroundColor,
