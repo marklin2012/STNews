@@ -61,14 +61,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: FutureBuilder(
-          future: _futrueIsLogin(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              final _isLogin = snapshot.data as bool;
-              if (_isLogin) return TabbarPage();
-            }
-            return LoginPage();
-          }),
+        future: _futrueIsLogin(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            final _isLogin = snapshot.data as bool;
+            if (_isLogin) return TabbarPage();
+          }
+          return LoginPage();
+        },
+      ),
     );
   }
 }

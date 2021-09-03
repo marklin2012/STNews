@@ -7,7 +7,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/person/person_setting/about_me/about_me_page.dart';
-import 'package:stnews/pages/person/person_setting/account_security_page.dart';
+import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
 import 'package:stnews/pages/person/person_setting/message_setting_page.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -137,7 +137,7 @@ class PersonSetingPage extends StatelessWidget {
       case 0:
         // 账号安全
         STRouters.push(context, AccountSecurityPage(),
-            routeName: '/account_security');
+            routeName: AccountSecurityPage.routeName);
         break;
       case 1:
         //消息设置

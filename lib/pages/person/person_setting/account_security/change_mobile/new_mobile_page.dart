@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/login/phone_input.dart';
-import 'package:stnews/pages/person/person_setting/change_mobile/new_mobile_code_page.dart';
+import 'package:stnews/pages/person/person_setting/account_security/change_password/check_mobile_page.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class NewMobilePage extends StatefulWidget {
@@ -64,7 +64,16 @@ class _NewMobilePageState extends State<NewMobilePage> {
               ),
               mainAxisSize: MainAxisSize.max,
               onTap: () {
-                STRouters.push(context, NewMobileCodePage());
+                if (_controller.text.isEmpty) {
+                  STToast.show(context: context, message: '手机号为空');
+                  return;
+                }
+                STRouters.push(
+                    context,
+                    CheckMobilePage(
+                      type: checkMobileType.changeMobile,
+                      newMobile: _controller.text,
+                    ));
               },
             )
           ],

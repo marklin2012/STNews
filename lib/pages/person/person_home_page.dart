@@ -7,7 +7,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/news_model.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
-import 'package:stnews/utils/st_image.dart';
+import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonHomePage extends StatefulWidget {
@@ -66,7 +66,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                             shape: BoxShape.circle,
                             color: Theme.of(context).accentColor,
                           ),
-                          child: STImage.loadingImage(
+                          child: STCaCheImage.loadingImage(
                               imageUrl: userProvider.user.avatar),
                         ),
                         title: Text(

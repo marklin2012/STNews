@@ -7,12 +7,13 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 class ValidCodeButton extends StatefulWidget {
   const ValidCodeButton({
     Key? key,
     required this.baseStr,
-    this.mobile = '12345677123',
+    this.mobile = '1234567',
     this.countDownStr = '秒后重发',
     this.style = const TextStyle(
       color: Colors.white,
@@ -69,7 +70,7 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
   }
 
   void _countDown() async {
-    final _mobile = widget.mobile.replaceAll(' ', '');
+    final _mobile = STString.removeSpace(widget.mobile);
     final result = await Api.getCheckCode(mobile: _mobile);
     if (result.success) {
       _btnDisabled = !_btnDisabled;

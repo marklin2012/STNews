@@ -20,9 +20,10 @@ class ChangeInfoPage extends StatefulWidget {
 class _ChangeInfoPageState extends State<ChangeInfoPage> {
   late bool _isChangeSex;
   late String _title;
-  late TextEditingController _controller;
+  TextEditingController? _controller;
 
-  var isSelectedMan = false;
+  int _originSex = 0;
+  int _sex = 0;
 
   @override
   void initState() {
@@ -32,11 +33,13 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
     if (!_isChangeSex) {
       _controller = TextEditingController();
     }
+    _originSex = UserProvider.shared.user.sex ?? 0;
+    _sex = _originSex;
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -72,16 +75,29 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
   void _saveAction() {
     if (_isChangeSex) {
       // 修改性别
+      if (_originSex == _sex) {
+        STToast.show(context: context, message: '未改变性别');
+        return;
+      }
+      Api.updateUserInfo(sex: _sex).then((resultData) {
+        if (resultData.success) {
+          Provider.of<UserProvider>(context, listen: false)
+              .changeUser(sex: _sex);
+          STRouters.pop(context);
+        } else {
+          STToast.show(context: context, message: resultData.message);
+        }
+      });
     } else {
       // 修改昵称
-      if (_controller.text.length < 4) {
+      if (_controller!.text.length < 4) {
         STToast.show(context: context, message: '输入的昵称少于4个字符');
         return;
       }
-      Api.updateUserInfo(nickname: _controller.text).then((resultData) {
+      Api.updateUserInfo(nickname: _controller!.text).then((resultData) {
         if (resultData.success) {
           Provider.of<UserProvider>(context, listen: false)
-              .changeUser(nickname: _controller.text);
+              .changeUser(nickname: _controller!.text);
           STRouters.pop(context);
         } else {
           STToast.show(context: context, message: resultData.message);
@@ -100,54 +116,50 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
   Widget _changeSex() {
     return Column(
       children: [
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          child: Container(
-            height: 48.0,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            color: Theme.of(context).backgroundColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '男',
-                  style: TextStyle(
-                      fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
-                ),
-                if (isSelectedMan) Icon(STIcons.commonly_selected),
-              ],
-            ),
-          ),
-          onTap: () {
-            isSelectedMan = true;
-            setState(() {});
-          },
-        ),
+        _subSexWidget(
+            title: '男',
+            isSelected: _sex == 1,
+            onTap: () {
+              setState(() {
+                _sex = 1;
+              });
+            }),
         SizedBox(height: 4.0),
-        GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          child: Container(
-            height: 48,
-            color: Theme.of(context).backgroundColor,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '女',
-                  style: TextStyle(
-                      fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
-                ),
-                if (!isSelectedMan) Icon(STIcons.commonly_selected),
-              ],
-            ),
-          ),
-          onTap: () {
-            isSelectedMan = false;
-            setState(() {});
-          },
-        ),
+        _subSexWidget(
+            title: '女',
+            isSelected: _sex == 2,
+            onTap: () {
+              setState(() {
+                _sex = 2;
+              });
+            }),
       ],
+    );
+  }
+
+  Widget _subSexWidget({
+    String? title,
+    void Function()? onTap,
+    bool isSelected = false,
+  }) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        height: 48.0,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        color: Theme.of(context).backgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title ?? '',
+              style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
+            ),
+            if (isSelected) Icon(STIcons.commonly_selected),
+          ],
+        ),
+      ),
+      onTap: onTap,
     );
   }
 

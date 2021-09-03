@@ -12,7 +12,7 @@ import 'package:stnews/pages/person/person_like_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/providers/user_provider.dart';
-import 'package:stnews/utils/st_image.dart';
+import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonPage extends StatefulWidget {
@@ -52,7 +52,7 @@ class _PersonPageState extends State<PersonPage> {
                         shape: BoxShape.circle,
                         color: Theme.of(context).accentColor,
                       ),
-                      child: STImage.loadingImage(
+                      child: STCaCheImage.loadingImage(
                         imageUrl: userProvider.user.avatar,
                       ),
                     ),

@@ -49,12 +49,23 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
               itemCount: _datas.length,
               itemBuilder: (context, index) {
                 final _map = _datas[index];
-                if (index == 0) {
-                  _map['isHead'] = userProvider.user.avatar ?? '';
-                } else if (index == 1) {
-                  _map['isSubTitle'] = userProvider.user.nickname;
-                } else if (index == 2) {
-                  _map['isSubTitle'] = userProvider.user.sex == 1 ? '男' : '女';
+                switch (index) {
+                  case 0:
+                    _map['isHead'] = userProvider.user.avatar ?? '';
+                    break;
+                  case 1:
+                    _map['isSubTitle'] = userProvider.user.nickname;
+                    break;
+                  case 2:
+                    String _sex = '';
+                    if (userProvider.user.sex == 1) {
+                      _sex = '男';
+                    } else if (userProvider.user.sex == 2) {
+                      _sex = '女';
+                    }
+                    _map['isSubTitle'] = _sex;
+                    break;
+                  default:
                 }
                 return Container(
                   color: Theme.of(context).primaryColor,

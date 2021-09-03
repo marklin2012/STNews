@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/pages/person/person_setting/change_mobile/new_mobile_page.dart';
+import 'package:stnews/pages/person/person_setting/account_security/change_mobile/new_mobile_page.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 class ChangeMobilePage extends StatelessWidget {
   const ChangeMobilePage({Key? key}) : super(key: key);
@@ -29,13 +32,16 @@ class ChangeMobilePage extends StatelessWidget {
             SizedBox(height: 56),
             Icon(STIcons.newsletter_mobile, size: 44),
             SizedBox(height: 24),
-            Text(
-              '187******68',
-              style: TextStyle(
-                fontSize: FONTSIZE22,
-                fontWeight: FONTWEIGHT500,
-              ),
-            ),
+            Consumer<UserProvider>(builder: (context, userProvider, child) {
+              String _mobile = userProvider.user.mobile ?? '';
+              return Text(
+                STString.removeSpaceAndSecurity(_mobile),
+                style: TextStyle(
+                  fontSize: FONTSIZE22,
+                  fontWeight: FONTWEIGHT500,
+                ),
+              );
+            }),
             SizedBox(height: 52),
             STButton(
               text: '更换',

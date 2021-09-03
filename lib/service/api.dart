@@ -41,6 +41,8 @@ Future<ResultData> _get(String url,
     Options? options,
     CancelToken? cancelToken}) async {
   try {
+    debugPrint('requestUri---$url');
+    debugPrint('params---$data');
     final Response response = await dio.get(url,
         queryParameters: data, options: options, cancelToken: cancelToken);
     debugPrint('get success---------${response.statusCode}');
@@ -65,6 +67,8 @@ Future<ResultData> _post(String url,
     Options? options,
     CancelToken? cancelToken}) async {
   try {
+    debugPrint('requestUri---$url');
+    debugPrint('params---$data');
     final Response response = await dio.post(url,
         data: data, options: options, cancelToken: cancelToken);
     debugPrint('requestUri ------- ${response.realUri}');
@@ -97,6 +101,8 @@ Future<ResultData> _put(String url,
     Options? options,
     CancelToken? cancelToken}) async {
   try {
+    debugPrint('requestUri---$url');
+    debugPrint('params---$data');
     final Response response = await dio.put(url,
         data: data, options: options, cancelToken: cancelToken);
     debugPrint('requestUri ------- ${response.realUri}');
@@ -148,6 +154,10 @@ class Api {
   static Future<ResultData> getCheckCode({String? mobile}) =>
       _get('/checkcode', data: {'mobile': mobile});
 
+  /// 验证验证码
+  static Future<ResultData> checkCodeVerify({String? code}) =>
+      _post('/checkcode/verify', data: {'code': code});
+
   /// 验证码登陆
   static Future<ResultData> loginWithPin({String? mobile, String? pin}) =>
       _post('/login/pin', data: {
@@ -165,13 +175,7 @@ class Api {
       {int? sex, String? nickname, String? headImage}) {
     Map<String, dynamic> _data = {};
     if (sex != null) {
-      String _sex = '';
-      if (sex == 1) {
-        _sex = '男';
-      } else if (sex == 2) {
-        _sex = '女';
-      }
-      _data['sex'] = _sex;
+      _data['sex'] = sex;
     }
     if (nickname != null) {
       _data['nickname'] = nickname;
