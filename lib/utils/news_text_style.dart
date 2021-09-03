@@ -84,8 +84,14 @@ class NewsTextStyle {
     fontWeight: FONTWEIGHT500,
   );
 
+  static const TextStyle style16NormalSecBlue = TextStyle(
+    fontSize: FONTSIZE16,
+    fontWeight: FONTWEIGHT400,
+    color: Color(0xFF4585FF),
+  );
+
   static const TextStyle style16NormalSecGrey = TextStyle(
-    fontSize: FONTSIZE18,
+    fontSize: FONTSIZE16,
     fontWeight: FONTWEIGHT400,
     color: Color(0xFF555555),
   );
@@ -124,12 +130,6 @@ class NewsTextStyle {
     color: Colors.black,
     fontSize: FONTSIZE18,
     fontWeight: FONTWEIGHT500,
-  );
-
-  static const TextStyle style16NormalSecBlue = TextStyle(
-    fontSize: FONTSIZE16,
-    fontWeight: FONTWEIGHT400,
-    color: Color(0xFF4585FF),
   );
 
   static const TextStyle style22BoldBlack = TextStyle(
