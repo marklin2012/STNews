@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
-import 'package:stnews/utils/st_routers.dart';
 
 /// data 固定格式
 /// icon 是图标 如果为空即没有图标
@@ -43,8 +43,7 @@ class PersonTile extends StatelessWidget {
         child: STCaCheImage.loadingImage(imageUrl: hasHead),
       );
     } else if (hasSubTitle != null) {
-      subWidget = Text(hasSubTitle,
-          style: TextStyle(fontSize: FONTSIZE16, fontWeight: FontWeight.w300));
+      subWidget = Text(hasSubTitle, style: NewsTextStyle.style16NormalSecGrey);
     }
 
     final iconData = data['icon'];
@@ -69,8 +68,7 @@ class PersonTile extends StatelessWidget {
                   if (iconData != null) SizedBox(width: 14),
                   Text(
                     data['title'],
-                    style: TextStyle(
-                        fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
+                    style: NewsTextStyle.style16NormalBlack,
                   ),
                 ]),
             Row(children: [

@@ -5,6 +5,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/login/phone_input.dart';
 import 'package:stnews/pages/person/person_setting/account_security/change_password/check_mobile_page.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class NewMobilePage extends StatefulWidget {
@@ -57,11 +58,7 @@ class _NewMobilePageState extends State<NewMobilePage> {
             SizedBox(height: 68),
             STButton(
               text: '下一步',
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: FONTSIZE18,
-                fontWeight: FONTWEIGHT500,
-              ),
+              textStyle: NewsTextStyle.style18BoldWhite,
               mainAxisSize: MainAxisSize.max,
               onTap: () {
                 if (_controller.text.isEmpty) {

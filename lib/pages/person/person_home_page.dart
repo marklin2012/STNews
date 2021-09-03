@@ -7,6 +7,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/news_model.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -154,12 +155,12 @@ class _PersonHomePageState extends State<PersonHomePage> {
           if (title != null)
             Text(
               title,
-              style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500),
+              style: NewsTextStyle.style16BoldBlack,
             ),
           if (unit != null)
             Text(
               unit,
-              style: TextStyle(fontSize: FONTSIZE14, fontWeight: FONTWEIGHT400),
+              style: NewsTextStyle.style14NormalBlack,
             ),
         ],
       ),

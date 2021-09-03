@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 import 'package:stnews/utils/st_routers.dart';
 
@@ -75,9 +76,7 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: _spaceFix34),
-              Text('设置新密码',
-                  style: TextStyle(
-                      fontSize: FONTSIZE28, fontWeight: FONTWEIGHT500)),
+              Text('设置新密码', style: NewsTextStyle.style28BoldBlack),
               SizedBox(height: _spaceFix46),
               STInput.password(
                 controller: _firstCon,
@@ -92,10 +91,7 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
               STButton(
                 disabled: _btnDisable,
                 text: "确定",
-                textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: FONTSIZE18,
-                    fontWeight: FONTWEIGHT500),
+                textStyle: NewsTextStyle.style18BoldWhite,
                 mainAxisSize: MainAxisSize.max,
                 onTap: _sureAction,
               )

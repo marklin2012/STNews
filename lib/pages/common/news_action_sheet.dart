@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 class NewsActionSheetAction extends StatelessWidget {
   const NewsActionSheetAction(
@@ -36,12 +36,7 @@ class NewsActionSheetAction extends StatelessWidget {
               horizontal: 10.0,
             ),
         child: DefaultTextStyle(
-          style: textStyle ??
-              TextStyle(
-                fontSize: FONTSIZE16,
-                fontWeight: FONTWEIGHT400,
-                color: CupertinoTheme.of(context).primaryColor,
-              ),
+          style: textStyle ?? NewsTextStyle.style16NormalWhite,
           child: child,
           textAlign: TextAlign.center,
         ),
@@ -113,11 +108,7 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Text(
           widget.title!,
-          style: TextStyle(
-            fontSize: FONTSIZE18,
-            fontWeight: FONTWEIGHT500,
-            color: Theme.of(context).accentColor,
-          ),
+          style: NewsTextStyle.style18BoldSecBlue,
         ),
       );
       _lists.add(_title);
@@ -128,11 +119,7 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
         child: Text(
           widget.message!,
           maxLines: 2,
-          style: TextStyle(
-            fontSize: FONTSIZE16,
-            fontWeight: FONTWEIGHT400,
-            color: Theme.of(context).accentColor,
-          ),
+          style: NewsTextStyle.style16NormalSecBlue,
         ),
       );
       _lists.add(_message);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/notice_model.dart';
-import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 class PersonNoticeCell extends StatelessWidget {
   const PersonNoticeCell({Key? key, this.model, this.onTap}) : super(key: key);
@@ -49,17 +49,13 @@ class PersonNoticeCell extends StatelessWidget {
                   children: [
                     Text(
                       model!.title,
-                      style: TextStyle(
-                          fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500),
+                      style: NewsTextStyle.style16BoldBlack,
                     ),
                     if (model!.subTitle != null) SizedBox(height: 4),
                     if (model!.subTitle != null)
                       Text(
                         model!.subTitle!,
-                        style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: FONTSIZE14,
-                            fontWeight: FONTWEIGHT400),
+                        style: NewsTextStyle.style14NormalSecGrey,
                       ),
                   ],
                 ),
@@ -72,10 +68,7 @@ class PersonNoticeCell extends StatelessWidget {
               children: [
                 Text(
                   _getDateTimeString(model!.dateTime),
-                  style: TextStyle(
-                      color: Color(0xFF888888),
-                      fontSize: FONTSIZE12,
-                      fontWeight: FONTWEIGHT400),
+                  style: NewsTextStyle.style12NormalThrGrey,
                 ),
                 if (model!.notices != null && model!.notices! > 0)
                   SizedBox(height: 10),

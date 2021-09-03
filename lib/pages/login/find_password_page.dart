@@ -6,6 +6,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/new_password_page.dart';
 import 'package:stnews/pages/login/phone_input.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 
@@ -81,9 +82,7 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: _spaceFix34),
-              Text('找回登录密码',
-                  style: TextStyle(
-                      fontSize: FONTSIZE28, fontWeight: FONTWEIGHT500)),
+              Text('找回登录密码', style: NewsTextStyle.style28BoldBlack),
               SizedBox(height: _spaceFix46),
               PhoneInput(
                 areaStr: _selectedArea.values.first,
@@ -110,10 +109,7 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
               STButton(
                 disabled: _btnDisable,
                 text: "下一步",
-                textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: FONTSIZE18,
-                    fontWeight: FONTWEIGHT500),
+                textStyle: NewsTextStyle.style18BoldWhite,
                 mainAxisSize: MainAxisSize.max,
                 onTap: () {
                   STRouters.push(context, NewPassWordPage());

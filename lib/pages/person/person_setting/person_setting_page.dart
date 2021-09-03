@@ -10,6 +10,7 @@ import 'package:stnews/pages/person/person_setting/about_me/about_me_page.dart';
 import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
 import 'package:stnews/pages/person/person_setting/message_setting_page.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 const _datas = [
@@ -65,11 +66,7 @@ class PersonSetingPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               child: STButton(
                 text: '退出登录',
-                textStyle: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: FONTSIZE18,
-                  fontWeight: FONTWEIGHT500,
-                ),
+                textStyle: NewsTextStyle.style18BoldWhite,
                 radius: 8.0,
                 mainAxisSize: MainAxisSize.max,
                 onTap: () {
@@ -79,27 +76,17 @@ class PersonSetingPage extends StatelessWidget {
                       return CupertinoAlertDialog(
                         title: Text(
                           '退出登录',
-                          style: TextStyle(
-                            fontSize: FONTSIZE18,
-                            fontWeight: FONTWEIGHT500,
-                          ),
+                          style: NewsTextStyle.style18BoldBlack,
                         ),
                         content: Text(
                           '退出当前账号，将不能同步收藏和回复/评论等',
-                          style: TextStyle(
-                            fontSize: FONTSIZE16,
-                            fontWeight: FONTWEIGHT400,
-                          ),
+                          style: NewsTextStyle.style16NormalBlack,
                         ),
                         actions: [
                           CupertinoDialogAction(
                             child: Text(
                               '取消',
-                              style: TextStyle(
-                                color: Color(0xFF095BF9),
-                                fontSize: FONTSIZE16,
-                                fontWeight: FONTWEIGHT400,
-                              ),
+                              style: NewsTextStyle.style16NormalFirBlue,
                             ),
                             onPressed: () {
                               Navigator.of(context1).pop();
@@ -108,11 +95,7 @@ class PersonSetingPage extends StatelessWidget {
                           CupertinoDialogAction(
                             child: Text(
                               '确定',
-                              style: TextStyle(
-                                color: Color(0xFF095BF9),
-                                fontSize: FONTSIZE16,
-                                fontWeight: FONTWEIGHT500,
-                              ),
+                              style: NewsTextStyle.style16BoldFirBlue,
                             ),
                             onPressed: () {
                               Navigator.of(context1).pop();

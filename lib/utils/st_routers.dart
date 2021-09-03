@@ -29,14 +29,3 @@ class BlankPutKeyborad extends StatelessWidget {
     );
   }
 }
-
-const FONTWEIGHT400 = FontWeight.w400;
-const FONTWEIGHT500 = FontWeight.w500;
-
-const FONTSIZE12 = 12.0;
-const FONTSIZE14 = 14.0;
-const FONTSIZE16 = 16.0;
-const FONTSIZE17 = 17.0;
-const FONTSIZE18 = 18.0;
-const FONTSIZE22 = 22.0;
-const FONTSIZE28 = 28.0;

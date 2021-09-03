@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/phone_input_formatter.dart';
-import 'package:stnews/utils/st_routers.dart';
 
 class PhoneInput extends StatelessWidget {
   const PhoneInput({
@@ -42,10 +42,7 @@ class PhoneInput extends StatelessWidget {
           children: [
             Text(
               '+' + areaStr,
-              style: const TextStyle(
-                fontSize: FONTSIZE16,
-                fontWeight: FONTWEIGHT400,
-              ),
+              style: NewsTextStyle.style16NormalBlack,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),

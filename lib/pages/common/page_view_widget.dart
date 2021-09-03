@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 const _horFix = 16.0;
 const _verFix = 8.0;
@@ -92,8 +92,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       alignment: Alignment.center,
       child: Text(
         text,
-        style: TextStyle(
-            fontSize: FONTSIZE16, color: Theme.of(context).primaryColor),
+        style: NewsTextStyle.style16NormalWhite,
       ),
     );
   }

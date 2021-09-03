@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/service/api.dart';
-import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/string+.dart';
 
 class ValidCodeButton extends StatefulWidget {
@@ -15,11 +15,7 @@ class ValidCodeButton extends StatefulWidget {
     required this.baseStr,
     this.mobile = '1234567',
     this.countDownStr = '秒后重发',
-    this.style = const TextStyle(
-      color: Colors.white,
-      fontSize: FONTSIZE14,
-      fontWeight: FONTWEIGHT400,
-    ),
+    this.style = NewsTextStyle.style14NormalWhite,
     this.countDown = 30,
   }) : super(key: key);
 

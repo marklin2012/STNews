@@ -6,6 +6,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/person/person_setting/account_security/change_mobile/new_mobile_page.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
 
@@ -36,20 +37,13 @@ class ChangeMobilePage extends StatelessWidget {
               String _mobile = userProvider.user.mobile ?? '';
               return Text(
                 STString.removeSpaceAndSecurity(_mobile),
-                style: TextStyle(
-                  fontSize: FONTSIZE22,
-                  fontWeight: FONTWEIGHT500,
-                ),
+                style: NewsTextStyle.style22BoldBlack,
               );
             }),
             SizedBox(height: 52),
             STButton(
               text: '更换',
-              textStyle: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: FONTSIZE18,
-                fontWeight: FONTWEIGHT500,
-              ),
+              textStyle: NewsTextStyle.style18BoldWhite,
               mainAxisSize: MainAxisSize.max,
               radius: 8.0,
               onTap: () {

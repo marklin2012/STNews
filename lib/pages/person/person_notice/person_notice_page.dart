@@ -6,6 +6,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/notice_model.dart';
 import 'package:stnews/pages/common/person_notice_cell.dart';
 import 'package:stnews/pages/person/person_notice/platform_notice_page.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonNoticePage extends StatefulWidget {
@@ -51,8 +52,7 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
             child: STButton(
               type: STButtonType.text,
               text: '清除未读',
-              textStyle:
-                  TextStyle(fontSize: FONTSIZE17, fontWeight: FONTWEIGHT400),
+              textStyle: NewsTextStyle.style17NormalBlack,
               onTap: _deletUnRead,
             ),
           ),

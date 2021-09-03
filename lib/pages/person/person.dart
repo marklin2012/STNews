@@ -12,6 +12,7 @@ import 'package:stnews/pages/person/person_like_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -59,8 +60,7 @@ class _PersonPageState extends State<PersonPage> {
                   ),
                   title: Text(
                     userProvider.user.nickname ?? '登录/注册',
-                    style: TextStyle(
-                        fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
+                    style: NewsTextStyle.style18BoldBlack,
                   ),
                   trailing: Icon(
                     STIcons.direction_rightoutlined,

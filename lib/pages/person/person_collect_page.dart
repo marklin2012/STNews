@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/news_model.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 const _selectWidth = 48.0;
@@ -58,10 +59,7 @@ class _PersonCollectPageState extends State<PersonCollectPage> {
             child: STButton(
               type: STButtonType.text,
               text: _isManage ? '管理' : '完成',
-              textStyle: TextStyle(
-                  fontSize: FONTSIZE17,
-                  fontWeight: FONTWEIGHT400,
-                  color: Colors.black),
+              textStyle: NewsTextStyle.style17NormalBlack,
               onTap: () {
                 _isManage = !_isManage;
                 setState(() {});

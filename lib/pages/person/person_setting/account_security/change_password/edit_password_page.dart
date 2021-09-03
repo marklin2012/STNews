@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class EditPasswordPage extends StatefulWidget {
@@ -100,11 +101,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
             SizedBox(height: 12),
             Text(
               '密码必须是8-16位数字、字母、符号的组合',
-              style: TextStyle(
-                color: Color(0xFF888888),
-                fontSize: FONTSIZE14,
-                fontWeight: FONTWEIGHT400,
-              ),
+              style: NewsTextStyle.style14NormalThrGrey,
             ),
             SizedBox(height: 68),
             STButton(

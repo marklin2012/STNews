@@ -4,24 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/login/webview_page.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
-
-const _textStyle = TextStyle(
-  fontSize: FONTSIZE16,
-  fontWeight: FONTWEIGHT400,
-);
-
-const _textStyle1 = TextStyle(
-  color: Color(0xFF555555),
-  fontSize: FONTSIZE16,
-  fontWeight: FONTWEIGHT400,
-);
-
-const _textStyle2 = TextStyle(
-  color: Color(0xFFBBBBBB),
-  fontSize: FONTSIZE14,
-  fontWeight: FONTWEIGHT400,
-);
 
 class AboutMePage extends StatefulWidget {
   const AboutMePage({Key? key}) : super(key: key);
@@ -72,7 +56,7 @@ class _AboutMePageState extends State<AboutMePage> {
                     SizedBox(height: 20),
                     Text(
                       '版本号 8.8.08',
-                      style: _textStyle1,
+                      style: NewsTextStyle.style16NormalSecGrey,
                     ),
                     SizedBox(height: 52),
                     GestureDetector(
@@ -90,17 +74,17 @@ class _AboutMePageState extends State<AboutMePage> {
                           children: [
                             Text(
                               '检测更新',
-                              style: _textStyle,
+                              style: NewsTextStyle.style16NormalBlack,
                             ),
                             if (_isNews)
                               Text(
                                 '已是最新版本',
-                                style: _textStyle1,
+                                style: NewsTextStyle.style16NormalSecGrey,
                               ),
                             if (!_isNews)
                               Text(
                                 '当前最新版本为8.8.09',
-                                style: _textStyle1,
+                                style: NewsTextStyle.style16NormalSecGrey,
                               ),
                           ],
                         ),
@@ -124,7 +108,7 @@ class _AboutMePageState extends State<AboutMePage> {
                           children: [
                             Text(
                               '软件许可及服务协议',
-                              style: _textStyle,
+                              style: NewsTextStyle.style16NormalBlack,
                             ),
                             Icon(STIcons.direction_rightoutlined, size: 12),
                           ],
@@ -140,12 +124,12 @@ class _AboutMePageState extends State<AboutMePage> {
                   children: [
                     Text(
                       '公司名称/版权所有',
-                      style: _textStyle2,
+                      style: NewsTextStyle.style14NormalFourGrey,
                     ),
                     SizedBox(height: 4),
                     Text(
                       'Copyright@2011-2021.Abcdefg All fasle',
-                      style: _textStyle2,
+                      style: NewsTextStyle.style14NormalFourGrey,
                     ),
                   ],
                 ),

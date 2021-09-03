@@ -7,12 +7,9 @@ import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/person/person_setting/account_security/change_password/edit_password_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
-
-const _styleNormal = TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400);
-
-const _styleBold = TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT500);
 
 enum checkMobileType {
   changeMobile,
@@ -78,10 +75,10 @@ class _CheckMobilePageState extends State<CheckMobilePage> {
                 children: [
                   Text(
                     '验证码将发送到 ',
-                    style: _styleNormal,
+                    style: NewsTextStyle.style16NormalBlack,
                   ),
                   Text(STString.removeSpaceAndSecurity(_mobile),
-                      style: _styleBold),
+                      style: NewsTextStyle.style16BoldBlack),
                 ],
               ),
               SizedBox(height: 18),
@@ -98,11 +95,7 @@ class _CheckMobilePageState extends State<CheckMobilePage> {
               SizedBox(height: 68),
               STButton(
                 text: '确定',
-                textStyle: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: FONTSIZE18,
-                  fontWeight: FONTWEIGHT500,
-                ),
+                textStyle: NewsTextStyle.style18BoldWhite,
                 radius: 8.0,
                 mainAxisSize: MainAxisSize.max,
                 onTap: _confirmAction,

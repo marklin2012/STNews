@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class ChangeInfoPage extends StatefulWidget {
@@ -61,8 +62,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
             child: STButton(
               type: STButtonType.text,
               text: '保存',
-              textStyle:
-                  TextStyle(fontSize: FONTSIZE17, fontWeight: FONTWEIGHT400),
+              textStyle: NewsTextStyle.style17NormalBlack,
               onTap: _saveAction,
             ),
           ),
@@ -153,7 +153,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
           children: [
             Text(
               title ?? '',
-              style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
+              style: NewsTextStyle.style16NormalBlack,
             ),
             if (isSelected) Icon(STIcons.commonly_selected),
           ],
@@ -189,10 +189,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
               SizedBox(width: 5.0),
               Text(
                 '昵称限制4-16个字符',
-                style: TextStyle(
-                    color: Color(0xFF555555),
-                    fontSize: FONTSIZE14,
-                    fontWeight: FONTWEIGHT400),
+                style: NewsTextStyle.style14NormalSecGrey,
               ),
             ],
           )

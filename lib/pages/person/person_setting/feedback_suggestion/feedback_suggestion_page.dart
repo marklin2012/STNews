@@ -4,19 +4,8 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
-
-const _textStyle = TextStyle(
-  color: Color(0xFF555555),
-  fontSize: FONTSIZE14,
-  fontWeight: FONTWEIGHT400,
-);
-
-const _placeholderTextStyle = TextStyle(
-  color: Color(0xFFBBBBBB),
-  fontSize: FONTSIZE16,
-  fontWeight: FONTWEIGHT400,
-);
 
 class FeedbackSuggestionPage extends StatefulWidget {
   const FeedbackSuggestionPage({Key? key}) : super(key: key);
@@ -85,7 +74,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                   children: [
                     Text(
                       '问题和建议',
-                      style: _textStyle,
+                      style: NewsTextStyle.style14NormalSecGrey,
                     ),
                     ValueListenableBuilder(
                         valueListenable: _countNoti,
@@ -96,7 +85,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                         ) {
                           return Text(
                             value,
-                            style: _textStyle,
+                            style: NewsTextStyle.style14NormalSecGrey,
                           );
                         }),
                   ],
@@ -112,7 +101,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                     maxLines: 5,
                     decoration: InputDecoration(
                       hintText: '请输入你的问题和建议，感谢你的支持～',
-                      hintStyle: _placeholderTextStyle,
+                      hintStyle: NewsTextStyle.style16NormalFourGrey,
                       border:
                           const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
@@ -124,7 +113,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                 SizedBox(height: 24),
                 Text(
                   '图片（可提供问题截图）',
-                  style: _textStyle,
+                  style: NewsTextStyle.style14NormalSecGrey,
                 ),
                 SizedBox(height: 8),
               ],
@@ -161,7 +150,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                 SizedBox(height: 24),
                 Text(
                   '联系方式',
-                  style: _textStyle,
+                  style: NewsTextStyle.style14NormalSecGrey,
                 ),
                 SizedBox(height: 8),
                 Container(
@@ -173,7 +162,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                     controller: _contactCon,
                     decoration: InputDecoration(
                       hintText: '留下联系方式，更可能解决问题',
-                      hintStyle: _placeholderTextStyle,
+                      hintStyle: NewsTextStyle.style16NormalFourGrey,
                       border:
                           const OutlineInputBorder(borderSide: BorderSide.none),
                     ),

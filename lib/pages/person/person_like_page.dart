@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonLikePage extends StatelessWidget {
@@ -47,10 +48,7 @@ class PersonLikePage extends StatelessWidget {
                         SizedBox(width: 12),
                         Text(
                           '用户昵称',
-                          style: TextStyle(
-                            fontSize: FONTSIZE16,
-                            fontWeight: FONTWEIGHT400,
-                          ),
+                          style: NewsTextStyle.style16NormalBlack,
                         ),
                       ],
                     ),
@@ -58,10 +56,7 @@ class PersonLikePage extends StatelessWidget {
                       type: STButtonType.outline,
                       text: '已关注',
                       borderColor: Color(0xFF888888),
-                      textStyle: TextStyle(
-                          color: Color(0xFF888888),
-                          fontSize: FONTSIZE16,
-                          fontWeight: FONTWEIGHT400),
+                      textStyle: NewsTextStyle.style16NormalSecGrey,
                     ),
                   ],
                 ),

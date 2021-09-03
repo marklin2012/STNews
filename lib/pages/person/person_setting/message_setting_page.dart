@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 // ignore: must_be_immutable
@@ -38,7 +39,7 @@ class MessageSettingPage extends StatelessWidget {
           children: [
             Text(
               '推送通知',
-              style: TextStyle(fontSize: FONTSIZE16, fontWeight: FONTWEIGHT400),
+              style: NewsTextStyle.style16NormalBlack,
             ),
             ValueListenableBuilder(
                 valueListenable: _notifier,

@@ -10,6 +10,7 @@ import 'package:stnews/pages/common/news_action_sheet.dart';
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_info/change_info_page.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonInfoPage extends StatefulWidget {
@@ -96,11 +97,7 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
               onPressed: _openGallery,
               child: Text(
                 '从相册选择图片',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: FONTSIZE16,
-                  fontWeight: FONTWEIGHT400,
-                ),
+                style: NewsTextStyle.style16NormalBlack,
               ),
               decoration: BoxDecoration(
                 border: Border(bottom: BorderSide(color: Color(0xFFEFF3F9))),
@@ -110,11 +107,7 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
                 onPressed: _useCamera,
                 child: Text(
                   '拍照',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: FONTSIZE16,
-                    fontWeight: FONTWEIGHT400,
-                  ),
+                  style: NewsTextStyle.style16NormalBlack,
                 )),
             NewsActionSheetAction(
                 onPressed: () {
@@ -129,11 +122,7 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
                   alignment: Alignment.center,
                   child: Text(
                     '取消',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: FONTSIZE18,
-                      fontWeight: FONTWEIGHT500,
-                    ),
+                    style: NewsTextStyle.style18BoldBlack,
                   ),
                 )),
           ],
