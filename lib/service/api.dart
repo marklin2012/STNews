@@ -198,4 +198,18 @@ class Api {
 
   /// 获取自己关注的用户
   static Future<ResultData> getFavourite() => _get('/user/favourite');
+
+  /// 关注用户
+  /// status是否关注, 默认 true, 传 false 则取消关注
+  static Future<ResultData> changeUserFavourite(
+          {String? followedUserID, bool status = true}) =>
+      _put('/user/favourite',
+          data: {'followed_user': followedUserID, 'status': status});
+
+  /// 获取自己关注的文章
+  static Future<ResultData> getUserFavouritePost() =>
+      _get('/user/favourite/post');
+
+  /// 获取文章列表
+  /// 收藏文章
 }

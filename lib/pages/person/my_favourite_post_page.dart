@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/news_model.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 const _selectWidth = 48.0;
 
-class PersonCollectPage extends StatefulWidget {
-  const PersonCollectPage({Key? key}) : super(key: key);
+class MyFavouritePostPage extends StatefulWidget {
+  const MyFavouritePostPage({Key? key}) : super(key: key);
 
   @override
-  _PersonCollectPageState createState() => _PersonCollectPageState();
+  _MyFavouritePostPageState createState() => _MyFavouritePostPageState();
 }
 
-class _PersonCollectPageState extends State<PersonCollectPage> {
+class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   bool _isManage = true;
   bool _isSelectAll = false;
   late List<NewsModel> _lists;
@@ -38,6 +39,13 @@ class _PersonCollectPageState extends State<PersonCollectPage> {
     for (var item in _lists) {
       _selectedMap[item.id!] = item.selected!;
     }
+    _getFavouritePostsData();
+  }
+
+  void _getFavouritePostsData() {
+    Api.getUserFavouritePost().then((result) {
+      if (result.success) {}
+    });
   }
 
   @override

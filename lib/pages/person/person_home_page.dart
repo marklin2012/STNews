@@ -31,11 +31,6 @@ class _PersonHomePageState extends State<PersonHomePage> {
       NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
       NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
-    // _getFavouritesData();
-  }
-
-  void _getFavouritesData() {
-    Api.getFavourite().then((result) {});
   }
 
   @override

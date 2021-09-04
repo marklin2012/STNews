@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
-class PersonLikePage extends StatelessWidget {
-  const PersonLikePage({Key? key}) : super(key: key);
+class MyFavouriteUserPage extends StatefulWidget {
+  const MyFavouriteUserPage({Key? key}) : super(key: key);
+
+  @override
+  _MyFavouriteUserPageState createState() => _MyFavouriteUserPageState();
+}
+
+class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
+  @override
+  void initState() {
+    super.initState();
+    _getFavouritesData();
+  }
+
+  void _getFavouritesData() {
+    Api.getFavourite().then((result) {
+      if (result.success) {}
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +75,9 @@ class PersonLikePage extends StatelessWidget {
                       text: '已关注',
                       borderColor: Color(0xFF888888),
                       textStyle: NewsTextStyle.style16NormalSecGrey,
+                      onTap: () {
+                        _changeFavouriteStatus(index);
+                      },
                     ),
                   ],
                 ),
@@ -64,5 +85,11 @@ class PersonLikePage extends StatelessWidget {
             }),
       ),
     );
+  }
+
+  void _changeFavouriteStatus(int index) {
+    Api.changeUserFavourite().then((reslut) {
+      if (reslut.success) {}
+    });
   }
 }

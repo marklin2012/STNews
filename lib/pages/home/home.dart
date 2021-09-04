@@ -6,7 +6,6 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 import 'package:stnews/models/news_model.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
-import 'package:stnews/service/api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
