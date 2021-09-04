@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/models/news_model.dart';
+import 'package:stnews/models/post_model.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -19,17 +19,17 @@ class PersonHomePage extends StatefulWidget {
 }
 
 class _PersonHomePageState extends State<PersonHomePage> {
-  late List<NewsModel> _lists;
+  late List<PostModel> _lists;
 
   @override
   void initState() {
     super.initState();
     _lists = [
-      NewsModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-      NewsModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-      NewsModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
-      NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
-      NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
+      PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+      PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+      PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
+      PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
+      PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
   }
 

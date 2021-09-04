@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 
-import 'package:stnews/models/news_model.dart';
+import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
+import 'package:stnews/service/api.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,25 +17,32 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late EasyRefreshController _controller;
-  late List<NewsModel> _lists;
+  late List<PostModel> _lists;
 
   @override
   void initState() {
     super.initState();
     _controller = EasyRefreshController();
     _lists = [
-      NewsModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-      NewsModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-      NewsModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
-      NewsModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
-      NewsModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
+      PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+      PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+      PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
+      PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
+      PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
     ];
+    _getPosts();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  void _getPosts() {
+    Api.getPosts().then((reslut) {
+      if (reslut.success) {}
+    });
   }
 
   @override
@@ -71,15 +79,15 @@ class _HomePageState extends State<HomePage> {
         onRefresh: () async {
           await Future.delayed(Duration(seconds: 2), () {
             _lists = [
-              NewsModel(
+              PostModel(
                   id: '0', title: 'title0', author: 'author0', image: 'image0'),
-              NewsModel(
+              PostModel(
                   id: '1', title: 'title1', author: 'author1', image: 'image1'),
-              NewsModel(
+              PostModel(
                   id: '2', title: 'title2', author: 'author2', image: 'image2'),
-              NewsModel(
+              PostModel(
                   id: '3', title: 'title3', author: 'author3', image: 'image3'),
-              NewsModel(
+              PostModel(
                   id: '4', title: 'title4', author: 'author4', image: 'image4'),
             ];
             setState(() {});
@@ -88,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         },
         onLoad: () async {
           await Future.delayed(Duration(seconds: 2), () {
-            _getNewsData();
+            _getMockPosts();
             _controller.finishLoad();
           });
         },
@@ -129,11 +137,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _getNewsData() {
+  void _getMockPosts() {
     final _lastM = _lists.last;
     final _lastIndex = int.parse(_lastM.id!);
     for (var i = _lastIndex + 1; i < _lastIndex + 10; i++) {
-      final _newM = NewsModel(
+      final _newM = PostModel(
         id: i.toString(),
         title: 'title' + i.toString(),
         author: 'author' + i.toString(),

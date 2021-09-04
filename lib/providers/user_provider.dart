@@ -84,7 +84,7 @@ class UserProvider extends ChangeNotifier {
   /// 获取用户资料
   void _getUserInfo() {
     debugPrint('userID:' + user.id.toString());
-    Api.getUserInfo(userID: user.id).then((result) {
+    Api.getUserInfo(userid: user.id).then((result) {
       if (result.success) {
         user = UserModel.fromJson(result.data['user']);
       }

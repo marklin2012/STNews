@@ -172,8 +172,8 @@ class Api {
       _post('/login/password', data: {'mobile': mobile, 'password': password});
 
   /// 获取用户资料
-  static Future<ResultData> getUserInfo({String? userID}) =>
-      _get('/user/info', data: {'user': userID});
+  static Future<ResultData> getUserInfo({String? userid}) =>
+      _get('/user/info', data: {'user': userid});
 
   /// 更新用户资料
   static Future<ResultData> updateUserInfo(
@@ -202,14 +202,18 @@ class Api {
   /// 关注用户
   /// status是否关注, 默认 true, 传 false 则取消关注
   static Future<ResultData> changeUserFavourite(
-          {String? followedUserID, bool status = true}) =>
+          {String? followeduserid, bool status = true}) =>
       _put('/user/favourite',
-          data: {'followed_user': followedUserID, 'status': status});
+          data: {'followed_user': followeduserid, 'status': status});
 
   /// 获取自己关注的文章
   static Future<ResultData> getUserFavouritePost() =>
       _get('/user/favourite/post');
 
   /// 获取文章列表
+  static Future<ResultData> getPosts({int? fieldname}) =>
+      _get('/', data: {'field_name': fieldname});
+
   /// 收藏文章
+  static Future<ResultData> favoritePost() => _put('/post/favourite');
 }

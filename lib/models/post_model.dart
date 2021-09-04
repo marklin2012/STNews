@@ -1,11 +1,11 @@
-class NewsModel {
+class PostModel {
   String? id;
   String? title;
   String? author;
   String? image;
   bool? selected;
 
-  NewsModel({
+  PostModel({
     this.id,
     this.title,
     this.author,
