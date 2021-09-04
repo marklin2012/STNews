@@ -6,7 +6,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
 import './change_mobile/change_mobile_page.dart';
-import './change_password/check_mobile_page.dart';
+import 'change_password/check_code_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
@@ -71,7 +71,7 @@ class AccountSecurityPage extends StatelessWidget {
     if (index == 0) {
       STRouters.push(context, ChangeMobilePage());
     } else if (index == 1) {
-      STRouters.push(context, CheckMobilePage());
+      STRouters.push(context, CheckCodePage());
     }
   }
 }

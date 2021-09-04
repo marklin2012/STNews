@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/login/phone_input.dart';
-import 'package:stnews/pages/person/person_setting/account_security/change_password/check_mobile_page.dart';
+import 'package:stnews/pages/person/person_setting/account_security/change_password/check_code_page.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -67,8 +67,8 @@ class _NewMobilePageState extends State<NewMobilePage> {
                 }
                 STRouters.push(
                     context,
-                    CheckMobilePage(
-                      type: checkMobileType.changeMobile,
+                    CheckCodePage(
+                      type: checkCodeType.changeMobile,
                       newMobile: _controller.text,
                     ));
               },

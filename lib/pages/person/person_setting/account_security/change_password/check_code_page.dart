@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
+import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/account_security/change_password/edit_password_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
@@ -11,33 +12,31 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
 
-enum checkMobileType {
+enum checkCodeType {
   changeMobile,
   changePassword,
 }
 
-class CheckMobilePage extends StatefulWidget {
-  const CheckMobilePage({Key? key, this.type, this.newMobile})
-      : assert(type == checkMobileType.changeMobile && newMobile != null),
-        super(key: key);
+class CheckCodePage extends StatefulWidget {
+  const CheckCodePage({Key? key, this.type, this.newMobile}) : super(key: key);
 
-  final checkMobileType? type;
+  final checkCodeType? type;
 
   final String? newMobile;
 
   @override
-  _CheckMobilePageState createState() => _CheckMobilePageState();
+  _CheckCodePageState createState() => _CheckCodePageState();
 }
 
-class _CheckMobilePageState extends State<CheckMobilePage> {
+class _CheckCodePageState extends State<CheckCodePage> {
   late TextEditingController _codeCon;
-  late checkMobileType _type;
+  late checkCodeType _type;
 
   @override
   void initState() {
     super.initState();
     _codeCon = TextEditingController();
-    _type = widget.type ?? checkMobileType.changePassword;
+    _type = widget.type ?? checkCodeType.changePassword;
   }
 
   @override
@@ -57,13 +56,13 @@ class _CheckMobilePageState extends State<CheckMobilePage> {
             STRouters.pop(context);
           },
         ),
-        title: Text(_type == checkMobileType.changePassword ? '验证码' : '校验手机号'),
+        title: Text(_type == checkCodeType.changePassword ? '验证码' : '校验手机号'),
       ),
       body: Padding(
         padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
         child: Consumer<UserProvider>(builder: (context, userProvider, child) {
           String _mobile;
-          if (_type == checkMobileType.changePassword) {
+          if (_type == checkCodeType.changePassword) {
             _mobile = userProvider.user.mobile ?? '';
           } else {
             _mobile = widget.newMobile!;
@@ -114,11 +113,11 @@ class _CheckMobilePageState extends State<CheckMobilePage> {
     }
     Api.checkCodeVerify(code: _codeCon.text).then((result) {
       if (result.success) {
-        if (_type == checkMobileType.changePassword) {
+        if (_type == checkCodeType.changePassword) {
           STRouters.push(context, EditPasswordPage());
         } else {
           Navigator.of(context)
-              .popUntil(ModalRoute.withName('/account_security'));
+              .popUntil(ModalRoute.withName(AccountSecurityPage.routeName));
         }
       }
     });
