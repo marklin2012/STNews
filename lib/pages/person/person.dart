@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/user_model.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_collect_page.dart';
@@ -13,6 +14,7 @@ import 'package:stnews/pages/person/person_like_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -32,6 +34,24 @@ class _PersonPageState extends State<PersonPage> {
     {'icon': STIcons.commonly_star, 'title': '消息中心', 'isDot': true},
     {'icon': STIcons.commonly_setting, 'title': '设置'}
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+  }
+
+  void _getUserInfo() {
+    UserModel user = context.read<UserProvider>().user;
+    debugPrint('userID:' + user.id.toString());
+    Api.getUserInfo(userID: context.read<UserProvider>().user.id)
+        .then((result) {
+      if (result.success) {
+        Provider.of<UserProvider>(context, listen: false).user =
+            UserModel.fromJson(result.data['user']);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
