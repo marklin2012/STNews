@@ -141,7 +141,8 @@ class Api {
     /// 如果您想以"application/x-www-form-urlencoded"格式编码请求数据,
     /// 可以设置此选项为 `Headers.formUrlEncodedContentType`,  这样[Dio]
     /// 就会自动编码请求体.
-    dio.options.contentType = Headers.formUrlEncodedContentType;
+    // dio.options.contentType = Headers.formUrlEncodedContentType;
+    dio.options.contentType = Headers.jsonContentType;
   }
 
   static void setAuthHeader(String token) {
@@ -169,6 +170,10 @@ class Api {
   static Future<ResultData> loginWithPassword(
           {String? mobile, String? password}) =>
       _post('/login/password', data: {'mobile': mobile, 'password': password});
+
+  /// 获取用户资料
+  static Future<ResultData> getUserInfo({String? userID}) =>
+      _get('/user/info', data: {'user': userID});
 
   /// 更新用户资料
   static Future<ResultData> updateUserInfo(
