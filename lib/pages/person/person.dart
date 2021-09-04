@@ -36,24 +36,6 @@ class _PersonPageState extends State<PersonPage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _getUserInfo();
-  }
-
-  void _getUserInfo() {
-    UserModel user = context.read<UserProvider>().user;
-    debugPrint('userID:' + user.id.toString());
-    Api.getUserInfo(userID: context.read<UserProvider>().user.id)
-        .then((result) {
-      if (result.success) {
-        Provider.of<UserProvider>(context, listen: false).user =
-            UserModel.fromJson(result.data['user']);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

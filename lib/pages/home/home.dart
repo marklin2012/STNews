@@ -45,10 +45,7 @@ class _HomePageState extends State<HomePage> {
         leading: STButton.icon(
             backgroundColor: Colors.transparent,
             icon: Icon(STIcons.commonly_search),
-            onTap: () {
-              Api.setAuthHeader(
-                  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjMgNDU2NyIsImlhdCI6MTYzMDUwNTEzN30.SCtRhjDnjzKS9W_fUf7oFvMAWq8LFtgv-kizP9iBovw');
-            }),
+            onTap: () {}),
         title: Text('资讯'),
       ),
       body: EasyRefresh(

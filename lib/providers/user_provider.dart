@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/shared_pref.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -19,9 +20,10 @@ class UserProvider extends ChangeNotifier {
   UserProvider._() {
     SharedPref.getToken().then((token) {
       if (token != null) {
+        Api.setAuthHeader(token);
         SharedPref.getUsers().then((localUser) {
           _userModel = UserModel.fromJson(localUser);
-        });
+        }).then((_) => _getUserInfo());
       }
     });
   }
@@ -77,5 +79,15 @@ class UserProvider extends ChangeNotifier {
     }
     notifyListeners();
     return SharedPref.saveUsers(_userModel.toJson());
+  }
+
+  /// 获取用户资料
+  void _getUserInfo() {
+    debugPrint('userID:' + user.id.toString());
+    Api.getUserInfo(userID: user.id).then((result) {
+      if (result.success) {
+        user = UserModel.fromJson(result.data['user']);
+      }
+    });
   }
 }
