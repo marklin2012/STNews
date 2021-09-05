@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -20,7 +21,7 @@ class _AboutMePageState extends State<AboutMePage> {
   @override
   void initState() {
     super.initState();
-    _isNews = true;
+    _isNews = false;
   }
 
   @override
@@ -54,15 +55,28 @@ class _AboutMePageState extends State<AboutMePage> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      '版本号 8.8.08',
-                      style: NewsTextStyle.style16NormalSecGrey,
-                    ),
+                    FutureBuilder(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            PackageInfo packageInfo =
+                                snapshot.data as PackageInfo;
+                            return Text(
+                              '版本号 ' + packageInfo.version,
+                              style: NewsTextStyle.style16NormalSecGrey,
+                            );
+                          }
+                          return SizedBox();
+                        }),
                     SizedBox(height: 52),
                     GestureDetector(
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        _isNews = !_isNews;
+                        if (_isNews) {
+                          return;
+                        }
+                        _isNews = true;
                         setState(() {});
                       },
                       child: Container(
@@ -79,11 +93,6 @@ class _AboutMePageState extends State<AboutMePage> {
                             if (_isNews)
                               Text(
                                 '已是最新版本',
-                                style: NewsTextStyle.style16NormalSecGrey,
-                              ),
-                            if (!_isNews)
-                              Text(
-                                '当前最新版本为8.8.09',
                                 style: NewsTextStyle.style16NormalSecGrey,
                               ),
                           ],
