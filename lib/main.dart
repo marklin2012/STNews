@@ -18,9 +18,9 @@ void main() {
   // SharedPreferences.setMockInitialValues({});
   SharedPreferences.setMockInitialValues({
     'token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjMgNDU2NyIsImlhdCI6MTYzMDUwNTEzN30.SCtRhjDnjzKS9W_fUf7oFvMAWq8LFtgv-kizP9iBovw',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjM0NTY3IiwiaWQiOiI2MTM0YzJiZDU2MmIyYTAzODM5ZDk2NDQiLCJpYXQiOjE2MzA4NDc3ODB9.4tU4ApD4Bz3fEvc8rUZbhi4-Xa8ChNrxrSZ4qmjeHGM',
     'user':
-        '{"_id":"612e2506573ba7d30affe47c","mobile":"123 4567","__v":0,"nickname":"用户567 506","sex":0}'
+        '{"_id":"6134c2bd562b2a03839d9644","mobile":"1234567","__v":0,"nickname":"用户4567882","sex":0}'
   });
 
   runApp(

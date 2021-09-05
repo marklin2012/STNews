@@ -197,23 +197,40 @@ class Api {
           data: {'password': password, 're_password': password});
 
   /// 获取自己关注的用户
-  static Future<ResultData> getFavourite() => _get('/user/favourite');
+  static Future<ResultData> getUserFavouriteList() =>
+      _get('/user/favourite/list');
 
   /// 关注用户
   /// status是否关注, 默认 true, 传 false 则取消关注
   static Future<ResultData> changeUserFavourite(
-          {String? followeduserid, bool status = true}) =>
-      _put('/user/favourite',
-          data: {'followed_user': followeduserid, 'status': status});
+      {String? followeduserid, bool? status}) {
+    bool _status = status ?? true;
+    return _put('/user/favourite',
+        data: {'followed_user': followeduserid, 'status': _status});
+  }
 
   /// 获取自己关注的文章
   static Future<ResultData> getUserFavouritePost() =>
       _get('/user/favourite/post');
 
+  /// 接口的小标题信息
+  static Future<ResultData> getHomeInfo() => _get('/');
+
   /// 获取文章列表
-  static Future<ResultData> getPosts({int? fieldname}) =>
-      _get('/', data: {'field_name': fieldname});
+  static Future<ResultData> getPosts({int? fieldname}) => _get('/post/list');
+
+  /// 获取文章详情
+  static Future<ResultData> getPostDetail({String? postid}) =>
+      _get('/post/:id', data: {'_id': postid});
 
   /// 收藏文章
   static Future<ResultData> favoritePost() => _put('/post/favourite');
+
+  /// 文章评论列表
+  static Future<ResultData> getCommentList({String? postid}) =>
+      _post('/comment/list', data: {'post': postid});
+
+  /// 添加文章评论
+  static Future<ResultData> addComment({String? postid, String? content}) =>
+      _post('/comment/add', data: {'post': postid, 'content': content});
 }

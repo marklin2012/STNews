@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/user_model.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -13,16 +14,12 @@ class MyFavouriteUserPage extends StatefulWidget {
 }
 
 class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
+  late List<UserModel> _favouriteLists = [];
+
   @override
   void initState() {
     super.initState();
     _getFavouritesData();
-  }
-
-  void _getFavouritesData() {
-    Api.getFavourite().then((result) {
-      if (result.success) {}
-    });
   }
 
   @override
@@ -43,8 +40,9 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView.builder(
             itemExtent: 56,
-            itemCount: 6,
+            itemCount: _favouriteLists.length,
             itemBuilder: (context, index) {
+              UserModel _user = _favouriteLists[index];
               return Container(
                 margin: EdgeInsets.only(bottom: 8.0),
                 child: Row(
@@ -65,7 +63,7 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
                         ),
                         SizedBox(width: 12),
                         Text(
-                          '用户昵称',
+                          _user.nickname ?? '用户昵称',
                           style: NewsTextStyle.style16NormalBlack,
                         ),
                       ],
@@ -87,9 +85,23 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
     );
   }
 
+  void _getFavouritesData() {
+    Api.getUserFavouriteList().then((result) {
+      if (result.success) {
+        List _temp = result.data['favourites'];
+        _favouriteLists = _temp.map((e) => UserModel.fromJson(e)).toList();
+        setState(() {});
+      }
+    });
+  }
+
   void _changeFavouriteStatus(int index) {
-    Api.changeUserFavourite().then((reslut) {
-      if (reslut.success) {}
+    UserModel _user = _favouriteLists[index];
+    Api.changeUserFavourite(followeduserid: _user.id, status: false)
+        .then((result) {
+      if (result.success) {
+        setState(() {});
+      }
     });
   }
 }

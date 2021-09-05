@@ -17,6 +17,7 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/shared_pref.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
+import 'package:stnews/utils/string+.dart';
 
 const _topFix = 122.0;
 const _bottomFix = 52.0;
@@ -255,8 +256,10 @@ class _LoginPageState extends State<LoginPage> {
     ResultData _resultData;
     if (_isCodeLogin) {
       /// pin固定为：'000000'
-      _resultData =
-          await Api.loginWithPin(mobile: _phoneCon.text, pin: _codeCon.text);
+      _resultData = await Api.loginWithPin(
+        mobile: STString.removeSpace(_phoneCon.text),
+        pin: _codeCon.text,
+      );
     } else {
       _resultData = await Api.loginWithPassword(
           mobile: _phoneCon.text, password: _passwordCon.text);
