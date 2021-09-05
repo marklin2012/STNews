@@ -6,7 +6,9 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
+import 'package:stnews/pages/home/search_post_page.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/st_routers.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -49,10 +51,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-            backgroundColor: Colors.transparent,
-            icon: Icon(STIcons.commonly_search),
-            onTap: () {}),
+        leading: Hero(
+            tag: SearchPostPage.searchHeroTag,
+            child: STButton.icon(
+                backgroundColor: Colors.transparent,
+                icon: Icon(STIcons.commonly_search),
+                onTap: () {
+                  STRouters.push(context, SearchPostPage());
+                })),
         title: Text('资讯'),
       ),
       body: EasyRefresh(
