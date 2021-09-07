@@ -1,15 +1,21 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
 import 'package:stnews/service/result_data.dart';
+import 'package:stnews/utils/shared_pref.dart';
 
 const TimeoutConnect = 5000;
 const TimeoutReceive = 8000;
 const TimeoutSend = 3000;
 
-const String BaseUrl = 'http://localhost:7001/';
-
+// ignore: non_constant_identifier_names
+String BaseUrl = Platform.isAndroid
+    ? 'http://192.168.2.110:7001/'
+    : 'http://localhost:7001/';
+// const String BaseUrl = 'http://localhost:7001/';
+// const String BaseUrl = 'http://192.168.2.110:7001/';
 Dio dio = Dio();
 
 /// error 统一处理
@@ -62,10 +68,12 @@ Future<ResultData> _get(String url,
   }
 }
 
-Future<ResultData> _post(String url,
-    {Map<String, dynamic>? data,
-    Options? options,
-    CancelToken? cancelToken}) async {
+Future<ResultData> _post(
+  String url, {
+  Map<String, dynamic>? data,
+  Options? options,
+  CancelToken? cancelToken,
+}) async {
   try {
     debugPrint('requestUri---$url');
     debugPrint('params---$data');
@@ -104,6 +112,48 @@ Future<ResultData> _put(String url,
     debugPrint('requestUri---$url');
     debugPrint('params---$data');
     final Response response = await dio.put(url,
+        data: data, options: options, cancelToken: cancelToken);
+    debugPrint('requestUri ------- ${response.realUri}');
+    debugPrint('requestHeader-------${response.headers}');
+    debugPrint('post success---------${response.statusCode}');
+    debugPrint('post success---------${response.data}');
+    if (response.statusCode == 200) {
+      var mapData;
+      if (response.data is String) {
+        mapData = json.decode(response.data);
+      } else {
+        mapData = response.data;
+      }
+      return ResultData(
+        success: true,
+        data: mapData['data'],
+        message: mapData['message'].toString(),
+        code: mapData['code'] as int,
+      );
+    }
+    return ResultData.error('请求异常');
+  } on DioError catch (error) {
+    debugPrint('post error -------- $error');
+    return ResultData.error(_formatError(error));
+  }
+}
+
+Future<ResultData> _upload(
+  String url, {
+  FormData? data,
+  Options? options,
+  CancelToken? cancelToken,
+}) async {
+  try {
+    debugPrint('requestUri---$url');
+    debugPrint('params---$data');
+    Dio uploadDio = Api.createUploadDio();
+    await SharedPref.getToken().then((token) {
+      uploadDio.options.headers = {
+        'Authorization': token,
+      };
+    });
+    final Response response = await uploadDio.post(url,
         data: data, options: options, cancelToken: cancelToken);
     debugPrint('requestUri ------- ${response.realUri}');
     debugPrint('requestHeader-------${response.headers}');
@@ -233,4 +283,17 @@ class Api {
   /// 添加文章评论
   static Future<ResultData> addComment({String? postid, String? content}) =>
       _post('/comment/add', data: {'post': postid, 'content': content});
+
+  /// 上传图片接口
+  static Future<ResultData> uploadFile({FormData? data}) =>
+      _upload('/file/upload', data: data);
+
+  static Dio createUploadDio() {
+    Dio uploadDio = new Dio();
+    uploadDio.options.baseUrl = BaseUrl;
+    uploadDio.options.sendTimeout = TimeoutSend;
+    uploadDio.options.receiveTimeout = TimeoutReceive;
+    uploadDio.options.contentType = 'multipart/form-data';
+    return uploadDio;
+  }
 }
