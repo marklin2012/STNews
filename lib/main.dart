@@ -16,6 +16,7 @@ void main() {
 
   // ignore: invalid_use_of_visible_for_testing_member
   // SharedPreferences.setMockInitialValues({});
+  // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({
     'token':
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxMjM0NTY3IiwiaWQiOiI2MTM0YzJiZDU2MmIyYTAzODM5ZDk2NDQiLCJpYXQiOjE2MzA4NDc3ODB9.4tU4ApD4Bz3fEvc8rUZbhi4-Xa8ChNrxrSZ4qmjeHGM',

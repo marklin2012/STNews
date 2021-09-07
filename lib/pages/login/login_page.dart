@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -268,8 +269,10 @@ class _LoginPageState extends State<LoginPage> {
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
       SharedPref.saveToken(token).then((_) {
+        Api.setAuthHeader(token);
         SharedPref.saveUsers(user).then((_) {
-          UserProvider.shared.user = UserModel.fromJson(user);
+          Provider.of<UserProvider>(context, listen: false).user =
+              UserModel.fromJson(user);
           STRouters.push(context, TabbarPage());
         });
       });

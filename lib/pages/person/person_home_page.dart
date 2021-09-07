@@ -6,7 +6,6 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/providers/user_provider.dart';
-import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
