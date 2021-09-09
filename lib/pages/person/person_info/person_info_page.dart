@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -173,12 +174,17 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
     String path = image.path;
     FormData formData = new FormData.fromMap({
       'files': [
-        MultipartFile.fromFileSync(path),
+        MultipartFile.fromFileSync(path,
+            contentType: MediaType.parse('image/jpeg')),
       ],
     });
     Api.uploadFile(data: formData).then((result) {
       if (result.success) {
-        // TODO 更新头像地址
+        final imageUrl = result.data['imgUrl'];
+        UserProvider.shared.changeUser(avatar: imageUrl);
+        STRouters.pop(context);
+      } else {
+        STToast.show(context: context, message: result.message);
       }
     });
   }

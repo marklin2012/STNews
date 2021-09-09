@@ -50,15 +50,17 @@ class _PersonPageState extends State<PersonPage> {
                     },
                     child: Hero(
                       tag: ShowAvatarPage.HeroTag,
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).accentColor,
-                        ),
-                        child: STCaCheImage.loadingImage(
-                          imageUrl: userProvider.user.avatar,
+                      child: ClipOval(
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          child: STCaCheImage.loadingImage(
+                            imageUrl: userProvider.user.avatar,
+                          ),
                         ),
                       ),
                     ),

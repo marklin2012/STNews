@@ -34,14 +34,16 @@ class PersonTile extends StatelessWidget {
       subWidget = STBadge(dot: true);
     } else if (hasHead != null) {
       final _imagePath = hasHead as String;
-      subWidget = Container(
-        height: 32,
-        width: 32,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.blue,
+      subWidget = ClipOval(
+        child: Container(
+          height: 32,
+          width: 32,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.blue,
+          ),
+          child: STCaCheImage.loadingImage(imageUrl: _imagePath),
         ),
-        child: STCaCheImage.loadingImage(imageUrl: _imagePath),
       );
     } else if (hasSubTitle != null) {
       subWidget = Text(hasSubTitle, style: NewsTextStyle.style16NormalSecGrey);
