@@ -6,6 +6,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
+import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/pages/home/search_post_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -130,7 +131,9 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(3.0)),
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        _gotoDetailPage(index);
+                      },
                     ),
                   );
                 },
@@ -156,5 +159,9 @@ class _HomePageState extends State<HomePage> {
       _lists.add(_newM);
     }
     setState(() {});
+  }
+
+  void _gotoDetailPage(int index) {
+    STRouters.push(context, PostDetailPage());
   }
 }

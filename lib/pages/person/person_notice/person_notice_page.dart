@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/notice_model.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/person_notice_cell.dart';
-import 'package:stnews/pages/person/person_notice/platform_notice_page.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -17,21 +17,23 @@ class PersonNoticePage extends StatefulWidget {
 }
 
 class _PersonNoticePageState extends State<PersonNoticePage> {
-  late List _lists;
+  List _lists = [];
+
+  bool get isEmpty => _lists.isEmpty;
 
   @override
   void initState() {
     super.initState();
-    _lists = [
-      NoticeModel('0', '平台通知', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息', notices: 8),
-      NoticeModel('1', '谁评论了我', DateTime.now().add(Duration(days: -1))),
-      NoticeModel('2', '谁点赞了我', DateTime.now().add(Duration(days: -1))),
-      NoticeModel('3', '端午活动', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息'),
-      NoticeModel('4', '祝福你', DateTime(2021, 6, 23),
-          subTitle: '文字信息', notices: 100),
-    ];
+    // _lists = [
+    //   NoticeModel('0', '平台通知', DateTime.now().add(Duration(days: -1)),
+    //       subTitle: '文字信息', notices: 8),
+    //   NoticeModel('1', '谁评论了我', DateTime.now().add(Duration(days: -1))),
+    //   NoticeModel('2', '谁点赞了我', DateTime.now().add(Duration(days: -1))),
+    //   NoticeModel('3', '端午活动', DateTime.now().add(Duration(days: -1)),
+    //       subTitle: '文字信息'),
+    //   NoticeModel('4', '祝福你', DateTime(2021, 6, 23),
+    //       subTitle: '文字信息', notices: 100),
+    // ];
   }
 
   @override
@@ -52,36 +54,49 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
             child: STButton(
               type: STButtonType.text,
               text: '清除未读',
-              textStyle: NewsTextStyle.style17NormalBlack,
+              textStyle: isEmpty
+                  ? NewsTextStyle.style17NormalFourGrey
+                  : NewsTextStyle.style17NormalBlack,
               onTap: _deletUnRead,
             ),
           ),
         ],
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 24.0),
-        child: ListView.builder(
-            itemCount: _lists.length,
-            itemBuilder: (context, index) {
-              final model = _lists[index];
-              return PersonNoticeCell(
-                model: model,
-                onTap: () {
-                  _tapActions(model.id);
-                },
-              );
-            }),
-      ),
+      body: _getSubWidget(),
+    );
+  }
+
+  Widget _getSubWidget() {
+    if (isEmpty) {
+      return EmptyViewWidget(
+        spaceH: 162.0,
+        imageBGSize: 100.0,
+        content: '暂无任何消息哦～',
+      );
+    }
+    return Container(
+      margin: EdgeInsets.only(top: 24.0),
+      child: ListView.builder(
+          itemCount: _lists.length,
+          itemBuilder: (context, index) {
+            final model = _lists[index];
+            return PersonNoticeCell(
+              model: model,
+              onTap: () {
+                // _tapActions(model.id);
+              },
+            );
+          }),
     );
   }
 
   void _deletUnRead() {}
 
-  void _tapActions(String id) {
-    debugPrint(id);
-    if (id == '0') {
-      // 平台通知
-      STRouters.push(context, PlatformNoticePage());
-    }
-  }
+  // void _tapActions(String id) {
+  //   debugPrint(id);
+  //   if (id == '0') {
+  //     // 平台通知
+  //     STRouters.push(context, PlatformNoticePage());
+  //   }
+  // }
 }

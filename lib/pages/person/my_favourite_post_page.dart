@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -20,7 +21,7 @@ class MyFavouritePostPage extends StatefulWidget {
 class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   bool _isManage = true;
   bool _isSelectAll = false;
-  late List<PostModel> _lists;
+  List<PostModel> _lists = [];
   Map<String, bool> _selectedMap = {};
 
   double _width = 0;
@@ -29,16 +30,16 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   void initState() {
     super.initState();
 
-    _lists = [
-      PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-      PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-      PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
-      PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
-      PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
-    ];
-    for (var item in _lists) {
-      _selectedMap[item.id!] = item.selected!;
-    }
+    // _lists = [
+    //   PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+    //   PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+    //   PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
+    //   PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
+    //   PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
+    // ];
+    // for (var item in _lists) {
+    //   _selectedMap[item.id!] = item.selected!;
+    // }
     _getFavouritePostsData();
   }
 
@@ -81,6 +82,13 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   }
 
   Widget _getBodyWidget() {
+    if (_lists.isEmpty) {
+      return EmptyViewWidget(
+        spaceH: 144.0,
+        imageBGSize: 100.0,
+        content: '暂无任何收藏哦～',
+      );
+    }
     return Stack(
       children: [
         ListView.builder(

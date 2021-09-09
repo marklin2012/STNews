@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_rich_text.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
@@ -16,16 +17,18 @@ class SearchPostPage extends StatefulWidget {
 
 class _SearchPostPageState extends State<SearchPostPage> {
   late TextEditingController _controller;
-  late List<PostModel> _lists;
+  List<PostModel> _lists = [];
+
+  bool get isEmpty => _lists.isEmpty;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _lists = [
-      PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-      PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-    ];
+    // _lists = [
+    //   PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
+    //   PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
+    // ];
   }
 
   @override
@@ -88,33 +91,42 @@ class _SearchPostPageState extends State<SearchPostPage> {
                 ],
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final _model = _lists[index];
-                  return Container(
-                    height: 92,
-                    child: ListTile(
-                      title: NewsRichText(
-                        textContent: _model.title,
-                        searchContent: _controller.text,
-                      ),
-                      subtitle: Text(_model.author!),
-                      trailing: Container(
-                        width: 102,
-                        height: 76,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  );
-                },
-                childCount: _lists.length,
+            if (isEmpty)
+              SliverToBoxAdapter(
+                child: EmptyViewWidget(
+                  spaceH: 60,
+                  content: '暂无搜索内容',
+                ),
               ),
-            ),
+            if (!isEmpty)
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final _model = _lists[index];
+                    return Container(
+                      height: 92,
+                      child: ListTile(
+                        title: NewsRichText(
+                          textContent: _model.title,
+                          searchContent: _controller.text,
+                        ),
+                        subtitle: Text(_model.author!),
+                        trailing: Container(
+                          width: 102,
+                          height: 76,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.0)),
+                          ),
+                        ),
+                        onTap: () {},
+                      ),
+                    );
+                  },
+                  childCount: _lists.length,
+                ),
+              ),
           ],
         ),
       ),
