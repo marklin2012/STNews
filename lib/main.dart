@@ -8,7 +8,6 @@ import 'package:stnews/pages/tabbar.dart';
 
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
-import 'package:stnews/utils/shared_pref.dart';
 
 void main() {
   // init API dio
@@ -37,14 +36,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  Future<bool> _futrueIsLogin() async {
-    String? token = await SharedPref.getToken();
-    if (token != null) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -61,16 +52,7 @@ class MyApp extends StatelessWidget {
           elevation: 0.1,
         ),
       ),
-      home: FutureBuilder(
-        future: _futrueIsLogin(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            final _isLogin = snapshot.data as bool;
-            if (_isLogin) return TabbarPage();
-          }
-          return LoginPage();
-        },
-      ),
+      home: UserProvider.shared.isLogin ? TabbarPage() : LoginPage(),
     );
   }
 }

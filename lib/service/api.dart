@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'package:flutter/material.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/result_data.dart';
-import 'package:stnews/utils/shared_pref.dart';
 
 const TimeoutConnect = 5000;
 const TimeoutReceive = 8000;
@@ -12,7 +12,7 @@ const TimeoutSend = 3000;
 
 // ignore: non_constant_identifier_names
 String BaseUrl = Platform.isAndroid
-    ? 'http://192.168.2.110:7001/'
+    ? 'http://192.168.2.116:7001/'
     : 'http://localhost:7001/';
 // const String BaseUrl = 'http://localhost:7001/';
 // const String BaseUrl = 'http://192.168.2.110:7001/';
@@ -147,12 +147,13 @@ Future<ResultData> _upload(
   try {
     debugPrint('requestUri---$url');
     debugPrint('params---$data');
-    Dio uploadDio = Api.createUploadDio();
-    await SharedPref.getToken().then((token) {
-      uploadDio.options.headers = {
-        'Authorization': token,
-      };
-    });
+    Dio uploadDio = new Dio();
+    uploadDio.options.baseUrl = BaseUrl;
+    uploadDio.options.sendTimeout = TimeoutSend;
+    uploadDio.options.receiveTimeout = TimeoutReceive;
+    uploadDio.options.contentType = 'multipart/form-data';
+    final token = UserProvider.shared.token;
+    uploadDio.options.headers = {'Authorization': token};
     final Response response = await uploadDio.post(url,
         data: data, options: options, cancelToken: cancelToken);
     debugPrint('requestUri ------- ${response.realUri}');
@@ -287,13 +288,4 @@ class Api {
   /// 上传图片接口
   static Future<ResultData> uploadFile({FormData? data}) =>
       _upload('/file/upload', data: data);
-
-  static Dio createUploadDio() {
-    Dio uploadDio = new Dio();
-    uploadDio.options.baseUrl = BaseUrl;
-    uploadDio.options.sendTimeout = TimeoutSend;
-    uploadDio.options.receiveTimeout = TimeoutReceive;
-    uploadDio.options.contentType = 'multipart/form-data';
-    return uploadDio;
-  }
 }

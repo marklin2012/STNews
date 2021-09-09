@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -81,8 +80,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
       }
       Api.updateUserInfo(sex: _sex).then((resultData) {
         if (resultData.success) {
-          Provider.of<UserProvider>(context, listen: false)
-              .changeUser(sex: _sex);
+          UserProvider.shared.changeUser(sex: _sex);
           STRouters.pop(context);
         } else {
           STToast.show(context: context, message: resultData.message);
@@ -96,8 +94,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
       }
       Api.updateUserInfo(nickname: _controller!.text).then((resultData) {
         if (resultData.success) {
-          Provider.of<UserProvider>(context, listen: false)
-              .changeUser(nickname: _controller!.text);
+          UserProvider.shared.changeUser(nickname: _controller!.text);
           STRouters.pop(context);
         } else {
           STToast.show(context: context, message: resultData.message);

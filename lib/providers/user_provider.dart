@@ -8,29 +8,46 @@ class UserProvider extends ChangeNotifier {
 
   UserModel get user => _userModel;
 
-  static late UserProvider _shared;
+  static UserProvider? _shared;
 
   static UserProvider get shared => UserProvider._shardProvider();
 
+  String? _token;
+
+  String get token => _token ?? '';
+
+  bool get isLogin {
+    return _token != null && _token!.length != 0;
+  }
+
   static UserProvider _shardProvider() {
-    _shared = UserProvider._();
-    return _shared;
+    _shared ??= UserProvider._();
+    return _shared!;
   }
 
   UserProvider._() {
-    SharedPref.getToken().then((token) {
-      if (token != null) {
-        Api.setAuthHeader(token);
+    SharedPref.getToken().then((localToken) {
+      if (localToken != null && localToken.length != 0) {
+        token = localToken;
         SharedPref.getUsers().then((localUser) {
-          _userModel = UserModel.fromJson(localUser);
+          user = UserModel.fromJson(localUser);
         }).then((_) => _getUserInfo());
       }
     });
   }
 
+  set token(String? token) {
+    if (token != null) {
+      _token = token;
+      Api.setAuthHeader(token);
+      SharedPref.saveToken(token);
+    }
+  }
+
   set user(UserModel? userModel) {
     if (userModel != null) {
       _userModel = userModel;
+      SharedPref.saveUsers(_userModel.toJson());
       notifyListeners();
     }
   }

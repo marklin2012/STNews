@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -15,7 +14,6 @@ import 'package:stnews/models/user_model.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
-import 'package:stnews/utils/shared_pref.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/utils/string+.dart';
@@ -268,14 +266,9 @@ class _LoginPageState extends State<LoginPage> {
     if (_resultData.success) {
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
-      SharedPref.saveToken(token).then((_) {
-        Api.setAuthHeader(token);
-        SharedPref.saveUsers(user).then((_) {
-          Provider.of<UserProvider>(context, listen: false).user =
-              UserModel.fromJson(user);
-          STRouters.push(context, TabbarPage());
-        });
-      });
+      UserProvider.shared.token = token;
+      UserProvider.shared.user = UserModel.fromJson(user);
+      STRouters.push(context, TabbarPage());
     } else {
       STToast.show(context: context, message: _resultData.message);
     }
