@@ -10,6 +10,7 @@ import 'package:stnews/pages/person/person_setting/about_me/about_me_page.dart';
 import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
 import 'package:stnews/pages/person/person_setting/message_setting_page.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -98,6 +99,8 @@ class PersonSetingPage extends StatelessWidget {
                               style: NewsTextStyle.style16BoldFirBlue,
                             ),
                             onPressed: () {
+                              UserProvider.shared
+                                  .setToken(null, isReload: true);
                               Navigator.of(context1).pop();
                               STRouters.push(context, LoginPage());
                             },

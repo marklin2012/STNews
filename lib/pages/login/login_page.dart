@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_resultData.success) {
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
-      UserProvider.shared.token = token;
+      UserProvider.shared.setToken(token);
       UserProvider.shared.user = UserModel.fromJson(user);
       STRouters.push(context, TabbarPage());
     } else {

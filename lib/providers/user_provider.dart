@@ -28,7 +28,7 @@ class UserProvider extends ChangeNotifier {
   UserProvider._() {
     SharedPref.getToken().then((localToken) {
       if (localToken != null && localToken.length != 0) {
-        token = localToken;
+        setToken(localToken);
         SharedPref.getUsers().then((localUser) {
           user = UserModel.fromJson(localUser);
         }).then((_) => _getUserInfo());
@@ -36,11 +36,12 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
-  set token(String? token) {
+  void setToken(String? token, {isReload = false}) {
     if (token != null) {
       _token = token;
       Api.setAuthHeader(token);
       SharedPref.saveToken(token);
+      if (isReload) notifyListeners();
     }
   }
 
