@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/news_rich_text.dart';
 import 'package:stnews/utils/news_text_style.dart';
-import 'package:stnews/utils/st_routers.dart';
 
 class SearchPostPage extends StatefulWidget {
   static const searchHeroTag = 'searchPost';
@@ -47,37 +47,45 @@ class _SearchPostPageState extends State<SearchPostPage> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width - 32 - 30 - 8,
-                      height: 44,
-                      child: STInput(
-                        prefixIcon: Hero(
-                          tag: SearchPostPage.searchHeroTag,
-                          child: Icon(STIcons.commonly_search),
-                        ),
-                        placeholder: '请输入搜索内容',
-                        controller: _controller,
-                      ),
+              child: Row(
+                children: [
+                  STButton.icon(
+                    backgroundColor: Colors.transparent,
+                    icon: Icon(
+                      STIcons.direction_leftoutlined,
+                      color: Colors.black,
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 8),
-                      width: 30,
-                      child: STButton(
-                        text: '取消',
-                        textStyle: NewsTextStyle.style12NormalThrGrey,
-                        type: STButtonType.text,
-                        backgroundColor: Colors.transparent,
-                        onTap: () {
-                          STRouters.pop(context);
-                        },
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  Container(
+                    width:
+                        MediaQuery.of(context).size.width - 36 - 30 - 24 - 12,
+                    height: 44,
+                    child: STInput(
+                      prefixIcon: Hero(
+                        tag: SearchPostPage.searchHeroTag,
+                        child: Icon(STIcons.commonly_search),
                       ),
+                      placeholder: '请输入搜索内容',
+                      controller: _controller,
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 8),
+                    width: 36,
+                    child: STButton(
+                      text: '搜索',
+                      textStyle: NewsTextStyle.style17NormalFirBlue,
+                      type: STButtonType.text,
+                      backgroundColor: Colors.transparent,
+                      onTap: () {
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             SliverList(
@@ -87,7 +95,10 @@ class _SearchPostPageState extends State<SearchPostPage> {
                   return Container(
                     height: 92,
                     child: ListTile(
-                      title: Text(_model.title!),
+                      title: NewsRichText(
+                        textContent: _model.title,
+                        searchContent: _controller.text,
+                      ),
                       subtitle: Text(_model.author!),
                       trailing: Container(
                         width: 102,
