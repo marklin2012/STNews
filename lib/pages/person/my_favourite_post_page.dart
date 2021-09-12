@@ -84,7 +84,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   Widget _getBodyWidget() {
     if (_lists.isEmpty) {
       return EmptyViewWidget(
-        spaceH: 144.0,
+        fixTop: 144.0,
         imageBGSize: 100.0,
         content: '暂无任何收藏哦～',
       );

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/models/notice_model.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/person_notice_cell.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -69,7 +68,7 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
   Widget _getSubWidget() {
     if (isEmpty) {
       return EmptyViewWidget(
-        spaceH: 162.0,
+        fixTop: 162.0,
         imageBGSize: 100.0,
         content: '暂无任何消息哦～',
       );
