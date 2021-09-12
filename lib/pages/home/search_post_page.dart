@@ -17,6 +17,9 @@ class SearchPostPage extends StatefulWidget {
 
 class _SearchPostPageState extends State<SearchPostPage> {
   late TextEditingController _controller;
+
+  late bool _isSearched;
+
   List<PostModel> _lists = [];
 
   bool get isEmpty => _lists.isEmpty;
@@ -25,6 +28,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _isSearched = false;
     // _lists = [
     //   PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
     //   PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
@@ -41,35 +45,42 @@ class _SearchPostPageState extends State<SearchPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.fromLTRB(
-          0,
-          MediaQuery.of(context).padding.top,
-          0,
-          MediaQuery.of(context).padding.bottom,
-        ),
-        child: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 44,
               child: Row(
                 children: [
-                  STButton.icon(
-                    backgroundColor: Colors.transparent,
-                    icon: Icon(
-                      STIcons.direction_leftoutlined,
-                      color: Colors.black,
+                  Container(
+                    width: 48,
+                    child: STButton.icon(
+                      backgroundColor: Colors.transparent,
+                      size: STButtonSize.small,
+                      icon: Icon(
+                        STIcons.direction_leftoutlined,
+                        color: Colors.black,
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
                   Container(
-                    width:
-                        MediaQuery.of(context).size.width - 36 - 30 - 24 - 12,
-                    height: 44,
+                    width: MediaQuery.of(context).size.width - 36 - 8 - 48 - 8,
+                    height: 32,
                     child: STInput(
+                      padding: EdgeInsets.zero,
                       prefixIcon: Hero(
                         tag: SearchPostPage.searchHeroTag,
                         child: Icon(STIcons.commonly_search),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFEFF3F9),
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
                       placeholder: '请输入搜索内容',
                       controller: _controller,
@@ -84,6 +95,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                       type: STButtonType.text,
                       backgroundColor: Colors.transparent,
                       onTap: () {
+                        _isSearched = true;
                         setState(() {});
                       },
                     ),
@@ -91,45 +103,58 @@ class _SearchPostPageState extends State<SearchPostPage> {
                 ],
               ),
             ),
-            if (isEmpty)
-              SliverToBoxAdapter(
-                child: EmptyViewWidget(
-                  spaceH: 60,
-                  content: '暂无搜索内容',
-                ),
-              ),
-            if (!isEmpty)
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final _model = _lists[index];
-                    return Container(
-                      height: 92,
-                      child: ListTile(
-                        title: NewsRichText(
-                          textContent: _model.title,
-                          searchContent: _controller.text,
-                        ),
-                        subtitle: Text(_model.author!),
-                        trailing: Container(
-                          width: 102,
-                          height: 76,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(3.0)),
-                          ),
-                        ),
-                        onTap: () {},
-                      ),
-                    );
-                  },
-                  childCount: _lists.length,
-                ),
-              ),
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 44,
+              bottom: 0,
+              child: _buildContent(),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildContent() {
+    if (!_isSearched) {
+      return Container();
+    }
+    if (isEmpty) {
+      return Container(
+        alignment: Alignment.center,
+        child: EmptyViewWidget(
+          fixTop: 60,
+          content: '暂无搜索内容',
+        ),
+      );
+    } else {
+      return ListView.builder(
+          itemCount: _lists.length,
+          itemBuilder: (context, index) {
+            final _model = _lists[index];
+            return Container(
+              height: 92,
+              child: ListTile(
+                title: NewsRichText(
+                  textContent: _model.title,
+                  searchContent: _controller.text,
+                ),
+                subtitle: Text(_model.author!),
+                trailing: Container(
+                  width: 102,
+                  height: 76,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                  ),
+                ),
+                onTap: () {
+                  /// TODO 文章详情
+                },
+              ),
+            );
+          });
+    }
   }
 }
