@@ -271,11 +271,13 @@ class Api {
   static Future<ResultData> getPosts({int? fieldname}) => _get('/post/list');
 
   /// 获取文章详情
-  static Future<ResultData> getPostDetail({String? postid}) =>
-      _get('/post/:id', data: {'_id': postid});
+  static Future<ResultData> getPostDetail(String postid) =>
+      _get('/post/$postid');
 
   /// 收藏文章
-  static Future<ResultData> favoritePost() => _put('/post/favourite');
+  static Future<ResultData> favoritePost(
+          {String? postid, bool status = true}) =>
+      _put('/post/favourite', data: {'post': postid, 'status': status});
 
   /// 文章评论列表
   static Future<ResultData> getCommentList({String? postid}) =>
@@ -284,6 +286,11 @@ class Api {
   /// 添加文章评论
   static Future<ResultData> addComment({String? postid, String? content}) =>
       _post('/comment/add', data: {'post': postid, 'content': content});
+
+  /// 点赞(取消点赞)评论
+  static Future<ResultData> commentFavourite(
+          {String? comment, bool status = true}) =>
+      _post('/comment/favourite', data: {'comment': comment, 'status': status});
 
   /// 上传图片接口
   static Future<ResultData> uploadFile({FormData? data}) =>

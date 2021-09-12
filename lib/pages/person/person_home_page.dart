@@ -18,18 +18,11 @@ class PersonHomePage extends StatefulWidget {
 }
 
 class _PersonHomePageState extends State<PersonHomePage> {
-  late List<PostModel> _lists;
+  List<PostModel> _lists = [];
 
   @override
   void initState() {
     super.initState();
-    _lists = [
-      PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-      PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-      PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
-      PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
-      PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
-    ];
   }
 
   @override
