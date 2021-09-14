@@ -63,7 +63,9 @@ class _DetailFooterState extends State<DetailFooter> {
               ),
               placeholder: '发表评论',
               controller: _controller,
-              onSubmitted: (String value) {},
+              onSubmitted: (String value) {
+                _addComment(value);
+              },
             ),
           ),
           STBadge(
@@ -97,6 +99,17 @@ class _DetailFooterState extends State<DetailFooter> {
         ],
       ),
     );
+  }
+
+  /// 发布评论
+  void _addComment(String? content) {
+    if (content == null) return;
+    final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    Api.addComment(postid: model.id, content: content).then((reslut) {
+      if (reslut.success) {
+        _controller.text = '';
+      }
+    });
   }
 
   /// 收藏或取消收藏该文章

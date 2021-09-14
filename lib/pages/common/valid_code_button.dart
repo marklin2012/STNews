@@ -59,34 +59,42 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
           text: value,
           textStyle: widget.style,
           disabled: _btnDisabled,
-          onTap: _countDown,
+          onTap: _getCheckCode,
         );
       },
     );
   }
 
-  void _countDown() async {
+  void _getCheckCode() async {
     final _mobile = STString.removeSpace(widget.mobile);
+
+    /// 请求接口
     final result = await Api.getCheckCode(mobile: _mobile);
     if (result.success) {
       _btnDisabled = !_btnDisabled;
       setState(() {});
-      _timer?.cancel();
-      _timer = null;
-      _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
-        if (_currentTime != 0) {
-          _currentTime--;
-          _btnValueNoti!.value = _currentTime.toString() + widget.countDownStr;
-        } else {
-          _btnValueNoti!.value = widget.baseStr;
-          _btnDisabled = !_btnDisabled;
-          _timer?.cancel();
-          _timer = null;
-          _currentTime = widget.countDown;
-        }
-      });
+      _startTimer();
     } else {
       STToast.show(context: context, message: result.message);
     }
+  }
+
+  /// 启动Timer计时
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = null;
+    _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+      if (_currentTime != 0) {
+        _currentTime--;
+        _btnValueNoti!.value = _currentTime.toString() + widget.countDownStr;
+      } else {
+        /// 重置
+        _btnValueNoti!.value = widget.baseStr;
+        _btnDisabled = !_btnDisabled;
+        _timer?.cancel();
+        _timer = null;
+        _currentTime = widget.countDown;
+      }
+    });
   }
 }
