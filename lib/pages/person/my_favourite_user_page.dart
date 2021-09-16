@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -52,15 +53,7 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Container(
-                          height: 36,
-                          width: 36,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(Icons.person),
-                        ),
+                        NewsImage.defaultAvatar(),
                         SizedBox(width: 12),
                         Text(
                           _user.nickname ?? '用户昵称',

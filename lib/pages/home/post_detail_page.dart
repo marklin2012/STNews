@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home_page.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PostDetailPage extends StatefulWidget {
@@ -30,9 +31,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
     //   if (reslut.success) {}
     // });
 
-    // Api.getCommentList(postid: widget.model!.id).then((reslut) {
-    //   if (reslut.success) {}
-    // });
+    Api.getCommentList(postid: widget.model!.id).then((reslut) {
+      if (reslut.success) {}
+    });
   }
 
   @override

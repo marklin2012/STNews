@@ -49,11 +49,6 @@ class _PersonHomePageState extends State<PersonHomePage> {
                       ListTile(
                         leading: Container(
                           height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).accentColor,
-                          ),
                           child: STCaCheImage.loadingImage(
                               imageUrl: userProvider.user.avatar),
                         ),

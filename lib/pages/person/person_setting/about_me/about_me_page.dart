@@ -49,9 +49,8 @@ class _AboutMePageState extends State<AboutMePage> {
                     Container(
                       width: 100,
                       height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
+                      child: Image(
+                        image: AssetImage('assets/images/default_logo.png'),
                       ),
                     ),
                     SizedBox(height: 20),

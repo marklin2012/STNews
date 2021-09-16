@@ -4,6 +4,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 class DetailHeader extends StatefulWidget {
@@ -48,10 +49,8 @@ class _DetailHeaderState extends State<DetailHeader> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   STButton.icon(
-                    icon: Icon(
-                      STIcons.commonly_user,
-                      color: Colors.white,
-                    ),
+                    padding: EdgeInsets.zero,
+                    icon: NewsImage.defaultAvatar(),
                     onTap: () {
                       if (widget.authorTap != null) {
                         widget.authorTap!();

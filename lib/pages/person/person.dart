@@ -26,10 +26,10 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   List<Map> _datas = [
-    {'icon': STIcons.commonly_message, 'title': '我的主页'},
-    {'icon': STIcons.commonly_star, 'title': '我的收藏'},
+    {'icon': STIcons.commonly_home, 'title': '我的主页'},
+    {'icon': STIcons.commonly_heart, 'title': '我的收藏'},
     {'icon': STIcons.commonly_star, 'title': '我的关注'},
-    {'icon': STIcons.commonly_star, 'title': '消息中心', 'isDot': true},
+    {'icon': STIcons.commonly_message, 'title': '消息中心', 'isDot': true},
     {'icon': STIcons.commonly_setting, 'title': '设置'}
   ];
 
@@ -50,17 +50,10 @@ class _PersonPageState extends State<PersonPage> {
                     },
                     child: Hero(
                       tag: ShowAvatarPage.HeroTag,
-                      child: ClipOval(
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).accentColor,
-                          ),
-                          child: STCaCheImage.loadingImage(
-                            imageUrl: userProvider.user.avatar,
-                          ),
+                      child: Container(
+                        height: 60,
+                        child: STCaCheImage.loadingImage(
+                          imageUrl: userProvider.user.avatar,
                         ),
                       ),
                     ),

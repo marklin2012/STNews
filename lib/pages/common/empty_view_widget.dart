@@ -109,11 +109,10 @@ class _EmptyViewWidgetState extends State<EmptyViewWidget> {
             Container(
               width: _imageBGSize,
               height: _imageBGSize,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              child: widget.image,
+              child: widget.image ??
+                  Image(
+                    image: AssetImage('assets/images/default_empty.png'),
+                  ),
             ),
             if (_content != null) SizedBox(height: 24),
             if (!widget.isLoading) Text(_content!, style: _textStyle),
