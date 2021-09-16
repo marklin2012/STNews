@@ -1,9 +1,10 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -202,22 +203,26 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        debugPrint('添加照片');
+        NewsImagePicker.showPicker(
+          context: context,
+          galleryTap: _openGallery,
+          cameraTap: _useCamera,
+        );
       },
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        radius: Radius.circular(4.0),
-        color: Color(0xFFC4C5C7),
-        dashPattern: [4, 3],
-        child: Container(
-          width: 80,
-          height: 80,
-          child: Icon(
-            Icons.add,
-            size: 40,
-          ),
-        ),
+      child: Image(
+        image: AssetImage('assets/images/default_add_picture.png'),
       ),
     );
+  }
+
+  /// 拍照
+  void _useCamera() async {
+    await ImagePicker().pickImage(source: ImageSource.camera);
+  }
+
+  /// 相册
+  void _openGallery() async {
+    await ImagePicker()
+        .pickMultiImage(maxHeight: 80, maxWidth: 80, imageQuality: 9);
   }
 }

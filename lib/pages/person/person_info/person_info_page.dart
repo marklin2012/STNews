@@ -8,12 +8,11 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/pages/common/news_action_sheet.dart';
+import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_info/change_info_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
-import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonInfoPage extends StatefulWidget {
@@ -92,53 +91,10 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
   void _goNextPage(int index) {
     switch (index) {
       case 0:
-        // 弹窗
-        NewsActionSheet.show(
+        NewsImagePicker.showPicker(
           context: context,
-          actions: [
-            NewsActionSheetAction(
-              onPressed: _openGallery,
-              child: Container(
-                height: 50,
-                alignment: Alignment.center,
-                child: Text(
-                  '从相册选择图片',
-                  style: NewsTextStyle.style16NormalBlack,
-                ),
-              ),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Color(0xFFEFF3F9))),
-              ),
-            ),
-            NewsActionSheetAction(
-              onPressed: _useCamera,
-              child: Container(
-                height: 50,
-                alignment: Alignment.center,
-                child: Text(
-                  '拍照',
-                  style: NewsTextStyle.style16NormalBlack,
-                ),
-              ),
-            ),
-            NewsActionSheetAction(
-                onPressed: () {
-                  STRouters.pop(context);
-                },
-                child: Container(
-                  height: 50,
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    '取消',
-                    style: NewsTextStyle.style18BoldBlack,
-                  ),
-                )),
-          ],
+          galleryTap: _openGallery,
+          cameraTap: _useCamera,
         );
         break;
       case 1:
