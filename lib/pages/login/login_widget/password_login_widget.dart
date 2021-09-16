@@ -32,10 +32,13 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   var _selectedArea = {"中国": "86"};
   TextEditingController _phoneCon = TextEditingController();
   TextEditingController _passwordCon = TextEditingController();
+  late ValueNotifier<bool> _btnNotifier;
 
   @override
   void initState() {
     super.initState();
+    var _loading = false;
+    _btnNotifier = ValueNotifier(_loading);
     _phoneCon.addListener(() {
       if (_phoneCon.text.length > 7 && _passwordCon.text.isNotEmpty) {
         _loginDisable = false;
@@ -59,6 +62,7 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   void dispose() {
     _phoneCon.dispose();
     _passwordCon.dispose();
+    _btnNotifier.dispose();
     super.dispose();
   }
 
@@ -74,12 +78,20 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           SizedBox(height: _spaceFix44),
           _buildForm(),
           SizedBox(height: _spaceFix36),
-          STButton(
-            mainAxisSize: MainAxisSize.max,
-            text: '登录',
-            textStyle: NewsTextStyle.style18BoldWhite,
-            disabled: _loginDisable,
-            onTap: _requestHttp,
+          ValueListenableBuilder(
+            valueListenable: _btnNotifier,
+            builder: (context, bool loading, child) {
+              return STButton(
+                mainAxisSize: MainAxisSize.max,
+                text: '登录',
+                textStyle: NewsTextStyle.style18BoldWhite,
+                disabled: _loginDisable,
+                loading: loading,
+                onTap: () {
+                  _requestHttp();
+                },
+              );
+            },
           ),
           SizedBox(height: _horFix16),
           STButton(
@@ -96,15 +108,18 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   }
 
   void _requestHttp() async {
+    _btnNotifier.value = true;
     ResultData _resultData = await Api.loginWithPassword(
         mobile: _phoneCon.text, password: _passwordCon.text);
     if (_resultData.success) {
+      _btnNotifier.value = false;
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
       UserProvider.shared.setToken(token);
       UserProvider.shared.user = UserModel.fromJson(user);
       STRouters.push(context, TabbarPage());
     } else {
+      _btnNotifier.value = false;
       STToast.show(context: context, message: _resultData.message);
     }
   }
