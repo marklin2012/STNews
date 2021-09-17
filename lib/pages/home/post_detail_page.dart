@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:stnews/models/comment_model.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
+import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home_page.dart';
-import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PostDetailPage extends StatefulWidget {
@@ -22,18 +25,57 @@ class PostDetailPage extends StatefulWidget {
 
 class _PostDetailPageState extends State<PostDetailPage> {
   late EasyRefreshController _controller;
+  late List<CommentModel>? _comments;
 
   @override
   void initState() {
     super.initState();
     _controller = EasyRefreshController();
+    _comments = [
+      CommentModel(
+        postid: '1',
+        content: '评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述',
+        user: UserModel(id: '1', nickname: '111', avatar: ''),
+        favourites: '11',
+        pubishtime: DateTime.now(),
+      ),
+      CommentModel(
+        postid: '2',
+        content: '评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述',
+        user: UserModel(id: '2', nickname: '222', avatar: ''),
+        favourites: '22',
+        pubishtime: DateTime.now().add(Duration(days: -1)),
+      ),
+      CommentModel(
+        postid: '3',
+        content: '评论内容描述评论内容描述',
+        user: UserModel(id: '3', nickname: '333', avatar: ''),
+        favourites: '33',
+        pubishtime: DateTime.now().add(Duration(days: -2)),
+      ),
+      CommentModel(
+        postid: '4',
+        content:
+            '评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述评论内容描述',
+        user: UserModel(id: '4', nickname: '4444', avatar: ''),
+        favourites: '44',
+        pubishtime: DateTime.now().add(Duration(days: -10)),
+      ),
+      CommentModel(
+        postid: '5',
+        content: '评论内容描述',
+        user: UserModel(id: '5', nickname: '555555', avatar: ''),
+        favourites: '555',
+        pubishtime: DateTime.now().add(Duration(days: -555)),
+      ),
+    ];
     // Api.getPostDetail(widget.model!.id!).then((reslut) {
     //   if (reslut.success) {}
     // });
 
-    Api.getCommentList(postid: widget.model!.id).then((reslut) {
-      if (reslut.success) {}
-    });
+    // Api.getCommentList(postid: widget.model!.id).then((reslut) {
+    //   if (reslut.success) {}
+    // });
   }
 
   @override
@@ -127,19 +169,31 @@ class _PostDetailPageState extends State<PostDetailPage> {
                       ),
                     ),
                   ),
-                  SliverFixedExtentList(
-                    itemExtent: 80.0,
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0),
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(color: Color(0xFFDFE2E7)),
+                        ),
+                      ),
+                      child: Text(
+                        '评论 (${_comments?.length})',
+                        style: NewsTextStyle.style16BoldBlack,
+                      ),
+                    ),
+                  ),
+                  SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Card(
-                          child: Container(
-                            alignment: Alignment.center,
-                            color: Colors.primaries[(index % 18)],
-                            child: Text(''),
+                      (context, index) {
+                        return Expanded(
+                          child: CommentCell(
+                            model: _comments?[index],
                           ),
                         );
                       },
-                      childCount: 10,
+                      childCount: _comments?.length,
                     ),
                   ),
                 ],
