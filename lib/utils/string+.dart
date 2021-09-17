@@ -23,4 +23,36 @@ class STString {
     final _temp = STString.removeSpace(mobile);
     return STString.securityMobile(_temp);
   }
+
+  static String getDateString(DateTime time) {
+    if (time.isAfter(DateTime.now().add(Duration(minutes: -30)))) {
+      return '刚刚';
+    }
+
+    if (time.isAfter(DateTime.now().add(Duration(days: -1)))) {
+      final different = DateTime.now().difference(time).inDays;
+      if (different == 0) {
+        return '今天';
+      } else {
+        return '昨天';
+      }
+    }
+
+    if (time.isAfter(DateTime.now().add(Duration(days: -2)))) {
+      final different = DateTime.now().difference(time).inDays;
+      if (different <= 1) {
+        return '昨天';
+      }
+    }
+
+    if (time.isAfter(DateTime.now().add(Duration(days: -365)))) {
+      final month = time.month;
+      final day = time.day;
+      return '$month-$day';
+    }
+    final year = time.year;
+    final month = time.month;
+    final day = time.day;
+    return '$year-$month-$day';
+  }
 }

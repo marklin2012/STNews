@@ -73,7 +73,7 @@ class _EmptyViewWidgetState extends State<EmptyViewWidget> {
     super.initState();
     _fixTop = widget.fixTop ?? 100;
     _imageBGSize = widget.imageBGSize ?? 80;
-    _content = widget.content;
+    _content = widget.content ?? '暂无内容';
     _backgroundColor = widget.backgroundColor ?? Colors.white;
     _textStyle = widget.textStyle ?? NewsTextStyle.style16NormalSecGrey;
     if (widget.isLoading) {
