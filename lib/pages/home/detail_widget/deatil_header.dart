@@ -67,7 +67,7 @@ class _DetailHeaderState extends State<DetailHeader> {
                         style: NewsTextStyle.style14NormalBlack,
                       ),
                       Text(
-                        _model.publishDate ?? '',
+                        _model.publishdate ?? '',
                         style: NewsTextStyle.style12NormalThrGrey,
                       ),
                     ],

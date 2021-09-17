@@ -1,37 +1,39 @@
 class PostModel {
   String? id;
-  bool? isTop;
+  bool? istop;
   String? title;
   String? article;
-  String? headImages;
+  String? headimages;
   String? author;
-  String? publishDate;
+  String? publishdate;
   String? favourites;
   bool? deleted;
 
   bool? selected;
+  bool? isliked;
 
   PostModel({
     this.id,
-    this.isTop,
+    this.istop,
     this.title,
     this.article,
-    this.headImages,
+    this.headimages,
     this.author,
-    this.publishDate,
+    this.publishdate,
     this.favourites,
     this.deleted,
     this.selected = false,
+    this.isliked = false,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
-    isTop = json['is_top'];
+    istop = json['is_top'];
     title = json['title'];
     article = json['article'];
-    headImages = json['head_images'];
+    headimages = json['head_images'];
     author = json['author'];
-    publishDate = json['publish_date'];
+    publishdate = json['publish_date'];
     deleted = json['deleted'];
     favourites = json['favourites'];
   }
@@ -39,12 +41,12 @@ class PostModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.id;
-    data['is_top'] = this.isTop;
+    data['is_top'] = this.istop;
     data['title'] = this.title;
     data['article'] = this.article;
-    data['head_images'] = this.headImages;
+    data['head_images'] = this.headimages;
     data['author'] = this.author;
-    data['publish_date'] = this.publishDate;
+    data['publish_date'] = this.publishdate;
     data['deleted'] = this.deleted;
     data['favourites'] = this.favourites;
     return data;

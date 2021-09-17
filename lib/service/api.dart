@@ -279,6 +279,14 @@ class Api {
           {String? postid, bool status = true}) =>
       _put('/post/favourite', data: {'post': postid, 'status': status});
 
+  /// 点赞文章
+  static Future<ResultData> thumbupPost({String? post, bool status = true}) =>
+      _put('/post/thumbup', data: {'post': post, 'status': status});
+
+  /// 是否点赞了该文章
+  static Future<ResultData> getThumpubPost({String? id}) =>
+      _get('/post/thumpub/$id');
+
   /// 文章评论列表
   static Future<ResultData> getCommentList({String? postid}) =>
       _post('/comment/list', data: {'post': postid});

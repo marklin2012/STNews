@@ -11,6 +11,7 @@ import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home_page.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -26,11 +27,13 @@ class PostDetailPage extends StatefulWidget {
 class _PostDetailPageState extends State<PostDetailPage> {
   late EasyRefreshController _controller;
   late List<CommentModel>? _comments;
+  late PostModel _model;
 
   @override
   void initState() {
     super.initState();
     _controller = EasyRefreshController();
+    _model = widget.model ?? PostModel();
     _comments = [
       CommentModel(
         postid: '1',
@@ -69,13 +72,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
         pubishtime: DateTime.now().add(Duration(days: -555)),
       ),
     ];
-    // Api.getPostDetail(widget.model!.id!).then((reslut) {
-    //   if (reslut.success) {}
-    // });
-
-    // Api.getCommentList(postid: widget.model!.id).then((reslut) {
-    //   if (reslut.success) {}
-    // });
   }
 
   @override
@@ -84,8 +80,26 @@ class _PostDetailPageState extends State<PostDetailPage> {
     super.dispose();
   }
 
+  void _getDatas() {
+    // Api.getPostDetail(widget.model!.id!).then((reslut) {
+    //   if (reslut.success) {}
+    // });
+
+    // Api.getCommentList(postid: widget.model!.id).then((reslut) {
+    //   if (reslut.success) {}
+    // });
+
+    // Api.getThumpubPost(id: _model.id).then((reslut) {
+    //   if (reslut.success) {
+    //     _model.isliked = true;
+    //     PostDetailInheritedWidget.of(context).updateData(_model);
+    //   }
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getDatas();
     return Scaffold(
       appBar: AppBar(
         leading: STButton.icon(
@@ -126,7 +140,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
 
   Widget buildChildWidget() {
     return PostDetailInheritedWidget(
-      widget.model!,
+      _model,
       child: Stack(
         children: [
           Positioned(
@@ -187,10 +201,8 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return Expanded(
-                          child: CommentCell(
-                            model: _comments?[index],
-                          ),
+                        return CommentCell(
+                          model: _comments?[index],
                         );
                       },
                       childCount: _comments?.length,

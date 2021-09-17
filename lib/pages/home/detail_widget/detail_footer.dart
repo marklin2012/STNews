@@ -119,10 +119,23 @@ class _DetailFooterState extends State<DetailFooter> {
       if (result.success) {
         _isFavourited = !_isFavourited;
         setState(() {});
+      } else {
+        STToast.show(
+            context: context, message: _isFavourited ? '取消收藏失败' : '收藏失败');
       }
     });
   }
 
   /// 点赞或取消点赞该文章
-  void _likedPost() {}
+  void _likedPost() {
+    final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    Api.thumbupPost(post: model.id, status: !_isLiked).then((result) {
+      if (result.success) {
+        _isLiked = !_isLiked;
+        setState(() {});
+      } else {
+        STToast.show(context: context, message: _isLiked ? '取消点赞失败' : '点赞失败');
+      }
+    });
+  }
 }
