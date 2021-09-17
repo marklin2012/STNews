@@ -5,6 +5,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/notice_model.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/string+.dart';
 
 class PersonNoticeCell extends StatelessWidget {
   const PersonNoticeCell({Key? key, this.model, this.onTap}) : super(key: key);
@@ -48,13 +49,13 @@ class PersonNoticeCell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      model!.title,
+                      model!.title ?? '',
                       style: NewsTextStyle.style16BoldBlack,
                     ),
-                    if (model!.subTitle != null) SizedBox(height: 4),
-                    if (model!.subTitle != null)
+                    if (model!.subtitle != null) SizedBox(height: 4),
+                    if (model!.subtitle != null)
                       Text(
-                        model!.subTitle!,
+                        model!.subtitle!,
                         style: NewsTextStyle.style14NormalSecGrey,
                       ),
                   ],
@@ -67,7 +68,7 @@ class PersonNoticeCell extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  _getDateTimeString(model!.dateTime),
+                  STString.getDateString(model!.datetime),
                   style: NewsTextStyle.style12NormalThrGrey,
                 ),
                 if (model!.notices != null && model!.notices! > 0)
@@ -82,37 +83,5 @@ class PersonNoticeCell extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getDateTimeString(DateTime time) {
-    if (time.isAfter(DateTime.now().add(Duration(minutes: -30)))) {
-      return '刚刚';
-    }
-
-    if (time.isAfter(DateTime.now().add(Duration(days: -1)))) {
-      final different = DateTime.now().difference(time).inDays;
-      if (different == 0) {
-        return '今天';
-      } else {
-        return '昨天';
-      }
-    }
-
-    if (time.isAfter(DateTime.now().add(Duration(days: -2)))) {
-      final different = DateTime.now().difference(time).inDays;
-      if (different <= 1) {
-        return '昨天';
-      }
-    }
-
-    if (time.isAfter(DateTime.now().add(Duration(days: -365)))) {
-      final month = time.month;
-      final day = time.day;
-      return '$month-$day';
-    }
-    final year = time.year;
-    final month = time.month;
-    final day = time.day;
-    return '$year-$month-$day';
   }
 }

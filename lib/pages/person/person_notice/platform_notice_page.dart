@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 
-import 'package:stnews/models/notice_model.dart';
 import 'package:stnews/pages/common/person_notice_cell.dart';
 import 'package:stnews/pages/login/webview_page.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -16,21 +16,11 @@ class PlatformNoticePage extends StatefulWidget {
 }
 
 class _PlatformNoticePageState extends State<PlatformNoticePage> {
-  late List _lists;
+  List _lists = [];
 
   @override
   void initState() {
     super.initState();
-    _lists = [
-      NoticeModel('0', '协议更新通知', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息'),
-      NoticeModel('1', '平台通知', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息'),
-      NoticeModel('2', '平台通知', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息'),
-      NoticeModel('3', '平台通知', DateTime.now().add(Duration(days: -1)),
-          subTitle: '文字信息'),
-    ];
   }
 
   @override
@@ -46,20 +36,27 @@ class _PlatformNoticePageState extends State<PlatformNoticePage> {
         ),
         title: Text('平台通知'),
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 24.0),
-        child: ListView.builder(
-            itemCount: _lists.length,
-            itemBuilder: (context, index) {
-              final model = _lists[index];
-              return PersonNoticeCell(
-                model: model,
-                onTap: () {
-                  _tapActions(model.id);
-                },
-              );
-            }),
-      ),
+      body: _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    if (_lists.isEmpty) {
+      return EmptyViewWidget();
+    }
+    return Container(
+      margin: EdgeInsets.only(top: 24.0),
+      child: ListView.builder(
+          itemCount: _lists.length,
+          itemBuilder: (context, index) {
+            final model = _lists[index];
+            return PersonNoticeCell(
+              model: model,
+              onTap: () {
+                _tapActions(model.id);
+              },
+            );
+          }),
     );
   }
 

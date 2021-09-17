@@ -23,16 +23,6 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
   @override
   void initState() {
     super.initState();
-    // _lists = [
-    //   NoticeModel('0', '平台通知', DateTime.now().add(Duration(days: -1)),
-    //       subTitle: '文字信息', notices: 8),
-    //   NoticeModel('1', '谁评论了我', DateTime.now().add(Duration(days: -1))),
-    //   NoticeModel('2', '谁点赞了我', DateTime.now().add(Duration(days: -1))),
-    //   NoticeModel('3', '端午活动', DateTime.now().add(Duration(days: -1)),
-    //       subTitle: '文字信息'),
-    //   NoticeModel('4', '祝福你', DateTime(2021, 6, 23),
-    //       subTitle: '文字信息', notices: 100),
-    // ];
   }
 
   @override
