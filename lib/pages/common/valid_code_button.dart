@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -67,9 +68,10 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
 
   void _getCheckCode() async {
     final _mobile = STString.removeSpace(widget.mobile);
-
-    /// 请求接口
+    NewsLoading.start(context);
+    // 请求接口
     final result = await Api.getCheckCode(mobile: _mobile);
+    NewsLoading.stop();
     if (result.success) {
       _btnDisabled = !_btnDisabled;
       setState(() {});

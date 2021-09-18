@@ -289,7 +289,7 @@ class Api {
 
   /// 文章评论列表
   static Future<ResultData> getCommentList({String? postid}) =>
-      _post('/comment/list', data: {'post': postid});
+      _get('/comment/list', data: {'post': postid});
 
   /// 添加文章评论
   static Future<ResultData> addComment({String? postid, String? content}) =>

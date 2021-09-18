@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -78,7 +79,9 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         STToast.show(context: context, message: '未改变性别');
         return;
       }
+      NewsLoading.start(context);
       Api.updateUserInfo(sex: _sex).then((resultData) {
+        NewsLoading.stop();
         if (resultData.success) {
           UserProvider.shared.changeUser(sex: _sex);
           STRouters.pop(context);
@@ -92,7 +95,9 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         STToast.show(context: context, message: '输入的昵称少于4个字符');
         return;
       }
+      NewsLoading.start(context);
       Api.updateUserInfo(nickname: _controller!.text).then((resultData) {
+        NewsLoading.stop();
         if (resultData.success) {
           UserProvider.shared.changeUser(nickname: _controller!.text);
           STRouters.pop(context);

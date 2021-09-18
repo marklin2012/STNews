@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/st_badge/badge_positoned.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
 
@@ -84,7 +85,8 @@ class _DetailFooterState extends State<DetailFooter> {
           ),
           STButton.icon(
             padding: EdgeInsets.all(2.0),
-            backgroundColor: _isFavourited ? Colors.blue : Colors.transparent,
+            backgroundColor:
+                _isFavourited ? Color(0xFFFFA927) : Colors.transparent,
             icon: Icon(
               STIcons.commonly_star,
             ),
@@ -92,7 +94,7 @@ class _DetailFooterState extends State<DetailFooter> {
           ),
           STButton.icon(
             padding: EdgeInsets.all(2.0),
-            backgroundColor: _isLiked ? Colors.blue : Colors.transparent,
+            backgroundColor: _isLiked ? Color(0xFFFF4141) : Colors.transparent,
             icon: Icon(STIcons.commonly_like),
             onTap: _likedPost,
           )
@@ -102,20 +104,24 @@ class _DetailFooterState extends State<DetailFooter> {
   }
 
   /// 发布评论
-  void _addComment(String? content) {
+  void _addComment(String? content) async {
     if (content == null) return;
     final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
-    Api.addComment(postid: model.id, content: content).then((reslut) {
-      if (reslut.success) {
+    NewsLoading.start(context);
+    Api.addComment(postid: model.id, content: content).then((result) {
+      NewsLoading.stop();
+      if (result.success) {
         _controller.text = '';
       }
     });
   }
 
   /// 收藏或取消收藏该文章
-  void _favouritedPost() {
+  void _favouritedPost() async {
     final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    NewsLoading.start(context);
     Api.favoritePost(postid: model.id, status: !_isFavourited).then((result) {
+      NewsLoading.stop();
       if (result.success) {
         _isFavourited = !_isFavourited;
         setState(() {});
@@ -129,7 +135,9 @@ class _DetailFooterState extends State<DetailFooter> {
   /// 点赞或取消点赞该文章
   void _likedPost() {
     final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    NewsLoading.start(context);
     Api.thumbupPost(post: model.id, status: !_isLiked).then((result) {
+      NewsLoading.stop();
       if (result.success) {
         _isLiked = !_isLiked;
         setState(() {});

@@ -6,12 +6,14 @@ import 'package:stnews/models/comment_model.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home_page.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -32,6 +34,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   @override
   void initState() {
     super.initState();
+    _getDatas();
     _controller = EasyRefreshController();
     _model = widget.model ?? PostModel();
     _comments = [
@@ -80,26 +83,19 @@ class _PostDetailPageState extends State<PostDetailPage> {
     super.dispose();
   }
 
-  void _getDatas() {
-    // Api.getPostDetail(widget.model!.id!).then((reslut) {
-    //   if (reslut.success) {}
-    // });
+  void _getDatas() async {
+    ResultData result1 = await Api.getCommentList(postid: widget.model!.id);
+    if (result1.success) {}
 
-    // Api.getCommentList(postid: widget.model!.id).then((reslut) {
-    //   if (reslut.success) {}
-    // });
-
-    // Api.getThumpubPost(id: _model.id).then((reslut) {
-    //   if (reslut.success) {
-    //     _model.isliked = true;
-    //     PostDetailInheritedWidget.of(context).updateData(_model);
-    //   }
-    // });
+    ResultData result2 = await Api.getThumpubPost(id: _model.id);
+    if (result2.success) {
+      _model.isliked = true;
+      PostDetailInheritedWidget.of(context).updateData(_model);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    _getDatas();
     return Scaffold(
       appBar: AppBar(
         leading: STButton.icon(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -15,21 +16,21 @@ class EditPasswordPage extends StatefulWidget {
 }
 
 class _EditPasswordPageState extends State<EditPasswordPage> {
-  late TextEditingController _originCon;
+  // late TextEditingController _originCon;
   late TextEditingController _newCon;
   late TextEditingController _confirmCon;
 
   @override
   void initState() {
     super.initState();
-    _originCon = TextEditingController();
+    // _originCon = TextEditingController();
     _newCon = TextEditingController();
     _confirmCon = TextEditingController();
   }
 
   @override
   void dispose() {
-    _originCon.dispose();
+    // _originCon.dispose();
     _newCon.dispose();
     _confirmCon.dispose();
     super.dispose();
@@ -54,20 +55,20 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            STInput.password(
-              prefixIcon: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Text('原密码'),
-                  )
-                ],
-              ),
-              placeholder: '请输入原密码',
-              controller: _originCon,
-            ),
-            SizedBox(height: 12),
+            // STInput.password(
+            //   prefixIcon: Column(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Padding(
+            //         padding: EdgeInsets.only(right: 8.0),
+            //         child: Text('原密码'),
+            //       )
+            //     ],
+            //   ),
+            //   placeholder: '请输入原密码',
+            //   controller: _originCon,
+            // ),
+            // SizedBox(height: 12),
             STInput.password(
               prefixIcon: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +93,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
                   )
                 ],
               ),
-              placeholder: '请输入新密码',
+              placeholder: '请输入确认密码',
               controller: _confirmCon,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(16),
@@ -129,10 +130,14 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
     } else if (_newCon.text != _confirmCon.text) {
       STToast.show(context: context, message: '两次密码输入不一致');
     } else {
+      NewsLoading.start(context);
       Api.setPassword(_newCon.text).then((reslutData) {
+        NewsLoading.stop();
         if (reslutData.success) {
           debugPrint('密码修改成功');
           STRouters.pop(context);
+        } else {
+          STToast.show(context: context, message: reslutData.message);
         }
       });
     }

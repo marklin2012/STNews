@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -89,9 +90,11 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
   }
 
   void _changeFavouriteStatus(int index) {
+    NewsLoading.start(context);
     UserModel _user = _favouriteLists[index];
     Api.changeUserFavourite(followeduserid: _user.id, status: false)
         .then((result) {
+      NewsLoading.stop();
       if (result.success) {
         setState(() {});
       }

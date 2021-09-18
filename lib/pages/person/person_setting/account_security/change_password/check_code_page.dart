@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/account_security/change_password/edit_password_page.dart';
@@ -111,7 +112,9 @@ class _CheckCodePageState extends State<CheckCodePage> {
       STToast.show(context: context, message: '验证码为空');
       return;
     }
+    NewsLoading.start(context);
     Api.checkCodeVerify(code: _codeCon.text).then((result) {
+      NewsLoading.stop();
       if (result.success) {
         if (_type == checkCodeType.changePassword) {
           STRouters.push(context, EditPasswordPage());

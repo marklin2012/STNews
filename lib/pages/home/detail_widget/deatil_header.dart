@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
@@ -89,12 +90,16 @@ class _DetailHeaderState extends State<DetailHeader> {
 
   /// 关注或取消关注该用户
   void _favouritedUser() {
+    NewsLoading.start(context);
     Api.changeUserFavourite(
             followeduserid: _model.author, status: !_isFavourite)
         .then((reslut) {
+      NewsLoading.stop();
       if (reslut.success) {
         _isFavourite = !_isFavourite;
         setState(() {});
+      } else {
+        STToast.show(context: context, message: reslut.message);
       }
     });
   }
