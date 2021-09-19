@@ -12,11 +12,12 @@ class PostDetailInheritedWidget extends InheritedWidget {
     _valueNotifier = ValueNotifier<PostModel>(postModel);
   }
 
-  static PostDetailInheritedWidget of(BuildContext context) {
-    final temp = context
-        .getElementForInheritedWidgetOfExactType<PostDetailInheritedWidget>()!
-        .widget;
-    return temp as PostDetailInheritedWidget;
+  static PostDetailInheritedWidget? of(BuildContext context) {
+    final element = context
+        .getElementForInheritedWidgetOfExactType<PostDetailInheritedWidget>();
+    if (element != null) {
+      return element.widget as PostDetailInheritedWidget;
+    }
   }
 
   void updateData(PostModel model) {

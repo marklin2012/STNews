@@ -1,10 +1,12 @@
+import 'package:stnews/models/user_model.dart';
+
 class PostModel {
   String? id;
   bool? istop;
   String? title;
   String? article;
   String? headimages;
-  String? author;
+  UserModel? author;
   String? publishdate;
   String? favourites;
   bool? deleted;
@@ -32,7 +34,7 @@ class PostModel {
     title = json['title'];
     article = json['article'];
     headimages = json['head_images'];
-    author = json['author'];
+    author = UserModel.fromJson(json['author']);
     publishdate = json['publish_date'];
     deleted = json['deleted'];
     favourites = json['favourites'];
@@ -45,7 +47,7 @@ class PostModel {
     data['title'] = this.title;
     data['article'] = this.article;
     data['head_images'] = this.headimages;
-    data['author'] = this.author;
+    data['author'] = this.author?.toJson();
     data['publish_date'] = this.publishdate;
     data['deleted'] = this.deleted;
     data['favourites'] = this.favourites;

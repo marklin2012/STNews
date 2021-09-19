@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/st_badge/badge_positoned.dart';
+import 'package:stnews/models/comment_model.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
 
 class DetailFooter extends StatefulWidget {
-  const DetailFooter(
-      {Key? key,
-      this.messageValue = '0',
-      this.isFavourited,
-      this.isLiked,
-      this.messageTap})
-      : super(key: key);
+  const DetailFooter({
+    Key? key,
+    this.messageValue = '0',
+    this.isFavourited,
+    this.isLiked,
+    this.messageTap,
+    this.commitTap,
+  }) : super(key: key);
 
   final String? messageValue;
 
@@ -23,6 +25,8 @@ class DetailFooter extends StatefulWidget {
   final bool? isLiked;
 
   final Function()? messageTap;
+
+  final Function(CommentModel?)? commitTap;
 
   @override
   _DetailFooterState createState() => _DetailFooterState();
@@ -85,17 +89,28 @@ class _DetailFooterState extends State<DetailFooter> {
           ),
           STButton.icon(
             padding: EdgeInsets.all(2.0),
-            backgroundColor:
-                _isFavourited ? Color(0xFFFFA927) : Colors.transparent,
-            icon: Icon(
-              STIcons.commonly_star,
-            ),
+            backgroundColor: Colors.transparent,
+            icon: _isFavourited
+                ? Image(
+                    width: 24,
+                    height: 24,
+                    image: AssetImage('assets/images/favourited.png'),
+                  )
+                : Icon(
+                    STIcons.commonly_star,
+                  ),
             onTap: _favouritedPost,
           ),
           STButton.icon(
             padding: EdgeInsets.all(2.0),
-            backgroundColor: _isLiked ? Color(0xFFFF4141) : Colors.transparent,
-            icon: Icon(STIcons.commonly_like),
+            backgroundColor: Colors.transparent,
+            icon: _isLiked
+                ? Image(
+                    width: 24,
+                    height: 24,
+                    image: AssetImage('assets/images/liked.png'),
+                  )
+                : Icon(STIcons.commonly_like),
             onTap: _likedPost,
           )
         ],
@@ -106,19 +121,24 @@ class _DetailFooterState extends State<DetailFooter> {
   /// 发布评论
   void _addComment(String? content) async {
     if (content == null) return;
-    final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    final model = PostDetailInheritedWidget.of(context)!.valueNotifier.value;
     NewsLoading.start(context);
     Api.addComment(postid: model.id, content: content).then((result) {
       NewsLoading.stop();
       if (result.success) {
         _controller.text = '';
+        if (widget.commitTap != null) {
+          Map<String, dynamic> _comment = result.data['comment'];
+          CommentModel? _model = CommentModel.fromJson(_comment);
+          widget.commitTap!(_model);
+        }
       }
     });
   }
 
   /// 收藏或取消收藏该文章
   void _favouritedPost() async {
-    final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    final model = PostDetailInheritedWidget.of(context)!.valueNotifier.value;
     NewsLoading.start(context);
     Api.favoritePost(postid: model.id, status: !_isFavourited).then((result) {
       NewsLoading.stop();
@@ -134,7 +154,7 @@ class _DetailFooterState extends State<DetailFooter> {
 
   /// 点赞或取消点赞该文章
   void _likedPost() {
-    final model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    final model = PostDetailInheritedWidget.of(context)!.valueNotifier.value;
     NewsLoading.start(context);
     Api.thumbupPost(post: model.id, status: !_isLiked).then((result) {
       NewsLoading.stop();

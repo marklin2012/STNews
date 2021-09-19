@@ -34,6 +34,7 @@ dependencies:
   image_picker: ^0.8.3
   http_parser: ^4.0.0
   package_info: ^2.0.2
+  intl: ^0.17.0
   saturn:
     # path: /Users/marklin/code/flutter/saturn
     path: /Users/chenming/Desktop/Saturn

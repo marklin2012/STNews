@@ -2,20 +2,37 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/comment_model.dart';
+import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/string+.dart';
 
-class CommentCell extends StatelessWidget {
+class CommentCell extends StatefulWidget {
   const CommentCell({Key? key, this.model}) : super(key: key);
 
   final CommentModel? model;
 
   @override
+  _CommentCellState createState() => _CommentCellState();
+}
+
+class _CommentCellState extends State<CommentCell> {
+  late CommentModel? _model;
+
+  @override
+  void initState() {
+    super.initState();
+    _model = widget.model;
+  }
+
+  @override
   Widget build(BuildContext context) {
     late String _publishDateStr;
-    if (model?.pubishtime != null) {
-      _publishDateStr = STString.getDateString(model!.pubishtime!);
+    if (_model?.publisheddate != null) {
+      DateTime datetime =
+          STString.dateTimeFromString(dateStr: _model!.publisheddate!);
+      _publishDateStr = STString.getDateString(datetime);
     }
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
@@ -30,13 +47,13 @@ class CommentCell extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  STCaCheImage.loadingImage(imageUrl: model?.user?.avatar),
+                  STCaCheImage.loadingImage(imageUrl: _model?.user?.avatar),
                   SizedBox(width: 4.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        model?.user?.nickname ?? '用户昵称',
+                        _model?.user?.nickname ?? '用户昵称',
                         style: NewsTextStyle.style14NormalBlack,
                       ),
                       Text(
@@ -53,20 +70,24 @@ class CommentCell extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    model?.favourites ?? '',
+                    _model?.favouriteCount.toString() ?? '',
                     style: NewsTextStyle.style12NormalThrGrey,
                   ),
                   SizedBox(width: 5.4),
                   STButton.icon(
                     backgroundColor: Colors.transparent,
-                    icon: Icon(
-                      STIcons.commonly_like,
-                      size: 18,
-                    ),
+                    icon: _model?.isUserFavourite ?? false
+                        ? Image(
+                            width: 18,
+                            height: 18,
+                            image: AssetImage('assets/images/liked.png'),
+                          )
+                        : Icon(
+                            STIcons.commonly_like,
+                            size: 18,
+                          ),
                     padding: EdgeInsets.zero,
-                    onTap: () {
-                      // TODO 点赞某一条评论
-                    },
+                    onTap: _commentFavourite,
                   ),
                 ],
               ),
@@ -76,12 +97,24 @@ class CommentCell extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(64, 12, 24, 0),
             alignment: Alignment.centerLeft,
             child: Text(
-              model?.content ?? '',
+              _model?.content ?? '',
               style: NewsTextStyle.style14NormalBlack,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _commentFavourite() {
+    NewsLoading.start(context);
+    bool _temp = _model?.isUserFavourite ?? false;
+    Api.commentFavourite(comment: _model?.id, status: !_temp).then((result) {
+      NewsLoading.stop();
+      if (result.success) {
+        _model?.isUserFavourite = !_temp;
+        setState(() {});
+      }
+    });
   }
 }

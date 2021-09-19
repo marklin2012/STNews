@@ -140,7 +140,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                   textContent: _model.title,
                   searchContent: _controller.text,
                 ),
-                subtitle: Text(_model.author!),
+                subtitle: Text(_model.author?.nickname ?? ''),
                 trailing: Container(
                   width: 102,
                   height: 76,

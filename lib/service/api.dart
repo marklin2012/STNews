@@ -285,7 +285,7 @@ class Api {
 
   /// 是否点赞了该文章
   static Future<ResultData> getThumpubPost({String? id}) =>
-      _get('/post/thumpub/$id');
+      _get('/post/thumbup/$id');
 
   /// 文章评论列表
   static Future<ResultData> getCommentList({String? postid}) =>

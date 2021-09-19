@@ -98,8 +98,8 @@ class _PersonHomePageState extends State<PersonHomePage> {
                 return Container(
                   height: 92,
                   child: ListTile(
-                    title: Text(_model.title!),
-                    subtitle: Text(_model.author!),
+                    title: Text(_model.title ?? ''),
+                    subtitle: Text(_model.author?.nickname ?? ''),
                     trailing: Container(
                       width: 102,
                       height: 76,

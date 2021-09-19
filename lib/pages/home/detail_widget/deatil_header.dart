@@ -7,6 +7,7 @@ import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/string+.dart';
 
 class DetailHeader extends StatefulWidget {
   const DetailHeader({Key? key, this.isFavourited, this.authorTap})
@@ -32,7 +33,13 @@ class _DetailHeaderState extends State<DetailHeader> {
 
   @override
   Widget build(BuildContext context) {
-    _model = PostDetailInheritedWidget.of(context).valueNotifier.value;
+    _model = PostDetailInheritedWidget.of(context)!.valueNotifier.value;
+    String _publishDate = '';
+    if (_model.publishdate != null) {
+      DateTime _temp =
+          STString.dateTimeFromString(dateStr: _model.publishdate!);
+      _publishDate = STString.getDateString(_temp);
+    }
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Column(
@@ -64,11 +71,11 @@ class _DetailHeaderState extends State<DetailHeader> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _model.author ?? '',
+                        _model.author?.nickname ?? '',
                         style: NewsTextStyle.style14NormalBlack,
                       ),
                       Text(
-                        _model.publishdate ?? '',
+                        _publishDate,
                         style: NewsTextStyle.style12NormalThrGrey,
                       ),
                     ],
@@ -92,7 +99,7 @@ class _DetailHeaderState extends State<DetailHeader> {
   void _favouritedUser() {
     NewsLoading.start(context);
     Api.changeUserFavourite(
-            followeduserid: _model.author, status: !_isFavourite)
+            followeduserid: _model.author?.id, status: !_isFavourite)
         .then((reslut) {
       NewsLoading.stop();
       if (reslut.success) {

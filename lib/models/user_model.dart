@@ -7,7 +7,7 @@ class UserModel {
   int? sex;
   String? mobile;
   String? email;
-  String? deleted;
+  bool? deleted;
   int? followers;
   int? favourites;
 

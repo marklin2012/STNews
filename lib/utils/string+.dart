@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class STString {
   static String securityMobile(String mobile) {
     if (mobile.length <= 7) {
@@ -54,5 +56,14 @@ class STString {
     final month = time.month;
     final day = time.day;
     return '$year-$month-$day';
+  }
+
+  // string转dateTime
+  static DateTime dateTimeFromString(
+      {required String dateStr, String format = "yyyy-MM-dd HH:mm:ss"}) {
+    DateFormat _format = DateFormat(format);
+    String _dateStr = dateStr.replaceAll('T', ' ');
+    DateTime _temp = _format.parse(_dateStr);
+    return _temp;
   }
 }

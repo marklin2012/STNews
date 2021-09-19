@@ -126,8 +126,8 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                   Container(
                     width: _width,
                     child: ListTile(
-                      title: Text(_model.title!),
-                      subtitle: Text(_model.author!),
+                      title: Text(_model.title ?? ''),
+                      subtitle: Text(_model.author?.nickname ?? ''),
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
                       trailing: Container(
