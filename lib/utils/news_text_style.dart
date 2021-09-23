@@ -40,6 +40,7 @@ class NewsTextStyle {
     color: Colors.white,
     fontSize: FONTSIZE14,
     fontWeight: FONTWEIGHT400,
+    decoration: TextDecoration.none,
   );
 
   static const TextStyle style14NormalBlack = TextStyle(

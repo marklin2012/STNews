@@ -268,7 +268,8 @@ class Api {
   static Future<ResultData> getHomeInfo() => _get('/');
 
   /// 获取文章列表
-  static Future<ResultData> getPosts({int? fieldname}) => _get('/post/list');
+  static Future<ResultData> getPosts({int page = 1, int perpage = 10}) =>
+      _get('/post/list?page=$page&per_page=$perpage');
 
   /// 获取文章详情
   static Future<ResultData> getPostDetail(String postid) =>
@@ -288,8 +289,10 @@ class Api {
       _get('/post/thumbup/$id');
 
   /// 文章评论列表
-  static Future<ResultData> getCommentList({String? postid}) =>
-      _get('/comment/list', data: {'post': postid});
+  static Future<ResultData> getCommentList(
+          {int page = 1, int perpage = 10, String? postid}) =>
+      _get('/comment/list',
+          data: {'page': page, 'per_page': perpage, 'post': postid});
 
   /// 添加文章评论
   static Future<ResultData> addComment({String? postid, String? content}) =>

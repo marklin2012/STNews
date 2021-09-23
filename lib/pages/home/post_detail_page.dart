@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:stnews/models/comment_model.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
@@ -24,8 +24,9 @@ class PostDetailPage extends StatefulWidget {
   _PostDetailPageState createState() => _PostDetailPageState();
 }
 
+const _finalPerPage = 5;
+
 class _PostDetailPageState extends State<PostDetailPage> {
-  late EasyRefreshController _controller;
   late ScrollController _scrollController;
   late PostModel _model;
   List<CommentModel> _comments = [];
@@ -34,23 +35,28 @@ class _PostDetailPageState extends State<PostDetailPage> {
   final GlobalKey _commentsKey = GlobalKey(debugLabel: 'comments'); // 控件的key
   Offset _offset = Offset.zero;
 
+  late int _page;
+  late int _perpage;
+  bool _hasMore = true;
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _controller = EasyRefreshController();
     _model = widget.model ?? PostModel();
     _commentsNoti = ValueNotifier(_comments);
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       _findRenderObject();
     });
-    _getCommentsAndPostFavourited();
+    _page = 1;
+    _perpage = _finalPerPage;
+    _getPostFavourited();
+    _getComments(true);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _controller.dispose();
     super.dispose();
   }
 
@@ -64,25 +70,34 @@ class _PostDetailPageState extends State<PostDetailPage> {
     }
   }
 
-  Future _getCommentsAndPostFavourited() async {
+  Future _getPostFavourited() async {
     ResultData result1 = await Api.getThumpubPost(id: _model.id);
     if (result1.success) {
       bool _isThumbup = result1.data['isThumbup'] as bool;
       _model.isliked = !_isThumbup;
     }
-
     setState(() {});
-
-    _getComments();
   }
 
-  Future _getComments() async {
-    ResultData result = await Api.getCommentList(postid: widget.model!.id);
+  Future _getComments(bool isFirst) async {
+    if (!_hasMore) return;
+    if (!isFirst) _page++;
+    ResultData result = await Api.getCommentList(
+        page: _page, perpage: _perpage, postid: widget.model!.id);
     if (result.success) {
       final _temps = result.data['comments'] as List;
-      _comments = _temps.map((e) => CommentModel.fromJson(e)).toList();
+      _hasMore = _temps.isNotEmpty;
+      if (isFirst) {
+        _comments = _temps.map((e) => CommentModel.fromJson(e)).toList();
+      } else {
+        for (Map<String, dynamic> item in _temps) {
+          final _temp = CommentModel.fromJson(item);
+          _comments.add(_temp);
+        }
+      }
       _commentsNoti.value = _comments;
     }
+    setState(() {});
   }
 
   @override
@@ -119,22 +134,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
             child: ValueListenableBuilder(
               valueListenable: _commentsNoti,
               builder: (context, List<CommentModel> values, _) {
-                return EasyRefresh(
-                  footer: ClassicalFooter(
-                    loadText: '上拉加载',
-                    loadReadyText: '松开加载',
-                    loadingText: '加载中...',
-                    loadedText: '完成加载',
-                    loadFailedText: '加载更多失败',
-                    noMoreText: '我是有底线的',
-                    showInfo: false,
-                    textColor: Color(0xFF888888),
-                  ),
+                return NewsEasyRefresh(
+                  hasFooter: true,
                   onLoad: () async {
-                    await Future.delayed(Duration(seconds: 2), () {
-                      // TODO 上拉加载更多
-                      _controller.finishLoad();
-                    });
+                    _getComments(false);
                   },
                   child: CustomScrollView(
                     controller: _scrollController,
@@ -198,7 +201,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   _comments.add(comment);
                   _commentsNoti.value = _comments;
                 } else {
-                  _getComments();
+                  _getComments(false);
                 }
               },
             ),
