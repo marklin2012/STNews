@@ -14,6 +14,7 @@ import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_info/change_info_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonInfoPage extends StatefulWidget {
@@ -136,15 +137,18 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
       ],
     });
     NewsLoading.start(context);
-    Api.uploadFile(data: formData).then((result) {
-      NewsLoading.stop();
-      if (result.success) {
-        final imageUrl = result.data['imgUrl'];
+    // 上传图片
+    ResultData result1 = await Api.uploadFile(data: formData);
+    if (result1.success) {
+      final imageUrl = result1.data['imgUrl'];
+      ResultData result2 = await Api.updateUserInfo(avatar: imageUrl);
+      if (result2.success) {
         UserProvider.shared.changeUser(avatar: imageUrl);
-        STRouters.pop(context);
-      } else {
-        STToast.show(context: context, message: result.message);
       }
-    });
+      STRouters.pop(context);
+    } else {
+      STToast.show(context: context, message: result1.message);
+    }
+    NewsLoading.stop();
   }
 }
