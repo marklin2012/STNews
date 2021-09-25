@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPref {
@@ -22,9 +21,7 @@ class SharedPref {
   static Future<bool> clear() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.clear().then((success) {
-      if (success) {
-        debugPrint('删除成功');
-      }
+      if (success) {}
       return true;
     });
   }

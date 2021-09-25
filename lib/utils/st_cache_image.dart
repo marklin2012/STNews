@@ -21,7 +21,6 @@ class STCaCheImage {
       imageUrl: _url,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
-        debugPrint('图片加载失败:' + error);
         return errorW ?? Icon(STIcons.commonly_user);
       },
     );

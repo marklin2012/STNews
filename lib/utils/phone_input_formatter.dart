@@ -5,7 +5,6 @@ class PhoneInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    // debugPrint('oldValue: $oldValue' + 'newValue: $newValue');
     if (oldValue.text.length < newValue.text.length) {
       // 添加数字
       if (newValue.text.length == 3) {

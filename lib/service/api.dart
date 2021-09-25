@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 
-import 'package:flutter/material.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/result_data.dart';
 
@@ -26,22 +25,22 @@ Dio dio = Dio();
 String _formatError(DioError e) {
   switch (e.type) {
     case DioErrorType.connectTimeout:
-      debugPrint('连接超时');
+      // debugPrint('连接超时');
       return '连接超时';
     case DioErrorType.sendTimeout:
-      debugPrint('请求超时');
+      // debugPrint('请求超时');
       return '请求超时';
     case DioErrorType.receiveTimeout:
-      debugPrint('响应超时');
+      // debugPrint('响应超时');
       return '响应超时';
     case DioErrorType.response:
-      debugPrint('出现异常');
+      // debugPrint('出现异常');
       return '出现异常';
     case DioErrorType.cancel:
-      debugPrint('请求取消');
+      // debugPrint('请求取消');
       return '请求取消';
     default:
-      debugPrint("未知错误");
+      // debugPrint("未知错误");
       return '未知错误';
   }
 }
@@ -51,12 +50,12 @@ Future<ResultData> _get(String url,
     Options? options,
     CancelToken? cancelToken}) async {
   try {
-    debugPrint('requestUri---$url');
-    debugPrint('params---$data');
+    // debugPrint('requestUri---$url');
+    // debugPrint('params---$data');
     final Response response = await dio.get(url,
         queryParameters: data, options: options, cancelToken: cancelToken);
-    debugPrint('get success---------${response.statusCode}');
-    debugPrint('get success---------${response.data}');
+    // debugPrint('get success---------${response.statusCode}');
+    // debugPrint('get success---------${response.data}');
     if (response.statusCode == 200) {
       return ResultData(
           code: response.data['code'] as int,
@@ -66,7 +65,7 @@ Future<ResultData> _get(String url,
     }
     return ResultData.error('请求失败');
   } on DioError catch (error) {
-    debugPrint('get error -------- $error');
+    // debugPrint('get error -------- $error');
 
     return ResultData.error(_formatError(error));
   }
@@ -79,14 +78,14 @@ Future<ResultData> _post(
   CancelToken? cancelToken,
 }) async {
   try {
-    debugPrint('requestUri---$url');
-    debugPrint('params---$data');
+    // debugPrint('requestUri---$url');
+    // debugPrint('params---$data');
     final Response response = await dio.post(url,
         data: data, options: options, cancelToken: cancelToken);
-    debugPrint('requestUri ------- ${response.realUri}');
-    debugPrint('requestHeader-------${response.headers}');
-    debugPrint('post success---------${response.statusCode}');
-    debugPrint('post success---------${response.data}');
+    // debugPrint('requestUri ------- ${response.realUri}');
+    // debugPrint('requestHeader-------${response.headers}');
+    // debugPrint('post success---------${response.statusCode}');
+    // debugPrint('post success---------${response.data}');
     if (response.statusCode == 200) {
       var mapData;
       if (response.data is String) {
@@ -103,7 +102,7 @@ Future<ResultData> _post(
     }
     return ResultData.error('请求异常');
   } on DioError catch (error) {
-    debugPrint('post error -------- $error');
+    // debugPrint('post error -------- $error');
     return ResultData.error(_formatError(error));
   }
 }
@@ -113,14 +112,14 @@ Future<ResultData> _put(String url,
     Options? options,
     CancelToken? cancelToken}) async {
   try {
-    debugPrint('requestUri---$url');
-    debugPrint('params---$data');
+    // debugPrint('requestUri---$url');
+    // debugPrint('params---$data');
     final Response response = await dio.put(url,
         data: data, options: options, cancelToken: cancelToken);
-    debugPrint('requestUri ------- ${response.realUri}');
-    debugPrint('requestHeader-------${response.headers}');
-    debugPrint('post success---------${response.statusCode}');
-    debugPrint('post success---------${response.data}');
+    // debugPrint('requestUri ------- ${response.realUri}');
+    // debugPrint('requestHeader-------${response.headers}');
+    // debugPrint('post success---------${response.statusCode}');
+    // debugPrint('post success---------${response.data}');
     if (response.statusCode == 200) {
       var mapData;
       if (response.data is String) {
@@ -137,7 +136,7 @@ Future<ResultData> _put(String url,
     }
     return ResultData.error('请求异常');
   } on DioError catch (error) {
-    debugPrint('post error -------- $error');
+    // debugPrint('post error -------- $error');
     return ResultData.error(_formatError(error));
   }
 }
@@ -149,8 +148,8 @@ Future<ResultData> _upload(
   CancelToken? cancelToken,
 }) async {
   try {
-    debugPrint('requestUri---$url');
-    debugPrint('params---$data');
+    // debugPrint('requestUri---$url');
+    // debugPrint('params---$data');
     Dio uploadDio = new Dio();
     uploadDio.options.baseUrl = BaseUrl;
     uploadDio.options.sendTimeout = TimeoutSend;
@@ -160,10 +159,10 @@ Future<ResultData> _upload(
     uploadDio.options.headers = {'Authorization': token};
     final Response response = await uploadDio.post(url,
         data: data, options: options, cancelToken: cancelToken);
-    debugPrint('requestUri ------- ${response.realUri}');
-    debugPrint('requestHeader-------${response.headers}');
-    debugPrint('post success---------${response.statusCode}');
-    debugPrint('post success---------${response.data}');
+    // debugPrint('requestUri ------- ${response.realUri}');
+    // debugPrint('requestHeader-------${response.headers}');
+    // debugPrint('post success---------${response.statusCode}');
+    // debugPrint('post success---------${response.data}');
     if (response.statusCode == 200) {
       var mapData;
       if (response.data is String) {
@@ -180,7 +179,7 @@ Future<ResultData> _upload(
     }
     return ResultData.error('请求异常');
   } on DioError catch (error) {
-    debugPrint('post error -------- $error');
+    // debugPrint('post error -------- $error');
     return ResultData.error(_formatError(error));
   }
 }

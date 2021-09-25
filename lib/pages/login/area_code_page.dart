@@ -35,7 +35,6 @@ class AreaCodePage extends StatelessWidget {
       body: FutureBuilder(
         future: _getAreaCodes(context),
         builder: (context, snap) {
-          if (snap.hasError) debugPrint(snap.error.toString());
           List<String> _titles = [];
           for (var item in _map.keys) {
             _titles.add(item);

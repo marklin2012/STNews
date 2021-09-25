@@ -134,7 +134,6 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
       Api.setPassword(_newCon.text).then((reslutData) {
         NewsLoading.stop();
         if (reslutData.success) {
-          debugPrint('密码修改成功');
           STRouters.pop(context);
         } else {
           STToast.show(context: context, message: reslutData.message);
