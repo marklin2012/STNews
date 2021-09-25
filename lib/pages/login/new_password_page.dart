@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 import 'package:stnews/utils/st_routers.dart';
@@ -102,5 +104,25 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
     );
   }
 
-  void _sureAction() {}
+  void _sureAction() {
+    if (_firstCon.text.isEmpty) {
+      STToast.show(context: context, message: '请输入密码');
+      return;
+    } else if (_confirmCon.text.isEmpty) {
+      STToast.show(context: context, message: '请输入确认密码');
+      return;
+    } else if (_firstCon.text != _confirmCon.text) {
+      STToast.show(context: context, message: '两次密码输入不一致');
+      return;
+    }
+    NewsLoading.start(context);
+    Api.setPassword(_firstCon.text).then((result) {
+      if (result.success) {
+        STToast.show(context: context, message: '设置密码成功');
+      } else {
+        STToast.show(context: context, message: result.message);
+      }
+      NewsLoading.stop();
+    });
+  }
 }

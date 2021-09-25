@@ -145,18 +145,18 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
     _getNotiLists(false);
   }
 
-  void _deletUnRead() {
-    if (isEmpty) return;
-    NewsLoading.start(context);
-    Api.setNotifyReaded().then((result) {
-      NewsLoading.stop();
-      if (result.success) {
-        STToast.show(context: context, message: '已标记全部已读');
-      } else {
-        STToast.show(context: context, message: result.message);
-      }
-    });
-  }
+  // void _deletUnRead() {
+  //   if (isEmpty) return;
+  //   NewsLoading.start(context);
+  //   Api.setNotifyReaded().then((result) {
+  //     NewsLoading.stop();
+  //     if (result.success) {
+  //       STToast.show(context: context, message: '已标记全部已读');
+  //     } else {
+  //       STToast.show(context: context, message: result.message);
+  //     }
+  //   });
+  // }
 
   void _tapActions(NoticeModel model) {
     if (model.isRead != null && !model.isRead!) {
