@@ -11,15 +11,14 @@ class STCaCheImage {
     String? imageUrl,
     Widget? errorW,
   }) {
+    if (imageUrl == null || imageUrl.length == 0)
+      return NewsImage.defaultAvatar();
     String _url = "http://via.placeholder.com/30x30";
-    if (imageUrl != null && imageUrl.isNotEmpty) {
+    if (imageUrl.isNotEmpty) {
       _url = BaseUrl + imageUrl;
     }
     return CachedNetworkImage(
       imageUrl: _url,
-      imageBuilder: (context, imageProvider) {
-        return NewsImage.defaultAvatar();
-      },
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
         debugPrint('图片加载失败:' + error);

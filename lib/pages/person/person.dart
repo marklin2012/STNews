@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/models/notice_model.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/my_favourite_user_page.dart';
@@ -14,7 +13,6 @@ import 'package:stnews/pages/person/person_info/show_avatar_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/providers/user_provider.dart';
-import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -57,10 +55,13 @@ class _PersonPageState extends State<PersonPage> {
                     },
                     child: Hero(
                       tag: ShowAvatarPage.HeroTag,
-                      child: Container(
-                        height: 60,
-                        child: STCaCheImage.loadingImage(
-                          imageUrl: userProvider.user.avatar,
+                      child: ClipOval(
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          child: STCaCheImage.loadingImage(
+                            imageUrl: userProvider.user.avatar,
+                          ),
                         ),
                       ),
                     ),

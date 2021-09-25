@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:stnews/models/user_model.dart';
 
 /// NoticeModel中type
@@ -8,6 +6,7 @@ class NotifyType {
   static String sysType = 'sys';
   static String favType = 'fav';
   static String upType = 'up';
+  static String commentType = 'comment';
 }
 
 class NoticeModel {

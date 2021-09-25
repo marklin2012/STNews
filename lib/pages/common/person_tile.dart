@@ -40,10 +40,6 @@ class PersonTile extends StatelessWidget {
         child: Container(
           height: 32,
           width: 32,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.blue,
-          ),
           child: STCaCheImage.loadingImage(imageUrl: _imagePath),
         ),
       );
