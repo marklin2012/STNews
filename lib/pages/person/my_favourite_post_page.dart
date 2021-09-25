@@ -30,22 +30,16 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   void initState() {
     super.initState();
 
-    // _lists = [
-    //   PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-    //   PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-    //   PostModel(id: '2', title: 'title2', author: 'author2', image: 'image2'),
-    //   PostModel(id: '3', title: 'title3', author: 'author3', image: 'image3'),
-    //   PostModel(id: '4', title: 'title4', author: 'author4', image: 'image4'),
-    // ];
-    // for (var item in _lists) {
-    //   _selectedMap[item.id!] = item.selected!;
-    // }
     _getFavouritePostsData();
   }
 
   void _getFavouritePostsData() {
     Api.getUserFavouritePost().then((result) {
-      if (result.success) {}
+      if (result.success) {
+        List _temps = result.data['favourites'];
+        _lists = _temps.map((e) => PostModel.fromJson(e)).toList();
+        setState(() {});
+      }
     });
   }
 
@@ -109,7 +103,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                     child: Container(
                       width: _selectWidth,
                       padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                      child: _model.selected!
+                      child: _model.selected ?? false
                           ? Icon(
                               Icons.check_box_outlined,
                               size: 24,
@@ -185,8 +179,8 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
 
   void _selectOneAction(int index) {
     final _model = _lists[index];
-    _model.selected = !_model.selected!;
-    _selectedMap[_model.id!] = _model.selected!;
+    _model.selected = !(_model.selected ?? false);
+    _selectedMap[_model.id!] = _model.selected ?? false;
     _isSelectAll = _isAllSelected();
     setState(() {});
   }
@@ -194,14 +188,23 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   void _selectAllBtnAction() {
     _isSelectAll = !_isSelectAll;
 
-    for (var list in _lists) {
-      list.selected = _isSelectAll;
-      _selectedMap[list.id!] = _isSelectAll;
+    for (var post in _lists) {
+      post.selected = _isSelectAll;
+      _selectedMap[post.id!] = _isSelectAll;
     }
     setState(() {});
   }
 
-  void _deletBtnAction() {}
+  void _deletBtnAction() {
+    for (final key in _selectedMap.keys) {
+      if (_selectedMap[key] != null && _selectedMap[key]!) {
+        Api.favoritePost(postid: key, status: false).then((result) {
+          _selectedMap[key] = false;
+        });
+      }
+    }
+    _getFavouritePostsData();
+  }
 
   bool _isAllSelected() {
     int _res = 0;
@@ -210,6 +213,6 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
         _res += 1;
       }
     }
-    return _res == _selectedMap.keys.length;
+    return _res == _lists.length;
   }
 }
