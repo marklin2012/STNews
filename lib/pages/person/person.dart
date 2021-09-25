@@ -114,7 +114,11 @@ class _PersonPageState extends State<PersonPage> {
     switch (index) {
       case 0:
         // 去我的主页
-        STRouters.push(context, PersonHomePage());
+        STRouters.push(
+            context,
+            PersonHomePage(
+              userID: UserProvider.shared.user.id ?? '',
+            ));
         break;
       case 1:
         // 去我的收藏
