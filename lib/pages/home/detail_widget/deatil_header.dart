@@ -4,6 +4,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -82,12 +83,14 @@ class _DetailHeaderState extends State<DetailHeader> {
                   )
                 ],
               ),
-              STButton(
-                type: STButtonType.outline,
-                text: _isFavourite ? '已关注' : '关注',
-                textStyle: NewsTextStyle.style16NormalFirBlue,
-                onTap: _favouritedUser,
-              ),
+              if (_model.author?.id != null &&
+                  _model.author?.id! != UserProvider.shared.user.id)
+                STButton(
+                  type: STButtonType.outline,
+                  text: _isFavourite ? '已关注' : '关注',
+                  textStyle: NewsTextStyle.style16NormalFirBlue,
+                  onTap: _favouritedUser,
+                ),
             ],
           ),
         ],

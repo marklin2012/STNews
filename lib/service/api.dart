@@ -272,7 +272,7 @@ class Api {
   static Future<ResultData> getHomeInfo() => _get('/');
 
   /// 获取首页banners
-  static Future<ResultData> getPostBanners() => _get('/post/banners');
+  static Future<ResultData> getPostBanners() => _get('/post/banner');
 
   /// 获取文章列表
   static Future<ResultData> getPosts({int page = 1, int perpage = 10}) =>

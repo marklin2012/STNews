@@ -9,7 +9,7 @@ import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
-import 'package:stnews/pages/home/user_home_page.dart';
+import 'package:stnews/pages/person/person_home_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -146,7 +146,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                             if (_model.author?.id != null) {
                               STRouters.push(
                                 context,
-                                UserHomePage(
+                                PersonHomePage(
                                   userID: _model.author!.id!,
                                 ),
                               );
