@@ -16,7 +16,7 @@ class NewsPerpage {
 
 // ignore: non_constant_identifier_names
 String BaseUrl = Platform.isAndroid
-    ? 'http://192.168.2.116:7001/'
+    ? 'http://192.168.2.194:7001/'
     : 'http://localhost:7001/';
 // const String BaseUrl = 'http://localhost:7001/';
 // const String BaseUrl = 'http://192.168.2.110:7001/';
@@ -271,6 +271,9 @@ class Api {
   /// 接口的小标题信息
   static Future<ResultData> getHomeInfo() => _get('/');
 
+  /// 获取首页banners
+  static Future<ResultData> getPostBanners() => _get('/post/banners');
+
   /// 获取文章列表
   static Future<ResultData> getPosts({int page = 1, int perpage = 10}) =>
       _get('/post/list?page=$page&per_page=$perpage');
@@ -324,4 +327,10 @@ class Api {
   /// 公告已读
   static Future<ResultData> setNotifyReaded({String? id}) =>
       _put('/notify/readed', data: {'id': id});
+
+  /// 上传反馈接口
+  static Future<ResultData> feedback(
+          {String? content, String? contact, List? images}) =>
+      _post('/feedback',
+          data: {'content': content, 'contact': contact, 'images': images});
 }

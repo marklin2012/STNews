@@ -1,11 +1,17 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
+import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/phone_input_formatter.dart';
+import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class FeedbackSuggestionPage extends StatefulWidget {
@@ -57,7 +63,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
         ),
         title: Text('反馈与建议'),
       ),
-      body: _buildCustomW(),
+      body: BlankPutKeyborad(child: _buildCustomW()),
     );
   }
 
@@ -138,7 +144,8 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                   }
                   return Container(
                     height: 80,
-                    color: Colors.primaries[index % Colors.primaries.length],
+                    width: 80,
+                    child: STCaCheImage.loadingImage(imageUrl: _images[index]),
                   );
                 },
                 itemCount: _images.length + 1,
@@ -168,8 +175,10 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                       border:
                           const OutlineInputBorder(borderSide: BorderSide.none),
                     ),
+                    keyboardType: TextInputType.phone,
                     inputFormatters: [
-                      LengthLimitingTextInputFormatter(20),
+                      LengthLimitingTextInputFormatter(14),
+                      PhoneInputFormatter(),
                     ],
                   ),
                 ),
@@ -182,7 +191,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                     fontWeight: FONTWEIGHT500,
                   ),
                   mainAxisSize: MainAxisSize.max,
-                  onTap: () {},
+                  onTap: _postFeedback,
                 ),
               ],
             ),
@@ -217,12 +226,60 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
 
   /// 拍照
   void _useCamera() async {
-    await ImagePicker().pickImage(source: ImageSource.camera);
+    final _image = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (_image == null) return;
+    _uploadFile(_image.path);
   }
 
   /// 相册
   void _openGallery() async {
-    await ImagePicker()
+    final _temps = await ImagePicker()
         .pickMultiImage(maxHeight: 80, maxWidth: 80, imageQuality: 9);
+    if (_temps != null) {
+      for (XFile _temp in _temps) {
+        _uploadFile(_temp.path);
+      }
+    }
+  }
+
+  void _uploadFile(String path) async {
+    FormData formData = new FormData.fromMap({
+      'files': [
+        MultipartFile.fromFileSync(path,
+            contentType: MediaType.parse('image/jpeg')),
+      ],
+    });
+    Api.uploadFile(data: formData).then((result) {
+      if (result.success) {
+        _images.add(result.data['imgUrl']);
+        setState(() {});
+      } else {
+        STToast.show(context: context, message: result.message);
+      }
+    });
+  }
+
+  void _postFeedback() {
+    if (_feedbackCon.text.isEmpty) {
+      STToast.show(context: context, message: '请填写问题和建议');
+      return;
+    } else if (_contactCon.text.isEmpty) {
+      STToast.show(context: context, message: '请留下联系方式');
+      return;
+    }
+    NewsLoading.start(context);
+    Api.feedback(
+            content: _feedbackCon.text,
+            contact: _contactCon.text,
+            images: _images)
+        .then((reslut) {
+      if (reslut.success) {
+        STToast.show(context: context, message: '提交成功');
+        STRouters.pop(context);
+      } else {
+        STToast.show(context: context, message: reslut.message);
+      }
+      NewsLoading.stop();
+    });
   }
 }
