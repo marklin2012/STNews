@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/comment_model.dart';
+import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -47,7 +48,10 @@ class _CommentCellState extends State<CommentCell> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  STCaCheImage.loadingImage(imageUrl: _model?.user?.avatar),
+                  NewsAvatarWidget(
+                    child: STCaCheImage.loadingImage(
+                        imageUrl: _model?.user?.avatar),
+                  ),
                   SizedBox(width: 4.0),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

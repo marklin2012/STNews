@@ -149,9 +149,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                     borderRadius: BorderRadius.all(Radius.circular(3.0)),
                   ),
                 ),
-                onTap: () {
-                  /// TODO 文章详情
-                },
+                onTap: () {},
               ),
             );
           });

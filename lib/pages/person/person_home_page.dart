@@ -5,8 +5,10 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -46,6 +48,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
     });
   }
 
+  /// 查询是否关注了该用户
   void _getFavouritedUser() {
     Api.getUserFavouriteList().then((result) {
       if (result.success) {
@@ -100,8 +103,8 @@ class _PersonHomePageState extends State<PersonHomePage> {
       child: Column(
         children: [
           ListTile(
-            leading: Container(
-              height: 60,
+            leading: NewsAvatarWidget(
+              size: 60,
               child:
                   STCaCheImage.loadingImage(imageUrl: _infoModel.user?.avatar),
             ),
@@ -126,20 +129,20 @@ class _PersonHomePageState extends State<PersonHomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 NewsIconTextWidget(
-                    icon: Icons.favorite,
-                    title: (_infoModel.user?.favourites ?? 0).toString(),
-                    unit: '关注',
-                    onTap: () {}),
+                  icon: Icons.favorite,
+                  title: (_infoModel.followerCount ?? 0).toString(),
+                  unit: '关注',
+                ),
                 Container(
                   width: 1,
                   height: 28,
                   color: Color(0xFFDFE2E7),
                 ),
                 NewsIconTextWidget(
-                    icon: Icons.favorite_outline,
-                    title: (_infoModel.user?.followers ?? 0).toString(),
-                    unit: '粉丝',
-                    onTap: () {}),
+                  icon: Icons.favorite_outline,
+                  title: (_infoModel.fansCount ?? 0).toString(),
+                  unit: '粉丝',
+                ),
               ],
             ),
           )
@@ -166,7 +169,14 @@ class _PersonHomePageState extends State<PersonHomePage> {
                   borderRadius: BorderRadius.all(Radius.circular(3.0)),
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                STRouters.push(
+                  context,
+                  PostDetailPage(
+                    model: _model,
+                  ),
+                );
+              },
             ),
           );
         },
