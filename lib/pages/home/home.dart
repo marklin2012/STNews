@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<PostModel> _lists = [];
+  List<PostModel> _banners = [];
   late int _page;
   late int _perpage;
   bool _hasMore = false;
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
     _page = 1;
     _perpage = NewsPerpage.finalPerPage;
+    _getPostBanners();
     _loadAndRefresh(true);
   }
 
@@ -77,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         slivers: [
           SliverToBoxAdapter(
             child: PageViewWidget(
-              pageList: ["#babber1#", "#babber2#", "#babber3#"],
+              pageList: _banners,
             ),
           ),
           SliverList(
@@ -118,6 +120,16 @@ class _HomePageState extends State<HomePage> {
         model: _lists[index],
       ),
     );
+  }
+
+  Future _getPostBanners() async {
+    Api.getPostBanners().then((result) {
+      if (result.success) {
+        List _temps = result.data as List;
+        _banners = _temps.map((e) => PostModel.fromJson(e)).toList();
+        setState(() {});
+      }
+    });
   }
 
   Future _loadAndRefresh(bool isFirst) async {

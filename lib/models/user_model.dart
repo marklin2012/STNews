@@ -1,3 +1,5 @@
+import 'package:stnews/models/post_model.dart';
+
 class UserModel {
   String? id;
   String? username;
@@ -52,6 +54,37 @@ class UserModel {
     data['deleted'] = this.deleted;
     data['followers'] = this.followers;
     data['favourites'] = this.favourites;
+    return data;
+  }
+}
+
+class UserInfoModel {
+  UserModel? user;
+  int? followerCount;
+  int? fansCount;
+  List<PostModel>? post;
+
+  UserInfoModel({
+    this.user,
+    this.followerCount,
+    this.fansCount,
+    this.post,
+  });
+
+  UserInfoModel.fromJson(Map<String, dynamic> json) {
+    user = UserModel.fromJson(json['user']);
+    followerCount = json['followerCount'];
+    fansCount = json['fansCount'];
+    List _temps = json['post'] as List;
+    post = _temps.map((e) => PostModel.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['user'] = this.user?.toJson();
+    data['followerCount'] = this.followerCount;
+    data['fansCount'] = this.fansCount;
+    data['post'] = this.post?.map((e) => e.toJson()).toList();
     return data;
   }
 }

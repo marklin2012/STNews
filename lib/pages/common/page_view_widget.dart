@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stnews/models/post_model.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 const _horFix = 16.0;
@@ -7,12 +8,12 @@ const _verFix = 8.0;
 class PageViewWidget extends StatefulWidget {
   const PageViewWidget({
     Key? key,
-    required this.pageList,
+    this.pageList,
     this.currentIndex,
     this.height,
   }) : super(key: key);
 
-  final List<String> pageList;
+  final List<PostModel>? pageList;
   final int? currentIndex;
   final double? height;
 
@@ -21,7 +22,7 @@ class PageViewWidget extends StatefulWidget {
 }
 
 class _PageViewWidgetState extends State<PageViewWidget> {
-  late List<String> _pageList;
+  late List<PostModel> _pageList;
   late int _currentIndex;
   late double _height;
 
@@ -29,7 +30,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
   void initState() {
     super.initState();
     _currentIndex = widget.currentIndex ?? 0;
-    _pageList = widget.pageList;
+    _pageList = widget.pageList ?? [];
     _height = widget.height ?? 200;
   }
 
@@ -41,7 +42,8 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         children: [
           PageView.builder(
             itemBuilder: (context, index) {
-              return buildPageViewItem(_pageList[index % (_pageList.length)]);
+              PostModel _model = _pageList[index % _pageList.length];
+              return buildPageViewItem(title: _model.title, index: index);
             },
             itemCount: 100,
             onPageChanged: (value) {
@@ -81,7 +83,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     );
   }
 
-  Widget buildPageViewItem(String text) {
+  Widget buildPageViewItem({String? title, required int index}) {
     return Container(
       margin:
           const EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
@@ -91,7 +93,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       ),
       alignment: Alignment.center,
       child: Text(
-        text,
+        title ?? index.toString(),
         style: NewsTextStyle.style16NormalWhite,
       ),
     );
