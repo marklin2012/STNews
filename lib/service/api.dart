@@ -232,7 +232,7 @@ class Api {
 
   /// 更新用户资料
   static Future<ResultData> updateUserInfo(
-      {int? sex, String? nickname, String? headImage}) {
+      {int? sex, String? nickname, String? avatar}) {
     Map<String, dynamic> _data = {};
     if (sex != null) {
       _data['sex'] = sex;
@@ -240,8 +240,8 @@ class Api {
     if (nickname != null) {
       _data['nickname'] = nickname;
     }
-    if (headImage != null) {
-      _data['head_image'] = headImage;
+    if (avatar != null) {
+      _data['avatar'] = avatar;
     }
     return _put('/user/update', data: _data);
   }
@@ -286,6 +286,10 @@ class Api {
   static Future<ResultData> favoritePost(
           {String? postid, bool status = true}) =>
       _put('/post/favourite', data: {'post': postid, 'status': status});
+
+  /// 是否收藏了该文章
+  static Future<ResultData> getFavouritePost({String? id}) =>
+      _get('/post/favourite/$id');
 
   /// 点赞文章
   static Future<ResultData> thumbupPost({String? post, bool status = true}) =>

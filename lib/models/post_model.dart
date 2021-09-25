@@ -12,7 +12,6 @@ class PostModel {
   bool? deleted;
 
   bool? selected;
-  bool? isliked;
 
   PostModel({
     this.id,
@@ -25,7 +24,6 @@ class PostModel {
     this.favourites,
     this.deleted,
     this.selected = false,
-    this.isliked = false,
   });
 
   PostModel.fromJson(Map<String, dynamic> json) {

@@ -48,7 +48,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
     });
     _page = 1;
     _perpage = NewsPerpage.finalPerPage;
-    _getPostFavourited();
     _getComments(true);
   }
 
@@ -66,15 +65,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
       _offset = renderBox.localToGlobal(Offset.zero);
       setState(() {});
     }
-  }
-
-  Future _getPostFavourited() async {
-    ResultData result1 = await Api.getThumpubPost(id: _model.id);
-    if (result1.success) {
-      bool _isThumbup = result1.data['isThumbup'] as bool;
-      _model.isliked = !_isThumbup;
-    }
-    setState(() {});
   }
 
   Future _getComments(bool isFirst) async {
@@ -199,7 +189,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
             right: 0,
             bottom: MediaQuery.of(context).padding.bottom,
             child: DetailFooter(
-              isLiked: _model.isliked,
+              id: _model.id,
               messageTap: _scrollToComments,
               commitTap: (CommentModel? comment) {
                 if (comment != null) {

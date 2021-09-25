@@ -7,22 +7,20 @@ import 'package:stnews/models/comment_model.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
 
 class DetailFooter extends StatefulWidget {
   const DetailFooter({
     Key? key,
+    this.id,
     this.messageValue = '0',
-    this.isFavourited,
-    this.isLiked,
     this.messageTap,
     this.commitTap,
   }) : super(key: key);
 
+  final String? id;
+
   final String? messageValue;
-
-  final bool? isFavourited;
-
-  final bool? isLiked;
 
   final Function()? messageTap;
 
@@ -33,16 +31,27 @@ class DetailFooter extends StatefulWidget {
 }
 
 class _DetailFooterState extends State<DetailFooter> {
-  late bool _isFavourited;
-  late bool _isLiked;
+  bool _isFavourited = false;
+  bool _isLiked = false;
   late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    _isFavourited = widget.isFavourited ?? false;
-    _isLiked = widget.isLiked ?? false;
+    _getPostFavouriteAndLiked();
+  }
+
+  Future _getPostFavouriteAndLiked() async {
+    ResultData result1 = await Api.getThumpubPost(id: widget.id);
+    if (result1.success) {
+      _isLiked = result1.data['isThumbup'] as bool;
+    }
+    ResultData result2 = await Api.getFavouritePost(id: widget.id);
+    if (result2.success) {
+      _isFavourited = result2.data['isFavourite'] as bool;
+    }
+    setState(() {});
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/post_detail_inherited.dart';
 import 'package:stnews/providers/user_provider.dart';
@@ -11,10 +12,7 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/string+.dart';
 
 class DetailHeader extends StatefulWidget {
-  const DetailHeader({Key? key, this.isFavourited, this.authorTap})
-      : super(key: key);
-
-  final bool? isFavourited;
+  const DetailHeader({Key? key, this.authorTap}) : super(key: key);
 
   final Function()? authorTap;
 
@@ -23,13 +21,31 @@ class DetailHeader extends StatefulWidget {
 }
 
 class _DetailHeaderState extends State<DetailHeader> {
-  late bool _isFavourite;
+  bool _isFavourite = false;
   late PostModel _model;
+  List<UserModel> _favouriteLists = [];
 
   @override
   void initState() {
     super.initState();
-    _isFavourite = widget.isFavourited ?? false;
+    _getFavouritedUser();
+  }
+
+  /// 查询是否关注了该用户
+  void _getFavouritedUser() {
+    Api.getUserFavouriteList().then((result) {
+      if (result.success) {
+        List _temp = result.data['favourites'];
+        _favouriteLists = _temp.map((e) => UserModel.fromJson(e)).toList();
+        for (UserModel user in _favouriteLists) {
+          if (user.id == _model.author?.id) {
+            _isFavourite = true;
+            break;
+          }
+        }
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -41,6 +57,7 @@ class _DetailHeaderState extends State<DetailHeader> {
           STString.dateTimeFromString(dateStr: _model.publishdate!);
       _publishDate = STString.getDateString(_temp);
     }
+
     return Container(
       padding: EdgeInsets.all(16.0),
       child: Column(
