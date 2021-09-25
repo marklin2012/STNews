@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 
@@ -36,12 +37,8 @@ class PersonTile extends StatelessWidget {
       }
     } else if (hasHead != null) {
       final _imagePath = hasHead as String;
-      subWidget = ClipOval(
-        child: Container(
-          height: 32,
-          width: 32,
-          child: STCaCheImage.loadingImage(imageUrl: _imagePath),
-        ),
+      subWidget = NewsAvatarWidget(
+        child: STCaCheImage.loadingImage(imageUrl: _imagePath),
       );
     } else if (hasSubTitle != null) {
       subWidget = Text(hasSubTitle, style: NewsTextStyle.style16NormalSecGrey);

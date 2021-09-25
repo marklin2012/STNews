@@ -10,8 +10,8 @@ class UserModel {
   String? mobile;
   String? email;
   bool? deleted;
-  int? followers;
-  int? favourites;
+  String? createdAt;
+  String? updatedAt;
 
   UserModel({
     this.id,
@@ -23,8 +23,8 @@ class UserModel {
     this.mobile,
     this.email,
     this.deleted,
-    this.followers,
-    this.favourites,
+    this.createdAt,
+    this.updatedAt,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -37,8 +37,8 @@ class UserModel {
     mobile = json['mobile'];
     email = json['email'];
     deleted = json['deleted'];
-    followers = json['followers'];
-    favourites = json['favourites'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,8 +52,8 @@ class UserModel {
     data['mobile'] = this.mobile;
     data['email'] = this.email;
     data['deleted'] = this.deleted;
-    data['followers'] = this.followers;
-    data['favourites'] = this.favourites;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     return data;
   }
 }

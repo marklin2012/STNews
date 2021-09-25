@@ -12,6 +12,7 @@ import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/pages/home/search_post_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,7 +66,9 @@ class _HomePageState extends State<HomePage> {
     if (_lists.isEmpty) {
       return EmptyViewWidget(
         content: '内容加载失败,请点击重试',
-        onTap: () {},
+        onTap: () {
+          _loadAndRefresh(false);
+        },
       );
     }
     return NewsEasyRefresh(
@@ -98,6 +101,10 @@ class _HomePageState extends State<HomePage> {
                         color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
                       ),
+                      child: _model.headimages != null
+                          ? STCaCheImage.loadingImage(
+                              imageUrl: _model.headimages)
+                          : null,
                     ),
                     onTap: () {
                       _gotoDetailPage(index);

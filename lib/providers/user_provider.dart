@@ -87,14 +87,6 @@ class UserProvider extends ChangeNotifier {
     if (email != null) {
       _userModel.email = email;
     }
-
-    if (followers != null) {
-      _userModel.followers = followers;
-    }
-
-    if (favourites != null) {
-      _userModel.favourites = favourites;
-    }
     notifyListeners();
     return SharedPref.saveUsers(_userModel.toJson());
   }
