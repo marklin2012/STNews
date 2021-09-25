@@ -66,4 +66,10 @@ class STString {
     DateTime _temp = _format.parse(_dateStr);
     return _temp;
   }
+
+  // 格式化时间
+  static String dateTimeStrFromString({String? dateStr}) {
+    DateTime _date = STString.dateTimeFromString(dateStr: dateStr ?? '');
+    return STString.getDateString(_date);
+  }
 }

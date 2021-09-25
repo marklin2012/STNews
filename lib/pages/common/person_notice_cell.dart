@@ -8,20 +8,15 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/string+.dart';
 
 class PersonNoticeCell extends StatelessWidget {
-  const PersonNoticeCell({Key? key, this.model, this.onTap}) : super(key: key);
+  const PersonNoticeCell({Key? key, required this.model, this.onTap})
+      : super(key: key);
 
-  final NoticeModel? model;
+  final NoticeModel model;
 
   final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
-    if (model == null) {
-      return Container(
-        height: 74,
-        color: Theme.of(context).backgroundColor,
-      );
-    }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -49,13 +44,16 @@ class PersonNoticeCell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      model!.title ?? '',
+                      model.announceID?.title ?? '',
                       style: NewsTextStyle.style16BoldBlack,
                     ),
-                    if (model!.subtitle != null) SizedBox(height: 4),
-                    if (model!.subtitle != null)
+                    if (model.announceID?.subscript != null &&
+                        model.announceID!.subscript!.length > 0)
+                      SizedBox(height: 4),
+                    if (model.announceID?.subscript != null &&
+                        model.announceID!.subscript!.length > 0)
                       Text(
-                        model!.subtitle!,
+                        model.announceID!.subscript!,
                         style: NewsTextStyle.style14NormalSecGrey,
                       ),
                   ],
@@ -68,15 +66,12 @@ class PersonNoticeCell extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  STString.getDateString(model!.datetime),
+                  STString.dateTimeStrFromString(dateStr: model.updatedAt),
                   style: NewsTextStyle.style12NormalThrGrey,
                 ),
-                if (model!.notices != null && model!.notices! > 0)
+                if (model.isRead != null && !model.isRead!)
                   SizedBox(height: 10),
-                if (model!.notices != null && model!.notices! > 0)
-                  STBadge(
-                    value: model!.notices!.toString(),
-                  ),
+                if (model.isRead != null && !model.isRead!) STBadge(dot: true),
               ],
             ),
           ],

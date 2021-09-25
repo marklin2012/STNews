@@ -306,4 +306,19 @@ class Api {
   /// 上传图片接口
   static Future<ResultData> uploadFile({FormData? data}) =>
       _upload('/file/upload', data: data);
+
+  /// 创建公告对象
+  static Future<ResultData> addAnnoucement(
+          {String? title, String? subscript, String? content}) =>
+      _post('/annoucement/add',
+          data: {'title': title, 'subscript': subscript, 'content': content});
+
+  /// 获取公告
+  static Future<ResultData> getNotifyList(
+          {String? title, String? subscript, String? content}) =>
+      _get('/notify/list');
+
+  /// 公告已读
+  static Future<ResultData> setNotifyReaded({String? id}) =>
+      _put('/notify/readed', data: {'id': id});
 }

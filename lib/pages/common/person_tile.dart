@@ -26,12 +26,14 @@ class PersonTile extends StatelessWidget {
     final hasDot = data['isDot'];
     final hasHead = data['isHead'];
     final hasSubTitle = data['isSubTitle'];
-    var subWidget;
+    Widget? subWidget;
     if (hasDot != null || hasHead != null || hasSubTitle != null) {
       hasTril = true;
     }
     if (hasDot != null) {
-      subWidget = STBadge(dot: true);
+      if (hasDot is bool && hasDot) {
+        subWidget = STBadge(dot: true);
+      }
     } else if (hasHead != null) {
       final _imagePath = hasHead as String;
       subWidget = ClipOval(
@@ -75,7 +77,7 @@ class PersonTile extends StatelessWidget {
                   ),
                 ]),
             Row(children: [
-              if (hasTril) subWidget,
+              if (hasTril && subWidget != null) subWidget,
               if (hasTril) SizedBox(width: 14),
               Icon(
                 STIcons.direction_rightoutlined,
