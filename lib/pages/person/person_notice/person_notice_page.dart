@@ -5,6 +5,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/models/notice_model.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/person_notice_cell.dart';
 import 'package:stnews/pages/login/webview_page.dart';
@@ -13,9 +14,7 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PersonNoticePage extends StatefulWidget {
-  const PersonNoticePage({Key? key, required this.notices}) : super(key: key);
-
-  final List<NoticeModel> notices;
+  const PersonNoticePage({Key? key}) : super(key: key);
 
   @override
   _PersonNoticePageState createState() => _PersonNoticePageState();
@@ -26,19 +25,46 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
 
   bool get isEmpty => _lists.isEmpty;
 
-  bool _btnDisabled = true;
+  bool _isAllReaded = true;
+
+  late int _page;
+  late int _perpage;
+  bool _hasMore = false;
 
   @override
   void initState() {
+    _page = 1;
+    _perpage = NewsPerpage.finalPerPage;
     super.initState();
-    _lists = widget.notices;
+    _getNotiLists(true);
     _getAllReaded();
+  }
+
+  void _getNotiLists(bool isFirst) {
+    if (!isFirst) NewsLoading.start(context);
+    Api.getNotifyList(page: _page, perpage: _perpage).then((result) {
+      if (result.success) {
+        List _temps = result.data['noti'] as List;
+        _hasMore = _temps.isNotEmpty;
+        if (isFirst) {
+          _lists = _temps.map((e) => NoticeModel.fromJson(e)).toList();
+        } else {
+          for (Map<String, dynamic> temp in _temps) {
+            NoticeModel model = NoticeModel.fromJson(temp);
+            _lists.add(model);
+          }
+        }
+        _getAllReaded();
+        setState(() {});
+      }
+      if (!isFirst) NewsLoading.stop();
+    });
   }
 
   void _getAllReaded() {
     for (NoticeModel model in _lists) {
       if (model.isRead == false) {
-        _btnDisabled = false;
+        _isAllReaded = false;
         break;
       }
     }
@@ -62,7 +88,7 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
             padding: EdgeInsets.only(right: 10.0),
             child: STButton(
               type: STButtonType.text,
-              disabled: _btnDisabled,
+              disabled: _isAllReaded,
               text: '清除未读',
               textStyle: isEmpty
                   ? NewsTextStyle.style17NormalFourGrey
@@ -85,8 +111,13 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
       );
     }
     return Container(
-      margin: EdgeInsets.only(top: 24.0),
-      child: ListView.builder(
+      padding: EdgeInsets.only(top: 24.0),
+      child: NewsEasyRefresh(
+        hasHeader: true,
+        hasFooter: true,
+        onRefresh: _onRefresh,
+        onLoad: _onLoad,
+        child: ListView.builder(
           itemCount: _lists.length,
           itemBuilder: (context, index) {
             NoticeModel model = _lists[index];
@@ -96,8 +127,22 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
                 _tapActions(model);
               },
             );
-          }),
+          },
+        ),
+      ),
     );
+  }
+
+  Future _onRefresh() async {
+    _page = 1;
+    _lists.clear();
+    _getNotiLists(false);
+  }
+
+  Future _onLoad() async {
+    if (!_hasMore) return;
+    _page++;
+    _getNotiLists(false);
   }
 
   void _deletUnRead() {

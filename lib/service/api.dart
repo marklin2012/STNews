@@ -10,6 +10,10 @@ const TimeoutConnect = 5000;
 const TimeoutReceive = 8000;
 const TimeoutSend = 3000;
 
+class NewsPerpage {
+  static int finalPerPage = 5;
+}
+
 // ignore: non_constant_identifier_names
 String BaseUrl = Platform.isAndroid
     ? 'http://192.168.2.116:7001/'
@@ -314,9 +318,8 @@ class Api {
           data: {'title': title, 'subscript': subscript, 'content': content});
 
   /// 获取公告
-  static Future<ResultData> getNotifyList(
-          {String? title, String? subscript, String? content}) =>
-      _get('/notify/list');
+  static Future<ResultData> getNotifyList({int? page = 1, int? perpage = 10}) =>
+      _get('/notify/list?page=$page&per_page=$perpage');
 
   /// 公告已读
   static Future<ResultData> setNotifyReaded({String? id}) =>

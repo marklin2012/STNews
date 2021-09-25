@@ -10,7 +10,6 @@ import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/home/user_home_page.dart';
-import 'package:stnews/pages/person/person_home_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -24,8 +23,6 @@ class PostDetailPage extends StatefulWidget {
   @override
   _PostDetailPageState createState() => _PostDetailPageState();
 }
-
-const _finalPerPage = 5;
 
 class _PostDetailPageState extends State<PostDetailPage> {
   late ScrollController _scrollController;
@@ -50,7 +47,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
       _findRenderObject();
     });
     _page = 1;
-    _perpage = _finalPerPage;
+    _perpage = NewsPerpage.finalPerPage;
     _getPostFavourited();
     _getComments(true);
   }

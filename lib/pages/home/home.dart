@@ -21,8 +21,6 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-const _finalPerPage = 5;
-
 class _HomePageState extends State<HomePage> {
   List<PostModel> _lists = [];
   late int _page;
@@ -34,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     _page = 1;
-    _perpage = _finalPerPage;
+    _perpage = NewsPerpage.finalPerPage;
     _loadAndRefresh(true);
   }
 
@@ -124,7 +122,7 @@ class _HomePageState extends State<HomePage> {
 
   Future _loadAndRefresh(bool isFirst) async {
     _page = 1;
-    _perpage = _finalPerPage;
+    _perpage = NewsPerpage.finalPerPage;
     if (!isFirst) NewsLoading.start(context);
     Api.getPosts(page: _page, perpage: _perpage).then((result) {
       if (result.success) {

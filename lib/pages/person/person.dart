@@ -27,54 +27,17 @@ class PersonPage extends StatefulWidget {
 }
 
 class _PersonPageState extends State<PersonPage> {
-  late ValueNotifier<List> _notifier;
-
-  List<NoticeModel> _lists = [];
-  bool _isAllReaded = true;
+  List<Map<String, dynamic>> _datas = [
+    {'icon': STIcons.commonly_home, 'title': '我的主页'},
+    {'icon': STIcons.commonly_heart, 'title': '我的收藏'},
+    {'icon': STIcons.commonly_star, 'title': '我的关注'},
+    {'icon': STIcons.commonly_message, 'title': '消息中心', 'isDot': true},
+    {'icon': STIcons.commonly_setting, 'title': '设置'}
+  ];
 
   @override
   void initState() {
     super.initState();
-    List<Map<String, dynamic>> _datas = [
-      {'icon': STIcons.commonly_home, 'title': '我的主页'},
-      {'icon': STIcons.commonly_heart, 'title': '我的收藏'},
-      {'icon': STIcons.commonly_star, 'title': '我的关注'},
-      {'icon': STIcons.commonly_message, 'title': '消息中心', 'isDot': false},
-      {'icon': STIcons.commonly_setting, 'title': '设置'}
-    ];
-    _notifier = ValueNotifier(_datas);
-    _getNotiLists();
-  }
-
-  void _getNotiLists() {
-    Api.getNotifyList().then((result) {
-      if (result.success) {
-        List _temps = result.data['noti'] as List;
-        _lists = _temps.map((e) => NoticeModel.fromJson(e)).toList();
-      }
-      for (NoticeModel model in _lists) {
-        if (model.isRead == false) {
-          _isAllReaded = false;
-          break;
-        }
-      }
-      _updateNoti(isAllReaded: _isAllReaded);
-    });
-  }
-
-  void _updateNoti({bool isAllReaded = true}) {
-    List<Map<String, dynamic>> _newDatas = [
-      {'icon': STIcons.commonly_home, 'title': '我的主页'},
-      {'icon': STIcons.commonly_heart, 'title': '我的收藏'},
-      {'icon': STIcons.commonly_star, 'title': '我的关注'},
-      {
-        'icon': STIcons.commonly_message,
-        'title': '消息中心',
-        'isDot': !isAllReaded
-      },
-      {'icon': STIcons.commonly_setting, 'title': '设置'}
-    ];
-    _notifier.value = _newDatas;
   }
 
   @override
@@ -117,32 +80,27 @@ class _PersonPageState extends State<PersonPage> {
                 );
               }),
               SizedBox(height: 50),
-              ValueListenableBuilder(
-                valueListenable: _notifier,
-                builder: (context, List _values, _) {
-                  return Container(
-                    height: 52.0 * _values.length - 4.0,
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemExtent: 52.0,
-                      itemCount: _values.length,
-                      itemBuilder: (context, index) {
-                        Map<String, dynamic> _map = _values[index];
-                        return Container(
-                          color: Theme.of(context).primaryColor,
-                          padding: EdgeInsets.only(bottom: 4.0),
-                          key: GlobalObjectKey(index),
-                          child: PersonTile(
-                            data: _map,
-                            onTap: () {
-                              _goNextPage(index);
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+              Container(
+                height: 52.0 * _datas.length - 4.0,
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemExtent: 52.0,
+                  itemCount: _datas.length,
+                  itemBuilder: (context, index) {
+                    Map<String, dynamic> _map = _datas[index];
+                    return Container(
+                      color: Theme.of(context).primaryColor,
+                      padding: EdgeInsets.only(bottom: 4.0),
+                      key: GlobalObjectKey(index),
+                      child: PersonTile(
+                        data: _map,
+                        onTap: () {
+                          _goNextPage(index);
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
@@ -169,9 +127,7 @@ class _PersonPageState extends State<PersonPage> {
         // 去消息中心
         STRouters.push(
           context,
-          PersonNoticePage(
-            notices: _lists,
-          ),
+          PersonNoticePage(),
         );
         break;
       case 4:
