@@ -12,6 +12,7 @@ import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 const _topFix = 88.0;
 const _horFix16 = 16.0;
@@ -110,7 +111,8 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   void _requestHttp() async {
     _btnNotifier.value = true;
     ResultData _resultData = await Api.loginWithPassword(
-        mobile: _phoneCon.text, password: _passwordCon.text);
+        mobile: STString.removeSpace(_phoneCon.text),
+        password: _passwordCon.text);
     if (_resultData.success) {
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];

@@ -3,11 +3,13 @@ import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 const _horFix16 = 16.0;
 const _spaceFix34 = 34.0;
@@ -15,7 +17,9 @@ const _spaceFix36 = 36.0;
 const _spaceFix46 = 46.0;
 
 class NewPassWordPage extends StatefulWidget {
-  const NewPassWordPage({Key? key}) : super(key: key);
+  const NewPassWordPage({Key? key, required this.mobile}) : super(key: key);
+
+  final String mobile;
 
   @override
   _NewPassWordPageState createState() => _NewPassWordPageState();
@@ -117,9 +121,11 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
       return;
     }
     NewsLoading.start(context);
-    ResultData result = await Api.setPassword(_firstCon.text);
+    ResultData result = await Api.setNewPassword(
+        mobile: STString.removeSpace(widget.mobile), password: _firstCon.text);
     if (result.success) {
       STToast.show(context: context, message: '设置密码成功');
+      Navigator.of(context).popUntil(ModalRoute.withName(LoginPage.routeName));
     }
     NewsLoading.stop();
   }

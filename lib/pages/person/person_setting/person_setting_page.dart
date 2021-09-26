@@ -102,7 +102,11 @@ class PersonSetingPage extends StatelessWidget {
                               UserProvider.shared
                                   .setToken(null, isReload: true);
                               Navigator.of(context1).pop();
-                              STRouters.push(context, LoginPage());
+                              STRouters.push(
+                                context,
+                                LoginPage(),
+                                routeName: LoginPage.routeName,
+                              );
                             },
                           ),
                         ],

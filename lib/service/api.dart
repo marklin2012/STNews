@@ -272,6 +272,17 @@ class Api {
     return _put('/user/update', data: _data, showToastError: showToastError);
   }
 
+  /// 忘记密码
+  static Future<ResultData> setNewPassword(
+          {String? mobile, String? password, bool showToastError = true}) =>
+      _post('/user/forget/password',
+          data: {
+            'mobile': mobile,
+            'password': password,
+            're_password': password
+          },
+          showToastError: showToastError);
+
   /// 设置密码
   static Future<ResultData> setPassword(String password,
           {bool showToastError = true}) =>

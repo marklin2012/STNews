@@ -9,6 +9,8 @@ import 'package:stnews/pages/person/person.dart';
 class TabbarPage extends StatefulWidget {
   const TabbarPage({Key? key}) : super(key: key);
 
+  static const routeName = '/tabbar';
+
   @override
   _TabbarPageState createState() => _TabbarPageState();
 }

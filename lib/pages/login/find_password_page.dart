@@ -112,7 +112,12 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
                 textStyle: NewsTextStyle.style18BoldWhite,
                 mainAxisSize: MainAxisSize.max,
                 onTap: () {
-                  STRouters.push(context, NewPassWordPage());
+                  STRouters.push(
+                    context,
+                    NewPassWordPage(
+                      mobile: _phoneCon.text,
+                    ),
+                  );
                 },
               )
             ],

@@ -14,6 +14,8 @@ const _bottomFix = 52.0;
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  static const routeName = '/login';
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }

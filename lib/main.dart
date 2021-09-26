@@ -17,14 +17,14 @@ void main() {
   Api.initAPI();
 
   // ignore: invalid_use_of_visible_for_testing_member
-  // SharedPreferences.setMockInitialValues({});
+  SharedPreferences.setMockInitialValues({});
   // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({
-    'token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjMyMDM5MDg5fQ.7Q-_n0rgQAuTYHPKJ0f1aPhwkHIky-27MxQZ3trYEG0',
-    'user':
-        '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"用户8888990","sex":0}'
-  });
+  // SharedPreferences.setMockInitialValues({
+  //   'token':
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjMyMDM5MDg5fQ.7Q-_n0rgQAuTYHPKJ0f1aPhwkHIky-27MxQZ3trYEG0',
+  //   'user':
+  //       '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"用户8888990","sex":0}'
+  // });
 
   runApp(
     MultiProvider(
@@ -58,7 +58,25 @@ class MyApp extends StatelessWidget {
           elevation: 0.1,
         ),
       ),
-      home: UserProvider.shared.isLogin ? TabbarPage() : LoginPage(),
+      onGenerateRoute: (setting) {
+        switch (setting.name) {
+          case LoginPage.routeName:
+            return PageRouteBuilder(
+              settings: RouteSettings(name: LoginPage.routeName),
+              transitionDuration: Duration(milliseconds: 100),
+              pageBuilder: (context, animation, secAnimation) => LoginPage(),
+            );
+          case TabbarPage.routeName:
+            return PageRouteBuilder(
+              settings: RouteSettings(name: TabbarPage.routeName),
+              transitionDuration: Duration(milliseconds: 100),
+              pageBuilder: (context, animation, secAnimation) => TabbarPage(),
+            );
+        }
+      },
+      initialRoute: UserProvider.shared.isLogin
+          ? TabbarPage.routeName
+          : LoginPage.routeName,
     );
   }
 }
