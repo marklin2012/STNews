@@ -23,6 +23,7 @@ class PostDetailProvider extends ChangeNotifier {
 
   bool _isFavouritedUser = false;
   bool get isFavouritedUser => _isFavouritedUser;
+
   List<UserModel> _favouritedLists = [];
 
   bool _isFavouritedPost = false;
@@ -154,5 +155,13 @@ class PostDetailProvider extends ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  /// 接收在用户详情点击关注或取消关注
+  void userHomeChangeStatus({String? userID, required bool status}) {
+    if (userID == null) return;
+    if (userID != _postModel.author?.id) return;
+    _isFavouritedUser = status;
+    notifyListeners();
   }
 }

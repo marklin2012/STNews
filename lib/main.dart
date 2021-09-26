@@ -8,6 +8,7 @@ import 'package:stnews/pages/tabbar.dart';
 import 'package:stnews/providers/home_post_provider.dart';
 import 'package:stnews/providers/notice_provider.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/providers/user_home_provider.dart';
 
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
@@ -32,6 +33,7 @@ void main() {
         ChangeNotifierProvider.value(value: UserProvider.shared),
         ChangeNotifierProvider.value(value: HomePostProvider()),
         ChangeNotifierProvider.value(value: PostDetailProvider()),
+        ChangeNotifierProvider.value(value: UserHomeProvider()),
         ChangeNotifierProvider.value(value: NoticeProvider()),
       ],
       child: MyApp(),

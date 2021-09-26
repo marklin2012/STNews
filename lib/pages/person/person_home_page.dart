@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
-import 'package:stnews/providers/user_provider.dart';
-import 'package:stnews/service/api.dart';
+import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -25,45 +25,15 @@ class PersonHomePage extends StatefulWidget {
 }
 
 class _PersonHomePageState extends State<PersonHomePage> {
-  UserInfoModel _infoModel = UserInfoModel();
-  late bool _isSelf;
-  bool _isFavouritedUser = false;
+  UserHomeProvider get userHomeProvider =>
+      Provider.of<UserHomeProvider>(context, listen: false);
 
   @override
   void initState() {
     super.initState();
-    _isSelf = widget.userID == UserProvider.shared.user.id;
-    if (widget.userID == null) _isSelf = true;
-    _getUserData();
-    _getFavouritedUser();
-  }
-
-  void _getUserData() {
-    Api.getUserInfo(userid: widget.userID).then((result) {
-      if (result.success) {
-        Map<String, dynamic> _userInfo = result.data;
-        _infoModel = UserInfoModel.fromJson(_userInfo);
-        setState(() {});
-      }
-    });
-  }
-
-  /// 查询是否关注了该用户
-  void _getFavouritedUser() {
-    Api.getUserFavouriteList().then((result) {
-      if (result.success) {
-        List _temp = result.data['favourites'];
-        List<UserModel> _favouriteLists =
-            _temp.map((e) => UserModel.fromJson(e)).toList();
-        for (var item in _favouriteLists) {
-          if (item.id == widget.userID) {
-            _isFavouritedUser = true;
-            break;
-          }
-        }
-        setState(() {});
-      }
-    });
+    userHomeProvider.userID = widget.userID;
+    userHomeProvider.getUserInfoData();
+    userHomeProvider.getFavouritedUser();
   }
 
   @override
@@ -78,26 +48,34 @@ class _PersonHomePageState extends State<PersonHomePage> {
           },
         ),
       ),
-      body: CustomScrollView(
+      body: _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    return Consumer<UserHomeProvider>(builder: (context, userHomeP, _) {
+      return CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: _buildHeader(),
+            child: _buildHeader(userHomeP),
           ),
-          if (_infoModel.post != null && _infoModel.post!.isNotEmpty)
-            _buildPost(),
-          if (_infoModel.post == null ||
-              (_infoModel.post != null && _infoModel.post!.isEmpty))
+          if (userHomeP.infoModel.post != null &&
+              userHomeP.infoModel.post!.isNotEmpty)
+            _buildPost(userHomeP),
+          if (userHomeP.infoModel.post == null ||
+              (userHomeP.infoModel.post != null &&
+                  userHomeP.infoModel.post!.isEmpty))
             SliverToBoxAdapter(
               child: EmptyViewWidget(
                 content: '暂无发布的内容',
               ),
             )
         ],
-      ),
-    );
+      );
+    });
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(UserHomeProvider userHomeP) {
     return Container(
       margin: const EdgeInsets.only(top: 12.0),
       child: Column(
@@ -105,17 +83,17 @@ class _PersonHomePageState extends State<PersonHomePage> {
           ListTile(
             leading: NewsAvatarWidget(
               size: 60,
-              child:
-                  STCaCheImage.loadingImage(imageUrl: _infoModel.user?.avatar),
+              child: STCaCheImage.loadingImage(
+                  imageUrl: userHomeP.infoModel.user?.avatar),
             ),
             title: Text(
-              _infoModel.user?.nickname ?? '',
+              userHomeP.infoModel.user?.nickname ?? '',
               style: TextStyle(fontSize: FONTSIZE18, fontWeight: FONTWEIGHT500),
             ),
-            trailing: _isSelf
+            trailing: userHomeP.isSelf
                 ? null
                 : STButton(
-                    text: _isFavouritedUser ? '已关注' : '关注',
+                    text: userHomeP.isFavouritedUser ? '已关注' : '关注',
                     type: STButtonType.outline,
                     size: STButtonSize.small,
                     onTap: _changeFavouriteStatus,
@@ -130,7 +108,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
               children: [
                 NewsIconTextWidget(
                   icon: Icons.favorite,
-                  title: (_infoModel.followerCount ?? 0).toString(),
+                  title: (userHomeP.infoModel.followerCount ?? 0).toString(),
                   unit: '关注',
                 ),
                 Container(
@@ -140,7 +118,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                 ),
                 NewsIconTextWidget(
                   icon: Icons.favorite_outline,
-                  title: (_infoModel.fansCount ?? 0).toString(),
+                  title: (userHomeP.infoModel.fansCount ?? 0).toString(),
                   unit: '粉丝',
                 ),
               ],
@@ -151,11 +129,11 @@ class _PersonHomePageState extends State<PersonHomePage> {
     );
   }
 
-  SliverList _buildPost() {
+  SliverList _buildPost(UserHomeProvider userHomeP) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final _model = _infoModel.post?[index];
+          final _model = userHomeP.infoModel.post?[index];
           return Container(
             height: 92,
             child: ListTile(
@@ -180,21 +158,16 @@ class _PersonHomePageState extends State<PersonHomePage> {
             ),
           );
         },
-        childCount: _infoModel.post?.length,
+        childCount: userHomeP.infoModel.post?.length,
       ),
     );
   }
 
-  void _changeFavouriteStatus() {
+  void _changeFavouriteStatus() async {
     NewsLoading.start(context);
-    Api.changeUserFavourite(
-            followeduserid: widget.userID, status: !_isFavouritedUser)
-        .then((result) {
-      NewsLoading.stop();
-      if (result.success) {
-        _isFavouritedUser = !_isFavouritedUser;
-        setState(() {});
-      }
-    });
+    bool _isFav = await userHomeProvider.changeFavouritedUserStatus();
+    Provider.of<PostDetailProvider>(context, listen: false)
+        .userHomeChangeStatus(status: _isFav, userID: userHomeProvider.userID);
+    NewsLoading.stop();
   }
 }
