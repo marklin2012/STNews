@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/notice_model.dart';
+import 'package:stnews/pages/common/news_perpage.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
+import 'package:stnews/utils/list+.dart';
 
 class NoticeProvider extends ChangeNotifier {
   NoticeProvider({Key? key});
@@ -29,7 +31,8 @@ class NoticeProvider extends ChangeNotifier {
     ResultData result = await Api.getNotifyList(page: _page, perpage: _perpage);
     if (result.success) {
       List _temps = result.data['noti'] as List;
-      _hasMore = _temps.isNotEmpty;
+      _hasMore =
+          (_temps.isNotEmpty || _temps.length < NewsPerpage.finalPerPage);
       _notices = _temps.map((e) => NoticeModel.fromJson(e)).toList();
       _getAllReaded();
       notifyListeners();
@@ -41,7 +44,7 @@ class NoticeProvider extends ChangeNotifier {
     ResultData result = await Api.getNotifyList(page: _page, perpage: _perpage);
     if (result.success) {
       List _temps = result.data['noti'] as List;
-      _hasMore = _temps.isNotEmpty;
+      _hasMore = STList.hasMore(_temps);
       for (Map<String, dynamic> temp in _temps) {
         NoticeModel model = NoticeModel.fromJson(temp);
         _notices.add(model);

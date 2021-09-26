@@ -65,14 +65,14 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
   }
 
   Widget _getSubWidget() {
-    if (!noticeProvider.hasData) {
-      return EmptyViewWidget(
-        fixTop: 162.0,
-        imageBGSize: 100.0,
-        content: '暂无任何消息哦～',
-      );
-    }
-    return Consumer<NoticeProvider>(builder: (context, noticeProvider, _) {
+    return Consumer<NoticeProvider>(builder: (context, noticeP, _) {
+      if (!noticeP.hasData) {
+        return EmptyViewWidget(
+          fixTop: 162.0,
+          imageBGSize: 100.0,
+          content: '暂无任何消息哦～',
+        );
+      }
       return Container(
         padding: EdgeInsets.only(top: 24.0),
         child: NewsEasyRefresh(
@@ -81,9 +81,9 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
           onRefresh: _onRefresh,
           onLoad: _onLoad,
           child: ListView.builder(
-            itemCount: noticeProvider.notices.length,
+            itemCount: noticeP.notices.length,
             itemBuilder: (context, index) {
-              NoticeModel model = noticeProvider.notices[index];
+              NoticeModel model = noticeP.notices[index];
               return PersonNoticeCell(
                 model: model,
                 onTap: () {

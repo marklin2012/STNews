@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
+import 'package:stnews/providers/home_post_provider.dart';
 import 'package:stnews/providers/notice_provider.dart';
 
 import 'package:stnews/providers/user_provider.dart';
@@ -28,6 +29,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: UserProvider.shared),
+        ChangeNotifierProvider.value(value: HomePostProvider()),
         ChangeNotifierProvider.value(value: NoticeProvider()),
       ],
       child: MyApp(),

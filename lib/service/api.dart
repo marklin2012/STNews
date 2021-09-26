@@ -11,10 +11,6 @@ const TimeoutConnect = 5000;
 const TimeoutReceive = 8000;
 const TimeoutSend = 3000;
 
-class NewsPerpage {
-  static int finalPerPage = 5;
-}
-
 // ignore: non_constant_identifier_names
 String BaseUrl = Platform.isAndroid
     ? 'http://192.168.2.199:7001/'
