@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/comment_model.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
-import 'package:stnews/service/api.dart';
+import 'package:stnews/providers/post_detail_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/string+.dart';
@@ -111,14 +112,10 @@ class _CommentCellState extends State<CommentCell> {
   }
 
   void _commentFavourite() {
+    if (_model?.id == null || _model?.isUserFavourite == null) return;
     NewsLoading.start(context);
-    bool _temp = _model?.isUserFavourite ?? false;
-    Api.commentFavourite(comment: _model?.id, status: !_temp).then((result) {
-      NewsLoading.stop();
-      if (result.success) {
-        _model?.isUserFavourite = !_temp;
-        setState(() {});
-      }
-    });
+    Provider.of<PostDetailProvider>(context, listen: false)
+        .commentLiked(_model!.id!, _model!.isUserFavourite!);
+    NewsLoading.stop();
   }
 }

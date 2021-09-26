@@ -18,7 +18,7 @@ class HomePostProvider extends ChangeNotifier {
   bool get hasMore => _hasMore;
   bool get isEmptyPosts => _posts.length == 0;
 
-  Future initOrRefresh() async {
+  Future<bool> initOrRefresh() async {
     ResultData bannerRes = await Api.getPostBanners();
     _page = 1;
     ResultData postRes = await Api.getPosts(page: _page, perpage: _perpage);
@@ -32,6 +32,7 @@ class HomePostProvider extends ChangeNotifier {
       _posts = _temps.map((e) => PostModel.fromJson(e)).toList();
     }
     notifyListeners();
+    return postRes.success;
   }
 
   Future loadMore() async {

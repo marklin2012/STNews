@@ -117,22 +117,23 @@ class _HomePageState extends State<HomePage> {
 
   Future _loadAndRefresh() async {
     NewsLoading.start(context);
-    await homePostProvider.initOrRefresh();
+    bool isSuc = await homePostProvider.initOrRefresh();
     NewsLoading.stop();
-    EasySnackbar.show(
-      context: context,
-      backgroundColor: Color(0xFFA6C4FF),
-      alignment: Alignment.topCenter,
-      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
-      padding: EdgeInsets.symmetric(vertical: 5),
-      title: Container(
-        alignment: Alignment.center,
-        child: Text(
-          '为您推荐${NewsPerpage.finalPerPage}条内容',
-          style: NewsTextStyle.style14NormalWhite,
+    if (isSuc)
+      EasySnackbar.show(
+        context: context,
+        backgroundColor: Color(0xFFA6C4FF),
+        alignment: Alignment.topCenter,
+        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
+        padding: EdgeInsets.symmetric(vertical: 5),
+        title: Container(
+          alignment: Alignment.center,
+          child: Text(
+            '为您推荐${NewsPerpage.finalPerPage}条内容',
+            style: NewsTextStyle.style14NormalWhite,
+          ),
         ),
-      ),
-    );
+      );
   }
 
   Future _loadMore() async {
