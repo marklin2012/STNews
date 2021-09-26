@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
-import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
-import 'package:stnews/service/api.dart';
+import 'package:stnews/providers/favourited_post_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -22,26 +23,16 @@ class MyFavouritePostPage extends StatefulWidget {
 class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   bool _isManage = true;
   bool _isSelectAll = false;
-  List<PostModel> _lists = [];
   Map<String, bool> _selectedMap = {};
 
   double _width = 0;
+  FavouritedPostProvider get favPostProvider =>
+      Provider.of<FavouritedPostProvider>(context, listen: false);
 
   @override
   void initState() {
     super.initState();
-
-    _getFavouritePostsData();
-  }
-
-  void _getFavouritePostsData() {
-    Api.getUserFavouritePost().then((result) {
-      if (result.success) {
-        List _temps = result.data['favourites'];
-        _lists = _temps.map((e) => PostModel.fromJson(e)).toList();
-        setState(() {});
-      }
-    });
+    favPostProvider.getFavouritedPostsData();
   }
 
   @override
@@ -77,109 +68,113 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   }
 
   Widget _getBodyWidget() {
-    if (_lists.isEmpty) {
-      return EmptyViewWidget(
-        fixTop: 144.0,
-        imageBGSize: 100.0,
-        content: '暂无任何收藏哦～',
-      );
-    }
-    return Stack(
-      children: [
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemExtent: 92,
-          itemCount: _lists.length,
-          itemBuilder: (context, index) {
-            final _model = _lists[index];
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: NeverScrollableScrollPhysics(),
-              reverse: _isManage,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: Container(
-                      width: _selectWidth,
-                      padding: EdgeInsets.only(left: 16.0, right: 8.0),
-                      child: _model.selected ?? false
-                          ? Icon(
-                              Icons.check_box_outlined,
-                              size: 24,
-                            )
-                          : Icon(
-                              Icons.check_box_outline_blank,
-                              size: 24,
-                            ),
-                    ),
-                    onTap: () {
-                      _selectOneAction(index);
-                    },
-                  ),
-                  Container(
-                    width: _width,
-                    child: ListTile(
-                      title: Text(_model.title ?? ''),
-                      subtitle: Text(_model.author?.nickname ?? ''),
-                      contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-                      trailing: Container(
-                        width: 102,
-                        height: 76,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        ),
+    return Consumer<FavouritedPostProvider>(builder: (context, favPostP, _) {
+      if (favPostP.posts.isEmpty) {
+        return EmptyViewWidget(
+          fixTop: 144.0,
+          imageBGSize: 100.0,
+          content: '暂无任何收藏哦～',
+        );
+      }
+      return Stack(
+        children: [
+          ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemExtent: 92,
+            itemCount: favPostP.posts.length,
+            itemBuilder: (context, index) {
+              final _model = favPostP.posts[index];
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: NeverScrollableScrollPhysics(),
+                reverse: _isManage,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.translucent,
+                      child: Container(
+                        width: _selectWidth,
+                        padding: EdgeInsets.only(left: 16.0, right: 8.0),
+                        child: _model.selected ?? false
+                            ? Icon(
+                                Icons.check_box_outlined,
+                                size: 24,
+                              )
+                            : Icon(
+                                Icons.check_box_outline_blank,
+                                size: 24,
+                              ),
                       ),
                       onTap: () {
                         _selectOneAction(index);
                       },
                     ),
+                    Container(
+                      width: _width,
+                      child: ListTile(
+                        title: Text(_model.title ?? ''),
+                        subtitle: Text(_model.author?.nickname ?? ''),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10),
+                        trailing: Container(
+                          width: 102,
+                          height: 76,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(3.0)),
+                          ),
+                        ),
+                        onTap: () {
+                          _selectOneAction(index);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          if (_isManage == false)
+            Positioned(
+              left: 16.0,
+              right: 16.0,
+              bottom: MediaQuery.of(context).padding.bottom,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  STButton(
+                    icon: !_isSelectAll
+                        ? Icon(Icons.check_box_outline_blank)
+                        : Icon(Icons.check_box_outlined),
+                    text: !_isSelectAll ? '全选' : '取消全选',
+                    textStyle: TextStyle(
+                        fontSize: FONTSIZE16,
+                        fontWeight: FONTWEIGHT400,
+                        color: Colors.black),
+                    backgroundColor: Colors.transparent,
+                    onTap: _selectAllBtnAction,
+                  ),
+                  STButton(
+                    text: '删除',
+                    textStyle: TextStyle(
+                        fontSize: FONTSIZE16,
+                        fontWeight: FONTWEIGHT400,
+                        color: Theme.of(context).primaryColor),
+                    onTap: _deletBtnAction,
                   ),
                 ],
               ),
-            );
-          },
-        ),
-        if (_isManage == false)
-          Positioned(
-            left: 16.0,
-            right: 16.0,
-            bottom: MediaQuery.of(context).padding.bottom,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                STButton(
-                  icon: !_isSelectAll
-                      ? Icon(Icons.check_box_outline_blank)
-                      : Icon(Icons.check_box_outlined),
-                  text: !_isSelectAll ? '全选' : '取消全选',
-                  textStyle: TextStyle(
-                      fontSize: FONTSIZE16,
-                      fontWeight: FONTWEIGHT400,
-                      color: Colors.black),
-                  backgroundColor: Colors.transparent,
-                  onTap: _selectAllBtnAction,
-                ),
-                STButton(
-                  text: '删除',
-                  textStyle: TextStyle(
-                      fontSize: FONTSIZE16,
-                      fontWeight: FONTWEIGHT400,
-                      color: Theme.of(context).primaryColor),
-                  onTap: _deletBtnAction,
-                ),
-              ],
             ),
-          ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   void _selectOneAction(int index) {
-    final _model = _lists[index];
+    if (index >= favPostProvider.posts.length) return;
+    final _model = favPostProvider.posts[index];
     if (_isManage) {
       STRouters.push(
         context,
@@ -197,8 +192,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
 
   void _selectAllBtnAction() {
     _isSelectAll = !_isSelectAll;
-
-    for (var post in _lists) {
+    for (var post in favPostProvider.posts) {
       post.selected = _isSelectAll;
       _selectedMap[post.id!] = _isSelectAll;
     }
@@ -206,14 +200,15 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
   }
 
   void _deletBtnAction() {
+    List<String> postIDs = [];
     for (final key in _selectedMap.keys) {
       if (_selectedMap[key] != null && _selectedMap[key]!) {
-        Api.favoritePost(postid: key, status: false).then((result) {
-          _selectedMap[key] = false;
-        });
+        postIDs.add(key);
       }
     }
-    _getFavouritePostsData();
+    NewsLoading.start(context);
+    favPostProvider.unFavouritedPosts(postIDs: postIDs);
+    NewsLoading.stop();
   }
 
   bool _isAllSelected() {
@@ -223,6 +218,6 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
         _res += 1;
       }
     }
-    return _res == _lists.length;
+    return _res == favPostProvider.posts.length;
   }
 }
