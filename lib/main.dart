@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
 import 'package:stnews/providers/favourited_post_provider.dart';
+import 'package:stnews/providers/favourited_user_provider.dart';
 import 'package:stnews/providers/home_post_provider.dart';
 import 'package:stnews/providers/notice_provider.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
@@ -36,6 +37,7 @@ void main() {
         ChangeNotifierProvider.value(value: PostDetailProvider()),
         ChangeNotifierProvider.value(value: UserHomeProvider()),
         ChangeNotifierProvider.value(value: FavouritedPostProvider()),
+        ChangeNotifierProvider.value(value: FavouritedUserProvider()),
         ChangeNotifierProvider.value(value: NoticeProvider()),
       ],
       child: MyApp(),
