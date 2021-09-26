@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 import 'package:stnews/utils/st_routers.dart';
@@ -104,7 +105,7 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
     );
   }
 
-  void _sureAction() {
+  void _sureAction() async {
     if (_firstCon.text.isEmpty) {
       STToast.show(context: context, message: '请输入密码');
       return;
@@ -116,13 +117,10 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
       return;
     }
     NewsLoading.start(context);
-    Api.setPassword(_firstCon.text).then((result) {
-      if (result.success) {
-        STToast.show(context: context, message: '设置密码成功');
-      } else {
-        STToast.show(context: context, message: result.message);
-      }
-      NewsLoading.stop();
-    });
+    ResultData result = await Api.setPassword(_firstCon.text);
+    if (result.success) {
+      STToast.show(context: context, message: '设置密码成功');
+    }
+    NewsLoading.stop();
   }
 }

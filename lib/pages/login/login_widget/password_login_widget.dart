@@ -112,16 +112,13 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
     ResultData _resultData = await Api.loginWithPassword(
         mobile: _phoneCon.text, password: _passwordCon.text);
     if (_resultData.success) {
-      _btnNotifier.value = false;
       final token = _resultData.data['token'];
       Map<String, dynamic> user = _resultData.data['user'];
       UserProvider.shared.setToken(token);
       UserProvider.shared.user = UserModel.fromJson(user);
       STRouters.push(context, TabbarPage());
-    } else {
-      _btnNotifier.value = false;
-      STToast.show(context: context, message: _resultData.message);
     }
+    _btnNotifier.value = false;
   }
 
   Widget _buildTitle() {

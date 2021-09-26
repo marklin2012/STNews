@@ -135,8 +135,6 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
         NewsLoading.stop();
         if (reslutData.success) {
           STRouters.pop(context);
-        } else {
-          STToast.show(context: context, message: reslutData.message);
         }
       });
     }

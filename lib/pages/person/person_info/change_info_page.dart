@@ -85,8 +85,6 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         if (resultData.success) {
           UserProvider.shared.changeUser(sex: _sex);
           STRouters.pop(context);
-        } else {
-          STToast.show(context: context, message: resultData.message);
         }
       });
     } else {
@@ -101,8 +99,6 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         if (resultData.success) {
           UserProvider.shared.changeUser(nickname: _controller!.text);
           STRouters.pop(context);
-        } else {
-          STToast.show(context: context, message: resultData.message);
         }
       });
     }

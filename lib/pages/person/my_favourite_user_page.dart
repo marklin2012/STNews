@@ -103,8 +103,6 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
       NewsLoading.stop();
       if (result.success) {
         setState(() {});
-      } else {
-        STToast.show(context: context, message: result.message);
       }
     });
   }

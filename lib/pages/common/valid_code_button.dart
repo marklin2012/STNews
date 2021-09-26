@@ -76,8 +76,6 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
       _btnDisabled = !_btnDisabled;
       setState(() {});
       _startTimer();
-    } else {
-      STToast.show(context: context, message: result.message);
     }
   }
 

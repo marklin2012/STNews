@@ -139,16 +139,16 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
     NewsLoading.start(context);
     // 上传图片
     ResultData result1 = await Api.uploadFile(data: formData);
+    ResultData? result2;
+    String? imageUrl;
     if (result1.success) {
-      final imageUrl = result1.data['imgUrl'];
-      ResultData result2 = await Api.updateUserInfo(avatar: imageUrl);
-      if (result2.success) {
-        UserProvider.shared.changeUser(avatar: imageUrl);
-      }
-      STRouters.pop(context);
-    } else {
-      STToast.show(context: context, message: result1.message);
+      imageUrl = result1.data['imgUrl'];
+      result2 = await Api.updateUserInfo(avatar: imageUrl);
     }
     NewsLoading.stop();
+    if (result2?.success ?? false) {
+      UserProvider.shared.changeUser(avatar: imageUrl);
+    }
+    STRouters.pop(context);
   }
 }

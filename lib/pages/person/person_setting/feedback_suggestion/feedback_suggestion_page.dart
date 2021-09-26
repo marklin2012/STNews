@@ -253,8 +253,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
       if (result.success) {
         _images.add(result.data['imgUrl']);
         setState(() {});
-      } else {
-        STToast.show(context: context, message: result.message);
       }
     });
   }
@@ -276,8 +274,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
       if (reslut.success) {
         STToast.show(context: context, message: '提交成功');
         STRouters.pop(context);
-      } else {
-        STToast.show(context: context, message: reslut.message);
       }
       NewsLoading.stop();
     });
