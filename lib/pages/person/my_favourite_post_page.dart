@@ -5,6 +5,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -179,10 +180,19 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
 
   void _selectOneAction(int index) {
     final _model = _lists[index];
-    _model.selected = !(_model.selected ?? false);
-    _selectedMap[_model.id!] = _model.selected ?? false;
-    _isSelectAll = _isAllSelected();
-    setState(() {});
+    if (_isManage) {
+      STRouters.push(
+        context,
+        PostDetailPage(
+          model: _model,
+        ),
+      );
+    } else {
+      _model.selected = !(_model.selected ?? false);
+      _selectedMap[_model.id!] = _model.selected ?? false;
+      _isSelectAll = _isAllSelected();
+      setState(() {});
+    }
   }
 
   void _selectAllBtnAction() {

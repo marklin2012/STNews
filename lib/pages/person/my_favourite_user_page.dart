@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
@@ -37,45 +38,50 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
         ),
         title: Text('我的关注'),
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 24.0),
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListView.builder(
-            itemExtent: 56,
-            itemCount: _favouriteLists.length,
-            itemBuilder: (context, index) {
-              UserModel _user = _favouriteLists[index];
-              return Container(
-                margin: EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        NewsImage.defaultAvatar(),
-                        SizedBox(width: 12),
-                        Text(
-                          _user.nickname ?? '用户昵称',
-                          style: NewsTextStyle.style16NormalBlack,
-                        ),
-                      ],
-                    ),
-                    STButton(
-                      type: STButtonType.outline,
-                      text: '已关注',
-                      borderColor: Color(0xFF888888),
-                      textStyle: NewsTextStyle.style16NormalSecGrey,
-                      onTap: () {
-                        _changeFavouriteStatus(index);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }),
-      ),
+      body: _buildContent(),
+    );
+  }
+
+  Widget _buildContent() {
+    if (_favouriteLists.isEmpty) return EmptyViewWidget(content: '暂无任何关注');
+    return Container(
+      margin: EdgeInsets.only(top: 24.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      child: ListView.builder(
+          itemExtent: 56,
+          itemCount: _favouriteLists.length,
+          itemBuilder: (context, index) {
+            UserModel _user = _favouriteLists[index];
+            return Container(
+              margin: EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      NewsImage.defaultAvatar(),
+                      SizedBox(width: 12),
+                      Text(
+                        _user.nickname ?? '用户昵称',
+                        style: NewsTextStyle.style16NormalBlack,
+                      ),
+                    ],
+                  ),
+                  STButton(
+                    type: STButtonType.outline,
+                    text: '已关注',
+                    borderColor: Color(0xFF888888),
+                    textStyle: NewsTextStyle.style16NormalSecGrey,
+                    onTap: () {
+                      _changeFavouriteStatus(index);
+                    },
+                  ),
+                ],
+              ),
+            );
+          }),
     );
   }
 
@@ -97,6 +103,8 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
       NewsLoading.stop();
       if (result.success) {
         setState(() {});
+      } else {
+        STToast.show(context: context, message: result.message);
       }
     });
   }
