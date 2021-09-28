@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
@@ -111,9 +111,17 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      height: 500,
-                      child: Center(
-                        child: Text('WebView'),
+                      child: Html(
+                        data: postDetP.postModel.article,
+                        style: {
+                          'p': Style(
+                            fontSize: FontSize.large,
+                            lineHeight: LineHeight(1.4),
+                          ),
+                        },
+                        onImageError: (err, _) {
+                          print(err);
+                        },
                       ),
                     ),
                   ),
