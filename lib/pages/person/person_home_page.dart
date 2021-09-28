@@ -32,9 +32,12 @@ class _PersonHomePageState extends State<PersonHomePage> {
   @override
   void initState() {
     super.initState();
-    userHomeProvider.userID = widget.userID;
-    userHomeProvider.getUserInfoData();
-    userHomeProvider.getFavouritedUser();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      userHomeProvider.userID = widget.userID ?? '';
+      userHomeProvider.getUserInfoData();
+      userHomeProvider.getFavouritedUser();
+    });
   }
 
   @override
