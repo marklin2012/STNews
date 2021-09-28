@@ -49,6 +49,8 @@ void main() {
   );
 }
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ColorThemeProvider>(builder: (context, colorTheme, _) {
       return MaterialApp(
+        navigatorKey: navigatorKey,
         title: 'STNews',
         theme: ThemeData(
           primaryColor: ColorConfig.primaryColor,

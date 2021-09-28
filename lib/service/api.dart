@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:stnews/pages/common/news_toast.dart';
+import 'package:stnews/pages/common/token_invalid.dart';
 
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/result_data.dart';
@@ -68,6 +69,7 @@ Future<ResultData> _get(
     return ResultData.error('请求失败');
   } on DioError catch (error) {
     debugPrint('get error -------- $error');
+    TokenInvalid.isTokenInvalid(error.response?.statusCode);
     if (showToastError) Newstoast.showToast(msg: _formatError(error));
     return ResultData.error(_formatError(error));
   }
@@ -107,6 +109,7 @@ Future<ResultData> _post(
     return ResultData.error('请求异常');
   } on DioError catch (error) {
     debugPrint('post error -------- $error');
+    TokenInvalid.isTokenInvalid(error.response?.statusCode);
     if (showToastError) Newstoast.showToast(msg: _formatError(error));
     return ResultData.error(_formatError(error));
   }
@@ -146,6 +149,7 @@ Future<ResultData> _put(
     return ResultData.error('请求异常');
   } on DioError catch (error) {
     debugPrint('post error -------- $error');
+    TokenInvalid.isTokenInvalid(error.response?.statusCode);
     if (showToastError) Newstoast.showToast(msg: _formatError(error));
     return ResultData.error(_formatError(error));
   }
@@ -192,6 +196,7 @@ Future<ResultData> _upload(
     return ResultData.error('请求异常');
   } on DioError catch (error) {
     debugPrint('post error -------- $error');
+    TokenInvalid.isTokenInvalid(error.response?.statusCode);
     if (showToastError) Newstoast.showToast(msg: _formatError(error));
     return ResultData.error(_formatError(error));
   }

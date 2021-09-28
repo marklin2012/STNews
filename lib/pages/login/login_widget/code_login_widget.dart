@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/phone_input.dart';
@@ -113,6 +114,7 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
       Map<String, dynamic> user = _resultData.data['user'];
       UserProvider.shared.setToken(token);
       UserProvider.shared.user = UserModel.fromJson(user);
+      TokenInvalid.resetInvalidCount();
       STRouters.push(context, TabbarPage());
     }
     _btnNotifier.value = false;
