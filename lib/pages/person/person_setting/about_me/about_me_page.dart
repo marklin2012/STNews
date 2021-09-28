@@ -3,6 +3,7 @@ import 'package:package_info/package_info.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/login/webview_page.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -81,7 +82,7 @@ class _AboutMePageState extends State<AboutMePage> {
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 16),
                         height: 48.0,
-                        color: Theme.of(context).backgroundColor,
+                        color: ColorConfig.backgroundColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -110,7 +111,7 @@ class _AboutMePageState extends State<AboutMePage> {
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 16),
                         height: 48.0,
-                        color: Theme.of(context).backgroundColor,
+                        color: ColorConfig.backgroundColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

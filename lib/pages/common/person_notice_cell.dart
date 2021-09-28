@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/notice_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/string+.dart';
 
@@ -24,7 +25,7 @@ class PersonNoticeCell extends StatelessWidget {
       },
       child: Container(
         height: 74,
-        color: Theme.of(context).backgroundColor,
+        color: ColorConfig.backgroundColor,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,7 +37,7 @@ class PersonNoticeCell extends StatelessWidget {
                   child: Icon(
                     Icons.image,
                     size: 36,
-                    color: Colors.blue,
+                    color: ColorConfig.baseSecBule,
                   ),
                 ),
                 Column(

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 class LoadingBase {
   static OverlayEntry show(
@@ -27,7 +28,7 @@ class LoadingBase {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              color: Color.fromARGB(128, 0, 0, 0),
+              color: ColorConfig.shadeThrColor,
             ),
             child: content,
           ),
@@ -66,7 +67,7 @@ class NewsLoading {
       icon: Icon(
         STIcons.status_loading,
         size: 40,
-        color: Colors.white,
+        color: ColorConfig.primaryColor,
       ),
       text: '',
     );

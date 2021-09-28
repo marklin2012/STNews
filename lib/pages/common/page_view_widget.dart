@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 const _horFix = 16.0;
@@ -62,16 +63,16 @@ class _PageViewWidgetState extends State<PageViewWidget> {
                 children: List.generate(
                   _pageList.length,
                   (index) {
-                    final _currentColor = Theme.of(context).primaryColor;
                     return Container(
                       margin: EdgeInsets.symmetric(horizontal: 2.0),
                       width: 6,
                       height: 6,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentIndex == index
-                              ? _currentColor
-                              : Color.fromARGB(76, 255, 255, 255)),
+                        shape: BoxShape.circle,
+                        color: _currentIndex == index
+                            ? ColorConfig.primaryColor
+                            : Color.fromRGBO(255, 255, 255, 0.3),
+                      ),
                     );
                   },
                 ).toList(),
@@ -88,7 +89,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       margin:
           const EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: ColorConfig.accentColor,
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
       ),
       alignment: Alignment.center,

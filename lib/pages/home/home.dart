@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
@@ -54,7 +55,7 @@ class _HomePageState extends State<HomePage> {
     return Consumer<HomePostProvider>(builder: (context, homePostP, _) {
       if (homePostP.isEmptyPosts) {
         return EmptyViewWidget(
-          content: '内容加载失败,请点击重试',
+          content: '暂无数据，点击重新加载',
           onTap: _loadAndRefresh,
         );
       }
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                         width: 102,
                         height: 76,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
+                          color: ColorConfig.accentColor,
                           borderRadius: BorderRadius.all(Radius.circular(3.0)),
                         ),
                         child: _model.headimages != null
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage> {
     if (isSuc)
       EasySnackbar.show(
         context: context,
-        backgroundColor: Color(0xFFA6C4FF),
+        backgroundColor: ColorConfig.backgroundColor,
         alignment: Alignment.topCenter,
         margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
         padding: EdgeInsets.symmetric(vertical: 5),

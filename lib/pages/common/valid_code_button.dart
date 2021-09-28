@@ -16,13 +16,13 @@ class ValidCodeButton extends StatefulWidget {
     required this.baseStr,
     this.mobile = '1234567',
     this.countDownStr = '秒后重发',
-    this.style = NewsTextStyle.style14NormalWhite,
+    this.style,
     this.countDown = 30,
   }) : super(key: key);
 
   final String baseStr;
   final String countDownStr;
-  final TextStyle style;
+  final TextStyle? style;
   final int countDown;
   final String mobile;
 
@@ -35,12 +35,14 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
   bool _btnDisabled = false;
   Timer? _timer;
   int _currentTime = 0;
+  TextStyle? _textStyle;
 
   @override
   void initState() {
     super.initState();
     _btnValueNoti = ValueNotifier(widget.baseStr);
     _currentTime = widget.countDown;
+    _textStyle = widget.style ?? NewsTextStyle.style14NormalWhite;
   }
 
   @override
@@ -58,7 +60,7 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
       builder: (context, String value, child) {
         return STButton(
           text: value,
-          textStyle: widget.style,
+          textStyle: _textStyle,
           disabled: _btnDisabled,
           onTap: _getCheckCode,
         );

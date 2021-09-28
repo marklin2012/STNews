@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 class NewsRichText extends StatelessWidget {
   const NewsRichText({
@@ -7,8 +8,8 @@ class NewsRichText extends StatelessWidget {
     this.textContent,
     this.frontContent,
     this.fontSize = 16,
-    this.fontColor = Colors.black,
-    this.selectFontColor = const Color(0xFF095BF9),
+    this.fontColor,
+    this.selectFontColor,
   }) : super(key: key);
 
   ///searchContent    输入的搜索内容
@@ -28,6 +29,7 @@ class NewsRichText extends StatelessWidget {
 
   ///selectFontColor  需要显示的搜索字体颜色
   final Color? selectFontColor;
+
   @override
   Widget build(BuildContext context) {
     return RichText(
@@ -46,7 +48,7 @@ class NewsRichText extends StatelessWidget {
           text: frontContent,
           style: TextStyle(
             fontSize: fontSize,
-            color: fontColor,
+            color: fontColor ?? ColorConfig.textFirColor,
           ),
         ),
       );
@@ -95,13 +97,16 @@ class NewsRichText extends StatelessWidget {
             text: map['content'],
             style: TextStyle(
                 fontSize: fontSize,
-                color: map['isHighlight'] ? selectFontColor : fontColor)));
+                color: map['isHighlight']
+                    ? selectFontColor ?? ColorConfig.baseFirBule
+                    : fontColor ?? ColorConfig.textFirColor)));
       });
     } else {
       ///正常显示所有文字
       textSpanList.add(TextSpan(
         text: textContent,
-        style: TextStyle(fontSize: fontSize, color: fontColor),
+        style: TextStyle(
+            fontSize: fontSize, color: fontColor ?? ColorConfig.textFirColor),
       ));
     }
     return textSpanList;

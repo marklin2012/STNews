@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/phone_input_formatter.dart';
 
@@ -33,6 +34,8 @@ class PhoneInput extends StatelessWidget {
           LengthLimitingTextInputFormatter(14)
         ];
     return STInput(
+      backgoundColor: ColorConfig.primaryColor,
+      textStyle: NewsTextStyle.style16NormalBlack,
       prefixIcon: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: this.onTap,
@@ -49,7 +52,7 @@ class PhoneInput extends StatelessWidget {
               child: Icon(
                 STIcons.direction_caretdown,
                 size: 14,
-                color: Colors.black,
+                color: ColorConfig.textFirColor,
               ),
             ),
           ],

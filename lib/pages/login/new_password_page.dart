@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/service/api.dart';
@@ -67,7 +68,7 @@ class _NewPassWordPageState extends State<NewPassWordPage> {
           backgroundColor: Colors.transparent,
           icon: Icon(
             STIcons.direction_arrowleft,
-            color: Colors.black,
+            color: ColorConfig.textFirColor,
           ),
           onTap: () {
             Navigator.of(context).pop();

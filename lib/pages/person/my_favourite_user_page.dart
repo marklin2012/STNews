@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/favourited_user_provider.dart';
@@ -77,7 +78,7 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
                     STButton(
                       type: STButtonType.outline,
                       text: '已关注',
-                      borderColor: Color(0xFF888888),
+                      borderColor: ColorConfig.textThrColor,
                       textStyle: NewsTextStyle.style16NormalSecGrey,
                       onTap: () {
                         _changeFavouriteStatus(index);

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
 import './change_mobile/change_mobile_page.dart';
@@ -51,7 +52,7 @@ class AccountSecurityPage extends StatelessWidget {
                 _map['isSubTitle'] = _mobile;
               }
               return Container(
-                color: Theme.of(context).primaryColor,
+                color: ColorConfig.primaryColor,
                 padding: EdgeInsets.only(bottom: 4.0),
                 child: PersonTile(
                   data: _map,

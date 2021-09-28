@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_action_sheet.dart';
 
 import 'package:stnews/providers/user_provider.dart';
@@ -31,7 +32,7 @@ class ShowAvatarPage extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              color: Colors.black,
+              color: ColorConfig.textFirColor,
             ),
           ),
           if (canSave != null && canSave!)
@@ -42,7 +43,7 @@ class ShowAvatarPage extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 icon: Icon(
                   STIcons.commonly_pointmenu,
-                  color: Colors.white,
+                  color: ColorConfig.primaryColor,
                 ),
                 onTap: () {
                   NewsActionSheet.show(
@@ -58,7 +59,7 @@ class ShowAvatarPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: ColorConfig.backgroundColor,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           alignment: Alignment.center,
@@ -78,7 +79,7 @@ class ShowAvatarPage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: 16, vertical: 8.0),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
+                            color: ColorConfig.backgroundColor,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           alignment: Alignment.center,
@@ -98,7 +99,7 @@ class ShowAvatarPage extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
-              color: Color(0xFF4585FF),
+              color: ColorConfig.baseSecBule,
               child: Hero(
                 tag: ShowAvatarPage.HeroTag,
                 child: Consumer<UserProvider>(

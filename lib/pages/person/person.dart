@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
@@ -88,7 +89,7 @@ class _PersonPageState extends State<PersonPage> {
                   itemBuilder: (context, index) {
                     Map<String, dynamic> _map = _datas[index];
                     return Container(
-                      color: Theme.of(context).primaryColor,
+                      color: ColorConfig.primaryColor,
                       padding: EdgeInsets.only(bottom: 4.0),
                       key: GlobalObjectKey(index),
                       child: PersonTile(

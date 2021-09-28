@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
@@ -100,7 +101,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                   ),
           ),
           Container(
-            color: Theme.of(context).backgroundColor,
+            color: ColorConfig.backgroundColor,
             margin: EdgeInsets.symmetric(vertical: 12.0),
             height: 44,
             child: Row(
@@ -114,7 +115,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                 Container(
                   width: 1,
                   height: 28,
-                  color: Color(0xFFDFE2E7),
+                  color: ColorConfig.thrGrey,
                 ),
                 NewsIconTextWidget(
                   icon: Icons.favorite_outline,
@@ -143,7 +144,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
                 width: 102,
                 height: 76,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
+                  color: ColorConfig.accentColor,
                   borderRadius: BorderRadius.all(Radius.circular(3.0)),
                 ),
               ),

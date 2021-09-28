@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 class EmptyViewWidget extends StatefulWidget {
@@ -74,7 +75,7 @@ class _EmptyViewWidgetState extends State<EmptyViewWidget> {
     _fixTop = widget.fixTop ?? 100;
     _imageBGSize = widget.imageBGSize ?? 80;
     _content = widget.content ?? '暂无内容';
-    _backgroundColor = widget.backgroundColor ?? Colors.white;
+    _backgroundColor = widget.backgroundColor ?? ColorConfig.primaryColor;
     _textStyle = widget.textStyle ?? NewsTextStyle.style16NormalSecGrey;
     if (widget.isLoading) {
       _contentNoti = ValueNotifier(_content ?? '内容加载中');

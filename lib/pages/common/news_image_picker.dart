@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_action_sheet.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -24,7 +25,7 @@ class NewsImagePicker {
             ),
           ),
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Color(0xFFEFF3F9))),
+            border: Border(bottom: BorderSide(color: ColorConfig.fourGrey)),
           ),
         ),
         NewsActionSheetAction(
@@ -46,7 +47,7 @@ class NewsImagePicker {
               height: 50,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
               decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
+                color: ColorConfig.backgroundColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 class NewsActionSheetAction extends StatelessWidget {
@@ -160,7 +161,7 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24)),
-                color: widget.backgroundColor ?? Colors.white,
+                color: widget.backgroundColor ?? ColorConfig.primaryColor,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

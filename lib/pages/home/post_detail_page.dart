@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
@@ -67,7 +68,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
           backgroundColor: Colors.transparent,
           icon: Icon(
             STIcons.direction_leftoutlined,
-            color: Colors.black,
+            color: ColorConfig.textFirColor,
           ),
           onTap: () {
             Navigator.of(context).pop();
@@ -124,7 +125,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                       padding: EdgeInsets.only(bottom: 8.0),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(color: Color(0xFFDFE2E7)),
+                          bottom: BorderSide(color: ColorConfig.thrGrey),
                         ),
                       ),
                       child: Text(

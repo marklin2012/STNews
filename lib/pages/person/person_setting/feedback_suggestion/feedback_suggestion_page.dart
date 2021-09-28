@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
@@ -102,7 +103,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                 Container(
                   height: 130,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
+                      color: ColorConfig.backgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: TextField(
                     controller: _feedbackCon,
@@ -130,7 +131,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
           SliverToBoxAdapter(
             child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
+                  color: ColorConfig.backgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               height: _getGridViewHeight(),
               padding: EdgeInsets.all(8.0),
@@ -165,7 +166,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                 Container(
                   height: 48,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).backgroundColor,
+                      color: ColorConfig.backgroundColor,
                       borderRadius: BorderRadius.all(Radius.circular(8.0))),
                   child: TextField(
                     controller: _contactCon,
@@ -186,7 +187,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                 STButton(
                   text: '提交',
                   textStyle: TextStyle(
-                    color: Theme.of(context).primaryColor,
+                    color: ColorConfig.primaryColor,
                     fontSize: FONTSIZE18,
                     fontWeight: FONTWEIGHT500,
                   ),

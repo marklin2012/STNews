@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -108,7 +109,7 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
             STButton(
               text: '完成',
               textStyle: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: ColorConfig.primaryColor,
                 fontSize: FONTSIZE18,
                 fontWeight: FONTWEIGHT500,
               ),

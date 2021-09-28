@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/phone_input.dart';
@@ -85,6 +86,7 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
                 mainAxisSize: MainAxisSize.max,
                 text: '登录',
                 textStyle: NewsTextStyle.style18BoldWhite,
+                backgroundColor: ColorConfig.baseFirBule,
                 disabled: _loginDisable,
                 loading: loading,
                 onTap: () {
@@ -169,6 +171,8 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
           key: Key('code'),
           controller: _codeCon,
           inputType: TextInputType.number,
+          textStyle: NewsTextStyle.style16NormalBlack,
+          backgoundColor: ColorConfig.primaryColor,
           inputFormatters: [LengthLimitingTextInputFormatter(6)],
           suffixIcon: ValidCodeButton(
             baseStr: '获取验证码',

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
@@ -50,7 +51,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
       appBar: AppBar(
         leading: STButton.icon(
           icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: ColorConfig.primaryColor,
           onTap: () {
             STRouters.pop(context);
           },
@@ -107,7 +108,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
   Widget _getSubWidget() {
     return Container(
         margin: const EdgeInsets.only(top: 24.0),
-        color: Theme.of(context).primaryColor,
+        color: ColorConfig.primaryColor,
         child: _isChangeSex ? _changeSex() : _changeNickName());
   }
 
@@ -145,7 +146,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
       child: Container(
         height: 48.0,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
-        color: Theme.of(context).backgroundColor,
+        color: ColorConfig.backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -172,7 +173,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
             placeholder: '请设置你的昵称',
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              border: Border.all(color: Color(0xFFC4C5C7)),
+              border: Border.all(color: ColorConfig.secGrey),
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(16),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
@@ -48,7 +49,7 @@ class PersonTile extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       child: Container(
-        color: Theme.of(context).backgroundColor,
+        color: ColorConfig.backgroundColor,
         padding: EdgeInsets.symmetric(horizontal: 18.0),
         height: height,
         child: Row(

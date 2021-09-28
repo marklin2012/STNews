@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/login/login_page.dart';
@@ -50,7 +51,7 @@ class PersonSetingPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final _map = _datas[index];
                   return Container(
-                    color: Theme.of(context).primaryColor,
+                    color: ColorConfig.primaryColor,
                     padding: EdgeInsets.only(bottom: 4.0),
                     child: PersonTile(
                       data: _map,

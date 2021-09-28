@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/new_password_page.dart';
@@ -68,7 +69,7 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
           backgroundColor: Colors.transparent,
           icon: Icon(
             STIcons.direction_arrowleft,
-            color: Colors.black,
+            color: ColorConfig.textFirColor,
           ),
           onTap: () {
             Navigator.of(context).pop();
@@ -77,6 +78,7 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
       ),
       body: BlankPutKeyborad(
         child: Container(
+          color: ColorConfig.primaryColor,
           padding: EdgeInsets.symmetric(horizontal: _horFix16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,6 +104,8 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
               STInput(
                 controller: _codeCon,
                 inputType: TextInputType.number,
+                textStyle: NewsTextStyle.style16NormalBlack,
+                backgoundColor: ColorConfig.primaryColor,
                 inputFormatters: [LengthLimitingTextInputFormatter(6)],
                 suffixIcon: ValidCodeButton(baseStr: '获取验证码'),
               ),

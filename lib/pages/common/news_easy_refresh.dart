@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 class NewsEasyRefresh extends StatefulWidget {
   const NewsEasyRefresh({
@@ -43,7 +44,7 @@ class _NewsEasyRefreshState extends State<NewsEasyRefresh> {
         refreshedText: '完成刷新',
         refreshFailedText: '刷新失败',
         showInfo: false,
-        textColor: Color(0xFF888888),
+        textColor: ColorConfig.textThrColor,
       );
     if (_hasFooter)
       _footer = ClassicalFooter(
@@ -54,7 +55,7 @@ class _NewsEasyRefreshState extends State<NewsEasyRefresh> {
         loadFailedText: '加载更多失败',
         noMoreText: '无更多数据',
         showInfo: false,
-        textColor: Color(0xFF888888),
+        textColor: ColorConfig.textThrColor,
       );
   }
 

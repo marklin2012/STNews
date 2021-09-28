@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
+import 'package:stnews/providers/color_theme_provider.dart';
 import 'package:stnews/providers/favourited_post_provider.dart';
 import 'package:stnews/providers/favourited_user_provider.dart';
 import 'package:stnews/providers/home_post_provider.dart';
@@ -14,6 +16,7 @@ import 'package:stnews/providers/user_home_provider.dart';
 
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 void main() {
   // init API dio
@@ -32,6 +35,7 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: ColorThemeProvider.shared),
         ChangeNotifierProvider.value(value: UserProvider.shared),
         ChangeNotifierProvider.value(value: HomePostProvider()),
         ChangeNotifierProvider.value(value: PostDetailProvider()),
@@ -50,39 +54,43 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'STNews',
-      theme: ThemeData(
-        // 配置主色
-        primaryColor: Colors.white,
-        // 配置背景色
-        backgroundColor: Color(0xFFFAFCFF),
-        // 配置前景色
-        accentColor: Color(0xFF4585FF),
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: 0.1,
+    return Consumer<ColorThemeProvider>(builder: (context, colorTheme, _) {
+      return MaterialApp(
+        title: 'STNews',
+        theme: ThemeData(
+          primaryColor: ColorConfig.primaryColor,
+          backgroundColor: ColorConfig.backgroundColor,
+          appBarTheme: AppBarTheme(
+            color: ColorConfig.primaryColor,
+            titleTextStyle: NewsTextStyle.style18BoldBlack,
+            iconTheme: IconThemeData(
+              color: ColorConfig.textFirColor,
+            ),
+            elevation: 0.1,
+          ),
+          colorScheme: ColorScheme.fromSwatch()
+              .copyWith(secondary: ColorConfig.accentColor),
         ),
-      ),
-      onGenerateRoute: (setting) {
-        switch (setting.name) {
-          case LoginPage.routeName:
-            return PageRouteBuilder(
-              settings: RouteSettings(name: LoginPage.routeName),
-              transitionDuration: Duration(milliseconds: 100),
-              pageBuilder: (context, animation, secAnimation) => LoginPage(),
-            );
-          case TabbarPage.routeName:
-            return PageRouteBuilder(
-              settings: RouteSettings(name: TabbarPage.routeName),
-              transitionDuration: Duration(milliseconds: 100),
-              pageBuilder: (context, animation, secAnimation) => TabbarPage(),
-            );
-        }
-      },
-      initialRoute: UserProvider.shared.isLogin
-          ? TabbarPage.routeName
-          : LoginPage.routeName,
-    );
+        onGenerateRoute: (setting) {
+          switch (setting.name) {
+            case LoginPage.routeName:
+              return PageRouteBuilder(
+                settings: RouteSettings(name: LoginPage.routeName),
+                transitionDuration: Duration(milliseconds: 100),
+                pageBuilder: (context, animation, secAnimation) => LoginPage(),
+              );
+            case TabbarPage.routeName:
+              return PageRouteBuilder(
+                settings: RouteSettings(name: TabbarPage.routeName),
+                transitionDuration: Duration(milliseconds: 100),
+                pageBuilder: (context, animation, secAnimation) => TabbarPage(),
+              );
+          }
+        },
+        initialRoute: UserProvider.shared.isLogin
+            ? TabbarPage.routeName
+            : LoginPage.routeName,
+      );
+    });
   }
 }

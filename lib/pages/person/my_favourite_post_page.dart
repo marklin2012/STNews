@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
@@ -121,7 +122,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                           width: 102,
                           height: 76,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: ColorConfig.accentColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(3.0)),
                           ),
@@ -149,10 +150,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                         ? Icon(Icons.check_box_outline_blank)
                         : Icon(Icons.check_box_outlined),
                     text: !_isSelectAll ? '全选' : '取消全选',
-                    textStyle: TextStyle(
-                        fontSize: FONTSIZE16,
-                        fontWeight: FONTWEIGHT400,
-                        color: Colors.black),
+                    textStyle: NewsTextStyle.style16NormalBlack,
                     backgroundColor: Colors.transparent,
                     onTap: _selectAllBtnAction,
                   ),
@@ -161,7 +159,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                     textStyle: TextStyle(
                         fontSize: FONTSIZE16,
                         fontWeight: FONTWEIGHT400,
-                        color: Theme.of(context).primaryColor),
+                        color: ColorConfig.primaryColor),
                     onTap: _deletBtnAction,
                   ),
                 ],

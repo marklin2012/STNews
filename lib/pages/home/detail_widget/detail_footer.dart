@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
 
@@ -49,7 +50,7 @@ class _DetailFooterState extends State<DetailFooter> {
               width: 211,
               child: STInput(
                 decoration: BoxDecoration(
-                  color: Color(0xFFEFF3F9),
+                  color: ColorConfig.fourGrey,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 placeholder: '发表评论',

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_rich_text.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -29,10 +30,6 @@ class _SearchPostPageState extends State<SearchPostPage> {
     super.initState();
     _controller = TextEditingController();
     _isSearched = false;
-    // _lists = [
-    //   PostModel(id: '0', title: 'title0', author: 'author0', image: 'image0'),
-    //   PostModel(id: '1', title: 'title1', author: 'author1', image: 'image1'),
-    // ];
   }
 
   @override
@@ -62,7 +59,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                       size: STButtonSize.small,
                       icon: Icon(
                         STIcons.direction_leftoutlined,
-                        color: Colors.black,
+                        color: ColorConfig.textFirColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
@@ -79,7 +76,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                         child: Icon(STIcons.commonly_search),
                       ),
                       decoration: BoxDecoration(
-                        color: Color(0xFFEFF3F9),
+                        color: ColorConfig.fourGrey,
                         borderRadius: BorderRadius.circular(4.0),
                       ),
                       placeholder: '请输入搜索内容',
@@ -145,7 +142,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                   width: 102,
                   height: 76,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
+                    color: ColorConfig.accentColor,
                     borderRadius: BorderRadius.all(Radius.circular(3.0)),
                   ),
                 ),
