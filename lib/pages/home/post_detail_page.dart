@@ -113,6 +113,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   ),
                   SliverToBoxAdapter(
                     child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Html(
                         data: postDetP.postModel.article,
                         style: {
@@ -120,6 +121,11 @@ class _PostDetailPageState extends State<PostDetailPage> {
                             fontSize: FontSize.large,
                             lineHeight: LineHeight(1.4),
                           ),
+                          'pre': Style(
+                            backgroundColor: Color(0xFFefefef),
+                            color: Color(0xFF333),
+                            padding: EdgeInsets.all(8),
+                          )
                         },
                         onImageError: (err, _) {
                           print(err);
