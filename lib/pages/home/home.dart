@@ -44,7 +44,11 @@ class _HomePageState extends State<HomePage> {
                 onTap: () {
                   STRouters.push(context, SearchPostPage());
                 })),
-        title: Text('资讯'),
+        title: Text(
+          '资讯',
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
       ),
       body: _buildContent(),
     );
