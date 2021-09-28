@@ -14,7 +14,7 @@ class ValidCodeButton extends StatefulWidget {
   const ValidCodeButton({
     Key? key,
     required this.baseStr,
-    this.mobile = '1234567',
+    this.mobile = '',
     this.countDownStr = '秒后重发',
     this.style,
     this.countDown = 30,
@@ -69,15 +69,20 @@ class _ValidCodeButtonState extends State<ValidCodeButton> {
   }
 
   void _getCheckCode() async {
-    final _mobile = STString.removeSpace(widget.mobile);
-    NewsLoading.start(context);
-    // 请求接口
-    final result = await Api.getCheckCode(mobile: _mobile);
-    NewsLoading.stop();
-    if (result.success) {
-      _btnDisabled = !_btnDisabled;
-      setState(() {});
-      _startTimer();
+    if (widget.mobile.isNotEmpty) {
+      final _mobile = STString.removeSpace(widget.mobile);
+      NewsLoading.start(context);
+      // 请求接口
+      final result = await Api.getCheckCode(mobile: _mobile);
+      NewsLoading.stop();
+      if (result.success) {
+        _btnDisabled = !_btnDisabled;
+        setState(() {});
+        _startTimer();
+      }
+      STMessage.show(context: context, title: '验证码如下', message: '000000');
+    } else {
+      STMessage.show(context: context, title: '请输入手机号');
     }
   }
 
