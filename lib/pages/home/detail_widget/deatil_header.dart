@@ -31,11 +31,11 @@ class _DetailHeaderState extends State<DetailHeader> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PostDetailProvider>(builder: (context, postDetP, _) {
-      String _publishDate = '';
-      if (postDetP.postModel.publishdate != null) {
+      String _publishedDate = '';
+      if (postDetP.postModel.publisheddate != null) {
         DateTime _temp = STString.dateTimeFromString(
-            dateStr: postDetP.postModel.publishdate!);
-        _publishDate = STString.getDateString(_temp);
+            dateStr: postDetP.postModel.publisheddate!);
+        _publishedDate = STString.getDateString(_temp);
       }
       return Container(
         padding: EdgeInsets.all(16.0),
@@ -73,7 +73,7 @@ class _DetailHeaderState extends State<DetailHeader> {
                           style: NewsTextStyle.style14NormalBlack,
                         ),
                         Text(
-                          _publishDate,
+                          _publishedDate,
                           style: NewsTextStyle.style12NormalThrGrey,
                         ),
                       ],
