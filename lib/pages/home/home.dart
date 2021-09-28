@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: _model.headimages != null
                             ? STCaCheImage.loadingImage(
-                                imageUrl: _model.headimages)
+                                imageUrl: _model.coverImage)
                             : null,
                       ),
                       onTap: () {

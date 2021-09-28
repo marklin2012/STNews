@@ -19,8 +19,10 @@ class HomePostProvider extends ChangeNotifier {
   bool get isEmptyPosts => _posts.length == 0;
 
   Future<bool> initOrRefresh() async {
-    ResultData bannerRes = await Api.getPostBanners();
     _page = 1;
+
+    ResultData bannerRes = await Api.getPostBanners();
+
     ResultData postRes = await Api.getPosts(page: _page, perpage: _perpage);
     if (bannerRes.success) {
       List _temps = bannerRes.data as List;
@@ -32,7 +34,7 @@ class HomePostProvider extends ChangeNotifier {
       _posts = _temps.map((e) => PostModel.fromJson(e)).toList();
     }
     notifyListeners();
-    return postRes.success;
+    return Future.value(true);
   }
 
   Future loadMore() async {

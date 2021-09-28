@@ -5,10 +5,10 @@ class PostModel {
   bool? istop;
   String? title;
   String? article;
-  String? headimages;
+  List<String>? headimages;
+  String? coverImage;
   UserModel? author;
-  String? publishdate;
-  String? favourites;
+  String? publisheddate;
   bool? deleted;
 
   bool? selected;
@@ -19,9 +19,9 @@ class PostModel {
     this.title,
     this.article,
     this.headimages,
+    this.coverImage,
     this.author,
-    this.publishdate,
-    this.favourites,
+    this.publisheddate,
     this.deleted,
     this.selected = false,
   });
@@ -31,11 +31,11 @@ class PostModel {
     istop = json['is_top'];
     title = json['title'];
     article = json['article'];
-    headimages = json['head_images'];
+    // headimages = json['head_images'] as List<String>;
+    coverImage = json['cover_image'];
     author = UserModel.fromJson(json['author']);
-    publishdate = json['publish_date'];
+    publisheddate = json['published_date'];
     deleted = json['deleted'];
-    favourites = json['favourites'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,9 +46,8 @@ class PostModel {
     data['article'] = this.article;
     data['head_images'] = this.headimages;
     data['author'] = this.author?.toJson();
-    data['publish_date'] = this.publishdate;
+    data['published_date'] = this.publisheddate;
     data['deleted'] = this.deleted;
-    data['favourites'] = this.favourites;
     return data;
   }
 }
