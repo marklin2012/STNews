@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
@@ -44,7 +45,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
           PageView.builder(
             itemBuilder: (context, index) {
               PostModel _model = _pageList[index % _pageList.length];
-              return buildPageViewItem(title: _model.title, index: index);
+              return buildPageViewItem(image: _model.coverImage, index: index);
             },
             itemCount: 100,
             onPageChanged: (value) {
@@ -84,18 +85,30 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     );
   }
 
-  Widget buildPageViewItem({String? title, required int index}) {
+  Widget buildPageViewItem({String? image, required int index}) {
     return Container(
       margin:
           const EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
       decoration: BoxDecoration(
-        color: ColorConfig.accentColor,
+        color: Colors.black,
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
       ),
+      padding: EdgeInsets.zero,
       alignment: Alignment.center,
-      child: Text(
-        title ?? index.toString(),
-        style: NewsTextStyle.style16NormalWhite,
+      child: Expanded(
+        flex: 1,
+        child: Container(
+          color: Colors.yellow,
+          child: CachedNetworkImage(
+            width: 500,
+            height: 200,
+            imageUrl: image ?? 'http://via.placeholder.com/500x200',
+            fit: BoxFit.fill,
+            placeholder: (context, url) => Container(
+              color: Colors.grey,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -91,10 +92,16 @@ class _HomePageState extends State<HomePage> {
                           color: ColorConfig.accentColor,
                           borderRadius: BorderRadius.all(Radius.circular(3.0)),
                         ),
-                        child: _model.headimages != null
-                            ? STCaCheImage.loadingImage(
-                                imageUrl: _model.coverImage)
-                            : null,
+                        child: CachedNetworkImage(
+                          imageUrl: _model.coverImage ??
+                              'http://via.placeholder.com/102x76',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey,
+                            height: 76,
+                            width: 102,
+                          ),
+                        ),
                       ),
                       onTap: () {
                         _gotoDetailPage(index);
