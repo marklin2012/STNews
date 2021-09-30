@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
-import 'package:stnews/utils/news_text_style.dart';
 
 const _horFix = 16.0;
 const _verFix = 8.0;

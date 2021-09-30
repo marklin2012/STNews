@@ -70,8 +70,14 @@ class _PersonHomePageState extends State<PersonHomePage> {
               (userHomeP.infoModel.post != null &&
                   userHomeP.infoModel.post!.isEmpty))
             SliverToBoxAdapter(
-              child: EmptyViewWidget(
-                content: '暂无发布的内容',
+              child: Container(
+                height: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom -
+                    210,
+                child: EmptyViewWidget(
+                  content: '暂无发布的内容',
+                ),
               ),
             )
         ],

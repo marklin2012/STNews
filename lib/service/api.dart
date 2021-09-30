@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:stnews/pages/common/news_toast.dart';
@@ -13,11 +12,11 @@ const TimeoutReceive = 8000;
 const TimeoutSend = 3000;
 
 // ignore: non_constant_identifier_names
-String BaseUrl = Platform.isAndroid
-    ? 'http://192.168.2.199:7001/'
-    : 'http://localhost:7001/';
-// const String BaseUrl = 'http://localhost:7001/';
-// const String BaseUrl = 'http://192.168.2.110:7001/';
+// String BaseUrl = Platform.isAndroid
+//     ? 'http://192.168.2.199:7001/'
+//     : 'http://localhost:7001/';
+const String BaseUrl = 'http://120.78.145.47:7001/';
+
 Dio dio = Dio();
 
 /// error 统一处理

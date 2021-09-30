@@ -53,7 +53,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: STButton.icon(
           icon: Icon(STIcons.direction_leftoutlined),
