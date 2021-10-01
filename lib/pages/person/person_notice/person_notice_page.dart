@@ -128,6 +128,7 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
           context,
           WebViewPage(
             title: model.announceID?.title,
+            content: model.announceID?.content ?? null,
           ),
         );
       }

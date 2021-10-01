@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class WebViewPage extends StatelessWidget {
-  const WebViewPage({Key? key, this.title, this.url}) : super(key: key);
-
   final String? title;
-  final String? url;
+  final String? content;
+
+  const WebViewPage({Key? key, this.title, this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +13,7 @@ class WebViewPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title ?? ''),
       ),
+      body: Html(data: content ?? "<p>这里是协议内容！</p>"),
     );
   }
 }
