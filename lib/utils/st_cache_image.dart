@@ -19,6 +19,7 @@ class STCaCheImage {
     }
     return CachedNetworkImage(
       imageUrl: _url,
+      fit: BoxFit.cover,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) {
         return errorW ?? Icon(STIcons.commonly_user);
