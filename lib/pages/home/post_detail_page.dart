@@ -122,8 +122,8 @@ class _PostDetailPageState extends State<PostDetailPage> {
                             lineHeight: LineHeight(1.4),
                           ),
                           'pre': Style(
-                            backgroundColor: Color(0xFFefefef),
-                            color: Color(0xFF333),
+                            backgroundColor: Color(0xFF000000),
+                            color: Color(0xFFfefefe),
                             padding: EdgeInsets.all(8),
                           )
                         },
