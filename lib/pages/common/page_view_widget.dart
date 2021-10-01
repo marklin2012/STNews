@@ -94,18 +94,15 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       ),
       padding: EdgeInsets.zero,
       alignment: Alignment.center,
-      child: Expanded(
-        flex: 1,
-        child: Container(
-          color: Colors.yellow,
-          child: CachedNetworkImage(
-            width: 500,
-            height: 200,
-            imageUrl: image ?? 'http://via.placeholder.com/500x200',
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Container(
-              color: Colors.grey,
-            ),
+      child: Container(
+        color: Colors.yellow,
+        child: CachedNetworkImage(
+          width: 500,
+          height: 200,
+          imageUrl: image ?? 'http://via.placeholder.com/500x200',
+          fit: BoxFit.fill,
+          placeholder: (context, url) => Container(
+            color: Colors.grey,
           ),
         ),
       ),
