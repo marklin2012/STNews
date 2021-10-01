@@ -35,9 +35,15 @@ class _PersonHomePageState extends State<PersonHomePage> {
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       userHomeProvider.userID = widget.userID ?? '';
-      userHomeProvider.getUserInfoData();
-      userHomeProvider.getFavouritedUser();
+      _requestData();
     });
+  }
+
+  Future _requestData() async {
+    NewsLoading.start(context);
+    await userHomeProvider.getUserInfoData();
+    await userHomeProvider.getFavouritedUser();
+    NewsLoading.stop();
   }
 
   @override
