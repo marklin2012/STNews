@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -155,12 +156,14 @@ class _PersonHomePageState extends State<PersonHomePage> {
             child: ListTile(
               title: Text(_model?.title ?? ''),
               subtitle: Text(_model?.author?.nickname ?? ''),
-              trailing: Container(
+              trailing: CachedNetworkImage(
+                imageUrl:
+                    _model?.coverImage ?? 'http://via.placeholder.com/500x200',
                 width: 102,
                 height: 76,
-                decoration: BoxDecoration(
-                  color: ColorConfig.accentColor,
-                  borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                fit: BoxFit.fill,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey,
                 ),
               ),
               onTap: () {
