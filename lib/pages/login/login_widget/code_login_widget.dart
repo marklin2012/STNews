@@ -7,6 +7,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
+import 'package:stnews/pages/login/login_widget/login_constant.dart';
 import 'package:stnews/pages/login/phone_input.dart';
 import 'package:stnews/pages/tabbar.dart';
 import 'package:stnews/providers/user_provider.dart';
@@ -15,11 +16,6 @@ import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
-
-const _topFix = 88.0;
-const _horFix16 = 16.0;
-const _spaceFix24 = 24.0;
-const _spaceFix36 = 36.0;
 
 class CodeLoginWidget extends StatefulWidget {
   const CodeLoginWidget({Key? key, this.switchPasswordTap}) : super(key: key);
@@ -75,11 +71,11 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          SizedBox(height: _topFix),
+          SizedBox(height: NewsLoginConstant.topFix),
           _buildTitle(),
-          SizedBox(height: _spaceFix24),
+          SizedBox(height: NewsLoginConstant.spaceFix24),
           _buildForm(),
-          SizedBox(height: _spaceFix36),
+          SizedBox(height: NewsLoginConstant.spaceFix36),
           ValueListenableBuilder(
             valueListenable: _btnNotifier,
             builder: (context, bool loading, child) {
@@ -90,6 +86,7 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
                 backgroundColor: ColorConfig.baseFirBule,
                 disabled: _loginDisable,
                 loading: loading,
+                height: NewsLoginConstant.loginBtnH,
                 onTap: () {
                   _requestHttp();
                 },
@@ -168,7 +165,7 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
           },
           controller: _phoneCon,
         ),
-        SizedBox(height: _horFix16),
+        SizedBox(height: NewsLoginConstant.horFix16),
         STInput(
           key: Key('code'),
           controller: _codeCon,

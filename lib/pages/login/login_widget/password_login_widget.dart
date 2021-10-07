@@ -7,6 +7,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/find_password_page.dart';
+import 'package:stnews/pages/login/login_widget/login_constant.dart';
 import 'package:stnews/pages/login/phone_input.dart';
 import 'package:stnews/pages/tabbar.dart';
 import 'package:stnews/providers/user_provider.dart';
@@ -15,11 +16,6 @@ import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
-
-const _topFix = 88.0;
-const _horFix16 = 16.0;
-const _spaceFix36 = 36.0;
-const _spaceFix44 = 44.0;
 
 class PasswordLoginWidget extends StatefulWidget {
   const PasswordLoginWidget({Key? key, this.switchCodeTap}) : super(key: key);
@@ -76,11 +72,11 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          SizedBox(height: _topFix),
+          SizedBox(height: NewsLoginConstant.topFix),
           _buildTitle(),
-          SizedBox(height: _spaceFix44),
+          SizedBox(height: NewsLoginConstant.spaceFix44),
           _buildForm(),
-          SizedBox(height: _spaceFix36),
+          SizedBox(height: NewsLoginConstant.spaceFix36),
           ValueListenableBuilder(
             valueListenable: _btnNotifier,
             builder: (context, bool loading, child) {
@@ -90,13 +86,14 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
                 textStyle: NewsTextStyle.style18BoldWhite,
                 disabled: _loginDisable,
                 loading: loading,
+                height: NewsLoginConstant.loginBtnH,
                 onTap: () {
                   _requestHttp();
                 },
               );
             },
           ),
-          SizedBox(height: _horFix16),
+          SizedBox(height: NewsLoginConstant.horFix16),
           STButton(
             text: '忘记密码',
             type: STButtonType.text,
@@ -164,7 +161,7 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           },
           controller: _phoneCon,
         ),
-        SizedBox(height: _horFix16),
+        SizedBox(height: NewsLoginConstant.horFix16),
         STInput.password(
           key: Key('password'),
           controller: _passwordCon,

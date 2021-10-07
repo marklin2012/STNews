@@ -70,9 +70,11 @@ class MyApp extends StatelessWidget {
               color: ColorConfig.textFirColor,
             ),
             elevation: 0.1,
+            centerTitle: true,
           ),
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: ColorConfig.accentColor),
+          fontFamily: 'PingFang',
         ),
         onGenerateRoute: (setting) {
           switch (setting.name) {

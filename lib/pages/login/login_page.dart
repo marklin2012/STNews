@@ -40,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final _screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlankPutKeyborad(
         child: Container(
           color: ColorConfig.primaryColor,
