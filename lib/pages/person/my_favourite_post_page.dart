@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/providers/favourited_post_provider.dart';
@@ -113,18 +115,25 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                     ),
                     Container(
                       width: _width,
-                      child: ListTile(
-                        title: Text(_model.title ?? ''),
-                        subtitle: Text(_model.author?.nickname ?? ''),
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10),
-                        trailing: Container(
-                          width: 102,
-                          height: 76,
-                          decoration: BoxDecoration(
-                            color: ColorConfig.accentColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(3.0)),
+                      child: NewsHomeCell(
+                        title: Text(
+                          _model.title ?? '',
+                          style: NewsTextStyle.style16NormalBlack,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        subTitle: Text(
+                          _model.author?.nickname ?? '',
+                          style: NewsTextStyle.style12NormalThrGrey,
+                        ),
+                        trailing: CachedNetworkImage(
+                          imageUrl: _model.coverImage ??
+                              'http://via.placeholder.com/102x76',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => Container(
+                            color: Colors.grey,
+                            height: 76,
+                            width: 102,
                           ),
                         ),
                         onTap: () {

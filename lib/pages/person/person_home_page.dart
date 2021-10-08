@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
+import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
@@ -153,9 +154,17 @@ class _PersonHomePageState extends State<PersonHomePage> {
           final _model = userHomeP.infoModel.post?[index];
           return Container(
             height: 92,
-            child: ListTile(
-              title: Text(_model?.title ?? ''),
-              subtitle: Text(_model?.author?.nickname ?? ''),
+            child: NewsHomeCell(
+              title: Text(
+                _model?.title ?? '',
+                style: NewsTextStyle.style16NormalBlack,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subTitle: Text(
+                _model?.author?.nickname ?? '',
+                style: NewsTextStyle.style12NormalThrGrey,
+              ),
               trailing: CachedNetworkImage(
                 imageUrl:
                     _model?.coverImage ?? 'http://via.placeholder.com/500x200',

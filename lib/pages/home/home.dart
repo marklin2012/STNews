@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
+import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
@@ -49,7 +50,6 @@ class _HomePageState extends State<HomePage> {
           '资讯',
           style: TextStyle(color: Colors.black),
         ),
-        centerTitle: true,
       ),
       body: _buildContent(),
     );
@@ -79,33 +79,30 @@ class _HomePageState extends State<HomePage> {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   final _model = homePostP.posts[index];
-                  return Container(
-                    height: 92,
-                    child: ListTile(
-                      title: Text(_model.title ?? ''),
-                      subtitle: Text(_model.author?.nickname ?? ''),
-                      trailing: Container(
-                        width: 102,
-                        height: 76,
-                        decoration: BoxDecoration(
-                          color: ColorConfig.accentColor,
-                          borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        ),
-                        child: CachedNetworkImage(
-                          imageUrl: _model.coverImage ??
-                              'http://via.placeholder.com/102x76',
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Container(
-                            color: Colors.grey,
-                            height: 76,
-                            width: 102,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        _gotoDetailPage(index);
-                      },
+                  return NewsHomeCell(
+                    title: Text(
+                      _model.title ?? '',
+                      style: NewsTextStyle.style16NormalBlack,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    subTitle: Text(
+                      _model.author?.nickname ?? '',
+                      style: NewsTextStyle.style12NormalThrGrey,
+                    ),
+                    trailing: CachedNetworkImage(
+                      imageUrl: _model.coverImage ??
+                          'http://via.placeholder.com/102x76',
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey,
+                        height: 76,
+                        width: 102,
+                      ),
+                    ),
+                    onTap: () {
+                      _gotoDetailPage(index);
+                    },
                   );
                 },
                 childCount: homePostP.posts.length,
@@ -127,9 +124,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future _loadAndRefresh() async {
-    NewsLoading.start(context);
     bool isSuc = await homePostProvider.initOrRefresh();
-    NewsLoading.stop();
     if (isSuc)
       EasySnackbar.show(
         context: context,

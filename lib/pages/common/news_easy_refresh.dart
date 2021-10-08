@@ -44,6 +44,7 @@ class _NewsEasyRefreshState extends State<NewsEasyRefresh> {
         refreshedText: '完成刷新',
         refreshFailedText: '刷新失败',
         showInfo: false,
+        enableHapticFeedback: false,
         textColor: ColorConfig.textThrColor,
       );
     if (_hasFooter)
@@ -55,6 +56,7 @@ class _NewsEasyRefreshState extends State<NewsEasyRefresh> {
         loadFailedText: '加载更多失败',
         noMoreText: '无更多数据',
         showInfo: false,
+        enableHapticFeedback: false,
         textColor: ColorConfig.textThrColor,
       );
   }
