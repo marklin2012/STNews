@@ -75,7 +75,7 @@ class _CommentCellState extends State<CommentCell> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    _model?.favouriteCount.toString() ?? '',
+                    (_model?.favouriteCount ?? 0).toString(),
                     style: NewsTextStyle.style12NormalThrGrey,
                   ),
                   SizedBox(width: 5.4),

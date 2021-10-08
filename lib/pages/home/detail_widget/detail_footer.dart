@@ -53,6 +53,7 @@ class _DetailFooterState extends State<DetailFooter> {
                   color: ColorConfig.fourGrey,
                   borderRadius: BorderRadius.circular(5.0),
                 ),
+                padding: EdgeInsets.zero,
                 placeholder: '发表评论',
                 controller: _controller,
                 onSubmitted: (String value) {
@@ -107,7 +108,7 @@ class _DetailFooterState extends State<DetailFooter> {
 
   /// 发布评论
   void _addComment(String? content) async {
-    if (content == null) {
+    if (content == null || content.isEmpty) {
       STToast.show(context: context, message: '评论不可为空');
       return;
     }

@@ -177,15 +177,16 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   void _scrollToComments() {
-    double animatH = 0;
-    double visibleH = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.bottom -
-        MediaQuery.of(context).padding.top -
-        44;
-    if (_offset.dy > visibleH) {
-      animatH = _offset.dy - visibleH;
-    }
-    _scrollController.animateTo(animatH,
+    // double animatH = 0;
+    // double visibleH = MediaQuery.of(context).size.height -
+    //     MediaQuery.of(context).padding.bottom -
+    //     MediaQuery.of(context).padding.top -
+    //     44 -
+    //     _detailHeaderH;
+    // if (_offset.dy > visibleH) {
+    //   animatH = _offset.dy - visibleH;
+    // }
+    _scrollController.animateTo(_offset.dy,
         duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
   }
 

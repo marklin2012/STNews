@@ -143,7 +143,7 @@ class NewsTextStyle {
   static get style18BoldBlack => TextStyle(
         color: ColorConfig.textFirColor,
         fontSize: FONTSIZE18,
-        fontWeight: FONTWEIGHT500,
+        fontWeight: FontWeight.bold,
       );
 
   static get style22BoldBlack => TextStyle(
@@ -154,7 +154,7 @@ class NewsTextStyle {
 
   static get style28BoldBlack => TextStyle(
         fontSize: FONTSIZE28,
-        fontWeight: FONTWEIGHT500,
+        fontWeight: FontWeight.bold,
         color: ColorConfig.textFirColor,
       );
 }
