@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stnews/pages/common/color_config.dart';
 
 const FONTWEIGHT400 = FontWeight.w400;
-const FONTWEIGHT500 = FontWeight.w500;
+const FONTWEIGHT500 = FontWeight.w600;
 
 const FONTSIZE12 = 12.0;
 const FONTSIZE14 = 14.0;
@@ -143,7 +143,7 @@ class NewsTextStyle {
   static get style18BoldBlack => TextStyle(
         color: ColorConfig.textFirColor,
         fontSize: FONTSIZE18,
-        fontWeight: FontWeight.bold,
+        fontWeight: FONTWEIGHT500,
       );
 
   static get style22BoldBlack => TextStyle(
@@ -154,7 +154,7 @@ class NewsTextStyle {
 
   static get style28BoldBlack => TextStyle(
         fontSize: FONTSIZE28,
-        fontWeight: FontWeight.bold,
+        fontWeight: FONTWEIGHT500,
         color: ColorConfig.textFirColor,
       );
 }
