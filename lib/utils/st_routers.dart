@@ -9,7 +9,11 @@ class STRouters {
   }
 
   static Future pop(BuildContext context) async {
-    return Navigator.of(context).pop();
+    if (Navigator.canPop(context)) {
+      Navigator.of(context).pop();
+      return Future.value(true);
+    }
+    return Future.value(false);
   }
 }
 
