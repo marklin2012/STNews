@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stnews/pages/tabbar.dart';
 
 class STRouters {
   static Future push(BuildContext context, Widget widget,

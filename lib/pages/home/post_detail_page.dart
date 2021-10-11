@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -34,12 +36,18 @@ class _PostDetailPageState extends State<PostDetailPage> {
   PostDetailProvider get postDetailProvider =>
       Provider.of<PostDetailProvider>(context, listen: false);
 
+  bool _isCurrentState = false;
+
   @override
   void initState() {
     super.initState();
+    _isCurrentState = true;
     _scrollController = ScrollController();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      _findRenderObject();
+      /// 注册后无法注销，暂时使用
+      WidgetsBinding.instance?.addPersistentFrameCallback((timeStamp) {
+        _findRenderObject();
+      });
     });
     postDetailProvider.postModel = widget.model ?? PostModel();
     postDetailProvider.initComments();
@@ -47,17 +55,18 @@ class _PostDetailPageState extends State<PostDetailPage> {
 
   @override
   void dispose() {
+    _isCurrentState = false;
     _scrollController.dispose();
     super.dispose();
   }
 
   void _findRenderObject() {
+    if (!_isCurrentState) return;
     RenderObject? renderobject =
         _commentsKey.currentContext?.findRenderObject();
     if (renderobject != null && renderobject is RenderBox) {
       RenderBox renderBox = renderobject;
       _offset = renderBox.localToGlobal(Offset.zero);
-      setState(() {});
     }
   }
 
@@ -83,97 +92,111 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   Widget buildChildWidget() {
-    return Consumer<PostDetailProvider>(builder: (context, postDetP, _) {
-      return Stack(
-        children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 44 + MediaQuery.of(context).padding.bottom,
-            child: NewsEasyRefresh(
-              hasFooter: true,
-              onLoad: _loadMore,
-              child: CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: DetailHeader(
+    return Stack(
+      children: [
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 44 + MediaQuery.of(context).padding.bottom,
+          child: NewsEasyRefresh(
+            hasFooter: true,
+            onLoad: _loadMore,
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: _consumerPostModel(
+                    (buildContext, provider, child) => DetailHeader(
                       authorTap: () {
-                        if (postDetP.postModel.author?.id != null) {
+                        if (provider.postModel.author?.id != null) {
                           STRouters.push(
                             context,
                             PersonHomePage(
-                              userID: postDetP.postModel.author!.id!,
+                              userID: provider.postModel.author!.id!,
                             ),
                           );
                         }
                       },
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
-                      child: Html(
-                        data: postDetP.postModel.article,
-                        style: {
-                          'p': Style(
-                            fontSize: FontSize.large,
-                            lineHeight: LineHeight(1.4),
-                          ),
-                          'pre': Style(
-                            backgroundColor: Color(0xFF000000),
-                            color: Color(0xFFfefefe),
-                            padding: EdgeInsets.all(8),
-                          )
-                        },
-                        onImageError: (err, _) {
-                          print(err);
-                        },
-                      ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Html(
+                      data: postDetailProvider.postModel.article,
+                      style: {
+                        'p': Style(
+                          fontSize: FontSize.large,
+                          lineHeight: LineHeight(1.4),
+                        ),
+                        'pre': Style(
+                          backgroundColor: Color(0xFF000000),
+                          color: Color(0xFFfefefe),
+                          padding: EdgeInsets.all(8),
+                        )
+                      },
+                      onImageError: (err, _) {
+                        print(err);
+                      },
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      key: _commentsKey,
-                      margin: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0),
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: ColorConfig.thrGrey),
-                        ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    key: _commentsKey,
+                    margin: EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 0),
+                    padding: EdgeInsets.only(bottom: 8.0),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: ColorConfig.thrGrey),
                       ),
-                      child: Text(
-                        '评论 (${postDetP.comments.length})',
+                    ),
+                    child: _consumerPostModel(
+                      (buildContext, provider, child) => Text(
+                        '评论 (${provider.comments.length})',
                         style: NewsTextStyle.style16BoldBlack,
                       ),
                     ),
                   ),
-                  SliverList(
+                ),
+                _consumerPostModel(
+                  (buildContext, provider, child) => SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         return CommentCell(
-                          model: postDetP.comments[index],
+                          model: provider.comments[index],
                         );
                       },
-                      childCount: postDetP.comments.length,
+                      childCount: provider.comments.length,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: MediaQuery.of(context).padding.bottom,
-            child: DetailFooter(
-              messageTap: _scrollToComments,
-            ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: MediaQuery.of(context).padding.bottom,
+          child: DetailFooter(
+            messageTap: _scrollToComments,
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
+  }
+
+  Widget _consumerPostModel(
+      Widget Function(
+    BuildContext buildContext,
+    PostDetailProvider provider,
+    Widget? child,
+  )
+          builder) {
+    return Consumer(builder: builder);
   }
 
   void _scrollToComments() {
