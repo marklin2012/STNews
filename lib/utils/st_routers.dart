@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stnews/pages/tabbar.dart';
 
 class STRouters {
   static Future push(BuildContext context, Widget widget,
@@ -9,11 +10,11 @@ class STRouters {
   }
 
   static Future pop(BuildContext context) async {
-    if (Navigator.canPop(context)) {
-      Navigator.of(context).pop();
-      return Future.value(true);
-    }
-    return Future.value(false);
+    return Navigator.of(context).maybePop();
+  }
+
+  static Future pushReplace(BuildContext context, String routeName) async {
+    return Navigator.of(context).pushReplacementNamed(routeName);
   }
 }
 

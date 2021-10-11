@@ -118,7 +118,7 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
       UserProvider.shared.setToken(token);
       UserProvider.shared.user = UserModel.fromJson(user);
       TokenInvalid.resetInvalidCount();
-      STRouters.push(context, TabbarPage());
+      STRouters.pushReplace(context, TabbarPage.routeName);
     }
     _btnNotifier.value = false;
   }
