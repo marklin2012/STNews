@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -34,7 +33,6 @@ class MessageSettingPage extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.only(top: 24.0),
         padding: EdgeInsets.symmetric(horizontal: 16.0),
-        color: ColorConfig.backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

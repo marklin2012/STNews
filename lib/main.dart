@@ -62,8 +62,6 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         title: 'STNews',
         theme: ThemeData(
-          primaryColor: ColorConfig.primaryColor,
-          backgroundColor: ColorConfig.backgroundColor,
           appBarTheme: AppBarTheme(
             color: ColorConfig.primaryColor,
             titleTextStyle: NewsTextStyle.style18BoldBlack,
@@ -73,6 +71,9 @@ class MyApp extends StatelessWidget {
             elevation: 0.1,
             centerTitle: true,
           ),
+          primaryColor: ColorConfig.primaryColor,
+          backgroundColor: ColorConfig.backgroundColor,
+          scaffoldBackgroundColor: ColorConfig.primaryColor,
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: ColorConfig.accentColor),
           fontFamily: 'PingFang',

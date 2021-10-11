@@ -78,7 +78,6 @@ class _FindPasswordPageState extends State<FindPasswordPage> {
       ),
       body: BlankPutKeyborad(
         child: Container(
-          color: ColorConfig.primaryColor,
           padding: EdgeInsets.symmetric(horizontal: _horFix16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
