@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/main.dart';
 import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/person_tile.dart';
@@ -103,11 +104,14 @@ class PersonSetingPage extends StatelessWidget {
                               UserProvider.shared
                                   .setToken(null, isReload: true);
                               Navigator.of(context1).pop();
-                              STRouters.push(
-                                context,
-                                LoginPage(),
-                                routeName: LoginPage.routeName,
-                              );
+                              navigatorKey.currentState?.pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext buildContext) {
+                                        return LoginPage();
+                                      },
+                                      settings: RouteSettings(
+                                          name: LoginPage.routeName)),
+                                  (route) => false);
                             },
                           ),
                         ],

@@ -17,6 +17,7 @@ import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_routers.dart';
 
 void main() {
   // init API dio
@@ -76,22 +77,8 @@ class MyApp extends StatelessWidget {
               .copyWith(secondary: ColorConfig.accentColor),
           fontFamily: 'PingFang',
         ),
-        onGenerateRoute: (setting) {
-          switch (setting.name) {
-            case LoginPage.routeName:
-              return PageRouteBuilder(
-                settings: RouteSettings(name: LoginPage.routeName),
-                transitionDuration: Duration(milliseconds: 100),
-                pageBuilder: (context, animation, secAnimation) => LoginPage(),
-              );
-            case TabbarPage.routeName:
-              return PageRouteBuilder(
-                settings: RouteSettings(name: TabbarPage.routeName),
-                transitionDuration: Duration(milliseconds: 100),
-                pageBuilder: (context, animation, secAnimation) => TabbarPage(),
-              );
-          }
-        },
+        routes: STRouters.routes,
+        onGenerateRoute: STRouters.onGenerateRoute,
         initialRoute: UserProvider.shared.isLogin
             ? TabbarPage.routeName
             : LoginPage.routeName,
