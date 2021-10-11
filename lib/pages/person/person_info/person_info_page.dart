@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/pages/common/color_config.dart';
 
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
@@ -73,15 +72,11 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
                     break;
                   default:
                 }
-                return Container(
-                  color: ColorConfig.primaryColor,
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: PersonTile(
-                    data: _map,
-                    onTap: () {
-                      _goNextPage(index);
-                    },
-                  ),
+                return PersonTile(
+                  data: _map,
+                  onTap: () {
+                    _goNextPage(index);
+                  },
                 );
               },
             );

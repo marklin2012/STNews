@@ -46,42 +46,49 @@ class PersonTile extends StatelessWidget {
     }
 
     final iconData = data['icon'];
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      child: Container(
-        color: ColorConfig.backgroundColor,
-        padding: EdgeInsets.symmetric(horizontal: 18.0),
-        height: height,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (iconData != null)
-                    Icon(
-                      iconData,
-                      size: 20,
-                    ),
-                  if (iconData != null) SizedBox(width: 14),
-                  Text(
-                    data['title'],
-                    style: NewsTextStyle.style16NormalBlack,
-                  ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: 4.0),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: ColorConfig.backgroundColor,
+        ),
+        child: InkWell(
+          highlightColor: ColorConfig.accentColor,
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 18.0),
+            height: height,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (iconData != null)
+                        Icon(
+                          iconData,
+                          size: 20,
+                        ),
+                      if (iconData != null) SizedBox(width: 14),
+                      Text(
+                        data['title'],
+                        style: NewsTextStyle.style16NormalBlack,
+                      ),
+                    ]),
+                Row(children: [
+                  if (hasTril && subWidget != null) subWidget,
+                  if (hasTril) SizedBox(width: 14),
+                  Icon(
+                    STIcons.direction_rightoutlined,
+                    size: 12,
+                  )
                 ]),
-            Row(children: [
-              if (hasTril && subWidget != null) subWidget,
-              if (hasTril) SizedBox(width: 14),
-              Icon(
-                STIcons.direction_rightoutlined,
-                size: 12,
-              )
-            ]),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
-      onTap: onTap,
     );
   }
 }
