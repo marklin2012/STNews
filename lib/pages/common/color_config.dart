@@ -41,7 +41,7 @@ Map<String, Color> lightColorMap = {
   textFirColorKey: Colors.black,
   textSecColorKey: Color(0xFF555555),
   textThrColorKey: Color(0xFF888888),
-  textFourColorKey: Color(0xFF095BF9),
+  textFourColorKey: Color(0xFFBBBBBB),
   shadeFirColorKey: Color.fromRGBO(0, 0, 0, 0.8),
   shadeSecColorKey: Color.fromRGBO(0, 0, 0, 0.6),
   shadeThrColorKey: Color.fromRGBO(0, 0, 0, 0.5),

@@ -25,7 +25,8 @@ class NewsImagePicker {
             ),
           ),
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: ColorConfig.fourGrey)),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24), topRight: Radius.circular(24)),
           ),
         ),
         NewsActionSheetAction(
@@ -38,6 +39,10 @@ class NewsImagePicker {
               style: NewsTextStyle.style16NormalBlack,
             ),
           ),
+          decoration: BoxDecoration(
+            border:
+                Border(top: BorderSide(color: ColorConfig.fourGrey, width: 1)),
+          ),
         ),
         NewsActionSheetAction(
             onPressed: () {
@@ -47,7 +52,6 @@ class NewsImagePicker {
               height: 50,
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
               decoration: BoxDecoration(
-                color: ColorConfig.backgroundColor,
                 borderRadius: BorderRadius.circular(12),
               ),
               alignment: Alignment.center,

@@ -133,7 +133,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
                   color: ColorConfig.backgroundColor,
                   borderRadius: BorderRadius.all(Radius.circular(8.0))),
               height: _getGridViewHeight(),
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(16.0),
               child: GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -204,7 +204,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
   double _getGridViewHeight() {
     double _rows = (_images.length + 1.0) / 4.0;
     int _ceil = _rows.ceil();
-    final _height = _ceil * 80.0 + (_ceil - 1) * 5.0 + 16.0;
+    final _height = _ceil * 85.0 + 30;
     return _height;
   }
 
@@ -212,14 +212,18 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        NewsImagePicker.showPicker(
-          context: context,
-          galleryTap: _openGallery,
-          cameraTap: _useCamera,
-        );
+        STDebounce().debounce(() {
+          NewsImagePicker.showPicker(
+            context: context,
+            galleryTap: _openGallery,
+            cameraTap: _useCamera,
+          );
+        }, 500);
       },
       child: Image(
         image: AssetImage('assets/images/default_add_picture.png'),
+        width: 80,
+        height: 80,
       ),
     );
   }

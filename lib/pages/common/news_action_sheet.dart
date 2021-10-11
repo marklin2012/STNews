@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
+
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
-class NewsActionSheetAction extends StatelessWidget {
+class NewsActionSheetAction extends StatefulWidget {
   const NewsActionSheetAction(
       {Key? key,
       required this.onPressed,
@@ -21,23 +25,65 @@ class NewsActionSheetAction extends StatelessWidget {
 
   final EdgeInsets? padding;
 
-  final Decoration? decoration;
+  final BoxDecoration? decoration;
+
+  @override
+  _NewsActionSheetActionState createState() => _NewsActionSheetActionState();
+}
+
+class _NewsActionSheetActionState extends State<NewsActionSheetAction> {
+  late Color _originColor;
+  late ValueNotifier<Color> _colorNoti;
+
+  @override
+  void initState() {
+    super.initState();
+    _originColor = widget.decoration?.color ?? ColorConfig.primaryColor;
+    _colorNoti = ValueNotifier(_originColor);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: decoration ?? BoxDecoration(),
-        padding: padding ?? EdgeInsets.zero,
-        child: DefaultTextStyle(
-          style: textStyle ?? NewsTextStyle.style16NormalWhite,
-          child: child,
-          textAlign: TextAlign.center,
-        ),
-      ),
+      onTap: () {
+        STDebounce().debounce(widget.onPressed, 300);
+      },
+      onTapDown: (TapDownDetails tapDownDetails) {
+        _colorNoti.value = ColorConfig.baseFirBule;
+      },
+      onTapUp: (TapUpDetails tapUpDetails) {
+        _colorNoti.value = _originColor;
+      },
+      onHorizontalDragEnd: (DragEndDetails dragEndDetails) {
+        _colorNoti.value = _originColor;
+      },
+      onVerticalDragEnd: (DragEndDetails dragEndDetails) {
+        _colorNoti.value = _originColor;
+      },
+      child: ValueListenableBuilder(
+          valueListenable: _colorNoti,
+          builder: (buildContext, Color color, _) {
+            BoxDecoration decoration = BoxDecoration(
+              color: color,
+              border: widget.decoration?.border,
+              borderRadius: widget.decoration?.borderRadius,
+              image: widget.decoration?.image,
+              boxShadow: widget.decoration?.boxShadow,
+              gradient: widget.decoration?.gradient,
+              backgroundBlendMode: widget.decoration?.backgroundBlendMode,
+              shape: widget.decoration?.shape ?? BoxShape.rectangle,
+            );
+            return Container(
+              alignment: Alignment.center,
+              decoration: decoration,
+              padding: widget.padding ?? EdgeInsets.zero,
+              child: DefaultTextStyle(
+                style: widget.textStyle ?? NewsTextStyle.style16NormalWhite,
+                child: widget.child,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }),
     );
   }
 }
@@ -158,10 +204,10 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).padding.bottom),
               decoration: BoxDecoration(
+                color: ColorConfig.primaryColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24)),
-                color: widget.backgroundColor ?? ColorConfig.primaryColor,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
