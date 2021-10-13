@@ -56,6 +56,12 @@ class NewsTextStyle {
         fontWeight: FONTWEIGHT400,
       );
 
+  static get style14NormalFirBlue => TextStyle(
+        color: ColorConfig.baseFirBule,
+        fontSize: FONTSIZE14,
+        fontWeight: FONTWEIGHT400,
+      );
+
   static get style16BoldBlack => TextStyle(
         fontSize: FONTSIZE16,
         fontWeight: FONTWEIGHT500,
