@@ -46,20 +46,25 @@ class _DetailFooterState extends State<DetailFooter> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 211,
-              child: STInput(
-                decoration: BoxDecoration(
-                  color: ColorConfig.fourGrey,
-                  borderRadius: BorderRadius.circular(5.0),
+            Expanded(
+              child: Container(
+                width: 211,
+                child: STInput(
+                  decoration: BoxDecoration(
+                    color: ColorConfig.fourGrey,
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  padding: EdgeInsets.zero,
+                  placeholder: '发表评论',
+                  controller: _controller,
+                  onSubmitted: (String value) {
+                    _addComment(value);
+                  },
                 ),
-                padding: EdgeInsets.zero,
-                placeholder: '发表评论',
-                controller: _controller,
-                onSubmitted: (String value) {
-                  _addComment(value);
-                },
               ),
+            ),
+            SizedBox(
+              width: 24,
             ),
             STBadge(
               child: STButton.icon(
@@ -73,6 +78,9 @@ class _DetailFooterState extends State<DetailFooter> {
                 },
               ),
               value: postDetP.comments.length.toString(),
+            ),
+            SizedBox(
+              width: 24,
             ),
             STButton.icon(
               padding: EdgeInsets.all(2.0),
@@ -88,6 +96,9 @@ class _DetailFooterState extends State<DetailFooter> {
                     ),
               onTap: _favouritedPost,
             ),
+            SizedBox(
+              width: 24,
+            ),
             STButton.icon(
               padding: EdgeInsets.all(2.0),
               backgroundColor: Colors.transparent,
@@ -99,7 +110,10 @@ class _DetailFooterState extends State<DetailFooter> {
                     )
                   : Icon(STIcons.commonly_like),
               onTap: _likedPost,
-            )
+            ),
+            SizedBox(
+              width: 4,
+            ),
           ],
         ),
       );
