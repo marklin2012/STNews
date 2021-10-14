@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stnews/models/post_model.dart';
@@ -12,11 +14,15 @@ class PageViewWidget extends StatefulWidget {
     this.pageList,
     this.currentIndex,
     this.height,
+    this.isAutoRoll = true,
+    this.autoRollTime = 3,
   }) : super(key: key);
 
   final List<PostModel>? pageList;
   final int? currentIndex;
   final double? height;
+  final bool isAutoRoll;
+  final int autoRollTime;
 
   @override
   _PageViewWidgetState createState() => _PageViewWidgetState();
@@ -26,6 +32,8 @@ class _PageViewWidgetState extends State<PageViewWidget> {
   late List<PostModel> _pageList;
   late int _currentIndex;
   late double _height;
+  late PageController _pageController;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -33,6 +41,27 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     _currentIndex = widget.currentIndex ?? 0;
     _pageList = widget.pageList ?? [];
     _height = widget.height ?? 200;
+    _pageController = PageController(initialPage: 0);
+
+    if (widget.isAutoRoll) {
+      _timer = new Timer.periodic(new Duration(seconds: widget.autoRollTime),
+          (timer) {
+        int _temp = _currentIndex;
+
+        _currentIndex = (_temp + 1) % (_pageList.length);
+
+        _pageController.animateToPage(_currentIndex,
+            duration: Duration(milliseconds: 200), curve: Curves.ease);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _timer = null;
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -42,6 +71,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       child: Stack(
         children: [
           PageView.builder(
+            controller: _pageController,
             itemBuilder: (context, index) {
               PostModel _model = _pageList[index % _pageList.length];
               return buildPageViewItem(image: _model.coverImage, index: index);
