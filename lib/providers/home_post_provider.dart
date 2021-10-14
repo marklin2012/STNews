@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/post_model.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
@@ -37,18 +38,26 @@ class HomePostProvider extends ChangeNotifier {
     return Future.value(true);
   }
 
-  Future loadMore() async {
-    if (!_hasMore) return;
-    _page++;
-    ResultData result = await Api.getPosts(page: _page, perpage: _perpage);
-    if (result.success) {
-      List _datas = result.data as List;
-      _hasMore = STList.hasMore(_datas);
-      for (Map<String, dynamic> item in _datas) {
-        final _temp = PostModel.fromJson(item);
-        _posts.add(_temp);
+  Future<ResultRefreshData> loadMore() async {
+    ResultRefreshData data;
+    if (!_hasMore) {
+      data = ResultRefreshData.noMore();
+    } else {
+      _page++;
+      ResultData result = await Api.getPosts(page: _page, perpage: _perpage);
+      if (result.success) {
+        List _datas = result.data as List;
+        _hasMore = STList.hasMore(_datas);
+        for (Map<String, dynamic> item in _datas) {
+          final _temp = PostModel.fromJson(item);
+          _posts.add(_temp);
+        }
+        data = ResultRefreshData(success: true, hasMore: _hasMore);
+      } else {
+        data = ResultRefreshData.error();
       }
-      notifyListeners();
     }
+    notifyListeners();
+    return Future.value(data);
   }
 }

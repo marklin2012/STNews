@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/notice_model.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
@@ -31,17 +32,18 @@ class NoticeProvider extends ChangeNotifier {
     ResultData result = await Api.getNotifyList(page: _page, perpage: _perpage);
     if (result.success) {
       List _temps = result.data['noti'] as List;
-      _hasMore =
-          (_temps.isNotEmpty || _temps.length < NewsPerpage.finalPerPage);
+      _hasMore = STList.hasMore(_temps);
       _notices = _temps.map((e) => NoticeModel.fromJson(e)).toList();
       _getAllReaded();
       notifyListeners();
     }
   }
 
-  Future loadMoreNotices() async {
+  Future<ResultRefreshData> loadMoreNotices() async {
+    if (!_hasMore) return Future.value(ResultRefreshData.noMore());
     _page++;
     ResultData result = await Api.getNotifyList(page: _page, perpage: _perpage);
+    ResultRefreshData data = ResultRefreshData.normal();
     if (result.success) {
       List _temps = result.data['noti'] as List;
       _hasMore = STList.hasMore(_temps);
@@ -50,8 +52,12 @@ class NoticeProvider extends ChangeNotifier {
         _notices.add(model);
       }
       _getAllReaded();
-      notifyListeners();
+      data = ResultRefreshData(success: true, hasMore: _hasMore);
+    } else {
+      data = ResultRefreshData.error();
     }
+    notifyListeners();
+    return Future.value(data);
   }
 
   void _getAllReaded() {

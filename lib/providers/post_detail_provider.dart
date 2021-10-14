@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stnews/models/comment_model.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
@@ -44,8 +45,9 @@ class PostDetailProvider extends ChangeNotifier {
     }
   }
 
-  Future loadMore() async {
-    if (!_hasMore) return;
+  Future<ResultRefreshData> loadMore() async {
+    ResultRefreshData data;
+    if (!_hasMore) return Future.value(ResultRefreshData.noMore());
     _page++;
     ResultData result = await Api.getCommentList(
         page: _page, perpage: _perpage, postid: postModel.id);
@@ -56,8 +58,12 @@ class PostDetailProvider extends ChangeNotifier {
         final _temp = CommentModel.fromJson(item);
         _comments.add(_temp);
       }
-      notifyListeners();
+      data = ResultRefreshData(success: true, hasMore: _hasMore);
+    } else {
+      data = ResultRefreshData.error();
     }
+    notifyListeners();
+    return Future.value(data);
   }
 
   /// 查询是否关注了该用户

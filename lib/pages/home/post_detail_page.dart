@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/scroll_header.dart';
@@ -227,9 +226,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
         duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
   }
 
-  Future _loadMore() async {
+  Future<ResultRefreshData> _loadMore() async {
     NewsLoading.start(context);
-    await postDetailProvider.loadMore();
+    ResultRefreshData data = await postDetailProvider.loadMore();
     NewsLoading.stop();
+    return data;
   }
 }

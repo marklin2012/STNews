@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
@@ -24,6 +25,8 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+const recommendHight = 32.0;
 
 class _HomePageState extends State<HomePage> {
   HomePostProvider get homePostProvider => Provider.of(context, listen: false);
@@ -134,6 +137,8 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.symmetric(vertical: 5),
         title: Container(
           alignment: Alignment.center,
+          color: ColorConfig.baseThrBlue,
+          height: recommendHight,
           child: Text(
             '为您推荐${NewsPerpage.finalPerPage}条内容',
             style: NewsTextStyle.style14NormalWhite,
@@ -142,9 +147,10 @@ class _HomePageState extends State<HomePage> {
       );
   }
 
-  Future _loadMore() async {
+  Future<ResultRefreshData> _loadMore() async {
     NewsLoading.start(context);
-    await homePostProvider.loadMore();
+    ResultRefreshData data = await homePostProvider.loadMore();
     NewsLoading.stop();
+    return data;
   }
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/notice_model.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
@@ -103,11 +104,11 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
     NewsLoading.stop();
   }
 
-  Future _onLoad() async {
-    if (!noticeProvider.hasMore) return;
+  Future<ResultRefreshData> _onLoad() async {
     NewsLoading.start(context);
-    await noticeProvider.loadMoreNotices();
+    ResultRefreshData data = await noticeProvider.loadMoreNotices();
     NewsLoading.stop();
+    return data;
   }
 
   Future _deletUnRead() async {
