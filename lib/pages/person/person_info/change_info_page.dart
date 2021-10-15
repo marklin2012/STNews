@@ -26,7 +26,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
 
   int _originSex = 0;
   int _sex = 0;
-  bool _nickNameEnable = false;
+  bool _nickNameSeted = false;
 
   @override
   void initState() {
@@ -35,9 +35,9 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
     _title = _isChangeSex ? '性别' : '昵称';
     if (!_isChangeSex) {
       _controller = TextEditingController();
-      _nickNameEnable = _getIsSetNickName();
+      _nickNameSeted = _getIsSetNickName();
       _controller!.text =
-          _nickNameEnable ? UserProvider.shared.user.nickname! : '';
+          _nickNameSeted ? UserProvider.shared.user.nickname! : '';
     }
     _originSex = UserProvider.shared.user.sex ?? 0;
     _sex = _originSex;
@@ -93,6 +93,10 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         }
       });
     } else {
+      if (_nickNameSeted) {
+        STToast.show(context: context, message: '已修改过昵称，暂无法修改');
+        return;
+      }
       // 修改昵称
       if (_controller!.text.length < 4) {
         STToast.show(context: context, message: '输入的昵称少于4个字符');
@@ -174,6 +178,10 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         children: [
           STInput(
             controller: _controller,
+            enabled: !_nickNameSeted,
+            textStyle: _nickNameSeted
+                ? NewsTextStyle.style16NormalSecGrey
+                : NewsTextStyle.style16NormalBlack,
             contentPadding: EdgeInsets.only(bottom: 14),
             placeholder: '请设置你的昵称',
             inputFormatters: [
