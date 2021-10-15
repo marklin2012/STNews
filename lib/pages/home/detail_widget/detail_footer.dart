@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 class DetailFooter extends StatefulWidget {
   const DetailFooter({
@@ -24,10 +26,26 @@ class _DetailFooterState extends State<DetailFooter> {
   PostDetailProvider get postDetailProvider =>
       Provider.of<PostDetailProvider>(context, listen: false);
 
+  late ValueNotifier<bool> _editNoti;
+  late ValueNotifier<bool> _sendEnableNoti;
+
+  FocusNode _commentFocus = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController()
+      ..addListener(() {
+        if (_controller.text.isNotEmpty || _controller.text.length > 0) {
+          _sendEnableNoti.value = true;
+        } else {
+          _sendEnableNoti.value = false;
+        }
+      });
+    bool _isEditComments = false;
+    _editNoti = ValueNotifier(_isEditComments);
+    bool _sendEnable = false;
+    _sendEnableNoti = ValueNotifier(_sendEnable);
     postDetailProvider.getPostFavouritedAndLiked();
   }
 
@@ -39,6 +57,30 @@ class _DetailFooterState extends State<DetailFooter> {
 
   @override
   Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: _editNoti,
+        builder: (context, bool value, _) {
+          return Stack(
+            children: [
+              Opacity(
+                opacity: value ? 1.0 : 0.0,
+                child: _buildEditComments(),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Opacity(
+                  opacity: value ? 0.0 : 1.0,
+                  child: _buildNormal(),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Widget _buildNormal() {
     return Consumer<PostDetailProvider>(builder: (context, postDetP, _) {
       return Container(
         height: 44.0,
@@ -47,19 +89,24 @@ class _DetailFooterState extends State<DetailFooter> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Container(
-                width: 211,
-                child: STInput(
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(_commentFocus);
+                  _editNoti.value = true;
+                },
+                child: Container(
+                  height: 36,
                   decoration: BoxDecoration(
                     color: ColorConfig.fourGrey,
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  padding: EdgeInsets.zero,
-                  placeholder: '发表评论',
-                  controller: _controller,
-                  onSubmitted: (String value) {
-                    _addComment(value);
-                  },
+                  padding: EdgeInsets.only(left: 8),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    '发表评论',
+                    style: NewsTextStyle.style14NormalFourGrey,
+                  ),
                 ),
               ),
             ),
@@ -120,6 +167,63 @@ class _DetailFooterState extends State<DetailFooter> {
     });
   }
 
+  Widget _buildEditComments() {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        _commentFocus.unfocus();
+        _editNoti.value = false;
+      },
+      child: Container(
+        padding: EdgeInsets.all(12.0),
+        color: ColorConfig.primaryColor,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+                child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 7.0),
+              decoration: BoxDecoration(
+                color: ColorConfig.fourGrey,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: TextField(
+                controller: _controller,
+                focusNode: _commentFocus,
+                maxLines: 100,
+                minLines: 3,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.zero,
+                  border: OutlineInputBorder(borderSide: BorderSide.none),
+                  hintMaxLines: 1,
+                  hintText: '发表评论',
+                  hintStyle: NewsTextStyle.style14NormalFourGrey,
+                ),
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(500),
+                ],
+              ),
+            )),
+            SizedBox(width: 8.0),
+            ValueListenableBuilder(
+                valueListenable: _sendEnableNoti,
+                builder: (context, bool value, _) {
+                  return STButton(
+                    disabled: !value,
+                    text: '发送',
+                    textStyle: NewsTextStyle.style16NormalWhite,
+                    onTap: () {
+                      _addComment(_controller.text);
+                    },
+                  );
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// 发布评论
   void _addComment(String? content) async {
     if (content == null || content.isEmpty) {
@@ -131,6 +235,8 @@ class _DetailFooterState extends State<DetailFooter> {
     NewsLoading.stop();
     if (isSuc) {
       _controller.text = '';
+      _commentFocus.unfocus();
+      _editNoti.value = false;
     }
   }
 

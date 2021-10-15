@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/comment_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
@@ -22,14 +24,17 @@ class CommentCell extends StatefulWidget {
 class _CommentCellState extends State<CommentCell> {
   late CommentModel? _model;
 
+  bool _isOverLines = false;
+  bool _isShowAll = false;
+
   @override
   void initState() {
     super.initState();
-    _model = widget.model;
   }
 
   @override
   Widget build(BuildContext context) {
+    _model = widget.model;
     late String _publishDateStr;
     if (_model?.publisheddate != null) {
       DateTime datetime =
@@ -99,15 +104,69 @@ class _CommentCellState extends State<CommentCell> {
             ],
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(64, 12, 24, 0),
+            padding: EdgeInsets.fromLTRB(48, 12, 8, 0),
             alignment: Alignment.centerLeft,
-            child: Text(
-              _model?.content ?? '',
-              style: NewsTextStyle.style14NormalBlack,
-            ),
+            child: _getContent(),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _getContent() {
+    _isOverLines = STString.textExceedMaxLined(
+      text: _model?.content,
+      textStyle: NewsTextStyle.style14NormalBlack,
+      maxWidth: MediaQuery.of(context).size.width - 88,
+    );
+    if (_isOverLines) {
+      if (_isShowAll) {
+        return Text(
+          _model?.content ?? '',
+          style: NewsTextStyle.style14NormalBlack,
+        );
+      } else {
+        return Stack(
+          children: [
+            Text(
+              _model?.content ?? '',
+              style: NewsTextStyle.style14NormalBlack,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 5,
+            ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: ColorConfig.primaryColor,
+                child: Row(
+                  children: [
+                    Text(
+                      '...',
+                      style: NewsTextStyle.style14NormalBlack,
+                    ),
+                    SizedBox(width: 2.0),
+                    STButton(
+                      backgroundColor: Colors.transparent,
+                      padding: EdgeInsets.zero,
+                      text: '查看全文',
+                      textStyle: NewsTextStyle.style14NormalSecBlue,
+                      onTap: () {
+                        _isShowAll = !_isShowAll;
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+    }
+    return Text(
+      _model?.content ?? '',
+      style: NewsTextStyle.style14NormalBlack,
     );
   }
 
