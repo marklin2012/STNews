@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 
 class STString {
   static String securityMobile(String mobile) {
@@ -27,14 +29,12 @@ class STString {
   }
 
   static String getDateString(DateTime time) {
-    if (time.isAfter(DateTime.now().add(Duration(minutes: -30)))) {
-      return '刚刚';
-    }
-
     if (time.isAfter(DateTime.now().add(Duration(days: -1)))) {
       final different = DateTime.now().difference(time).inDays;
       if (different == 0) {
-        return '今天';
+        String hour = time.hour.toString();
+        String minute = time.minute.toString();
+        return hour + ':' + minute;
       } else {
         return '昨天';
       }
@@ -44,18 +44,33 @@ class STString {
       final different = DateTime.now().difference(time).inDays;
       if (different <= 1) {
         return '昨天';
+      } else {
+        return '前天';
       }
     }
 
-    if (time.isAfter(DateTime.now().add(Duration(days: -365)))) {
+    if (time.isAfter(DateTime.now().add(Duration(days: -3)))) {
+      final different = DateTime.now().difference(time).inDays;
+      if (different <= 2) {
+        return '前天';
+      } else {
+        return '大前天';
+      }
+    }
+
+    if (time.isAfter(DateTime.now().add(Duration(days: -4)))) {
+      final different = DateTime.now().difference(time).inDays;
+      if (different <= 3) {
+        return '大前天';
+      }
       final month = time.month;
       final day = time.day;
       return '$month-$day';
     }
-    final year = time.year;
+
     final month = time.month;
     final day = time.day;
-    return '$year-$month-$day';
+    return '$month-$day';
   }
 
   // string转dateTime
@@ -71,5 +86,25 @@ class STString {
   static String dateTimeStrFromString({String? dateStr}) {
     DateTime _date = STString.dateTimeFromString(dateStr: dateStr ?? '');
     return STString.getDateString(_date);
+  }
+
+  // 计算文本是否超过指定的行数
+  static bool textExceedMaxLined(
+      {String? text,
+      TextStyle? textStyle,
+      int maxLines = 5,
+      double? maxWidth}) {
+    if (text != null && textStyle != null && maxWidth != null) {
+      TextSpan textSpan = TextSpan(text: text, style: textStyle);
+      TextPainter textPainter = TextPainter(
+          text: textSpan,
+          maxLines: maxLines,
+          textDirection: ui.TextDirection.ltr);
+      textPainter.layout(maxWidth: maxWidth);
+      if (textPainter.didExceedMaxLines) {
+        return true;
+      }
+    }
+    return false;
   }
 }
