@@ -26,6 +26,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
 
   int _originSex = 0;
   int _sex = 0;
+  bool _nickNameEnable = false;
 
   @override
   void initState() {
@@ -34,6 +35,9 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
     _title = _isChangeSex ? '性别' : '昵称';
     if (!_isChangeSex) {
       _controller = TextEditingController();
+      _nickNameEnable = _getIsSetNickName();
+      _controller!.text =
+          _nickNameEnable ? UserProvider.shared.user.nickname! : '';
     }
     _originSex = UserProvider.shared.user.sex ?? 0;
     _sex = _originSex;
@@ -69,7 +73,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
           ),
         ],
       ),
-      body: _getSubWidget(),
+      body: BlankPutKeyborad(child: _getSubWidget()),
     );
   }
 
@@ -170,11 +174,8 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         children: [
           STInput(
             controller: _controller,
+            contentPadding: EdgeInsets.only(bottom: 14),
             placeholder: '请设置你的昵称',
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              border: Border.all(color: ColorConfig.secGrey),
-            ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(16),
             ],
@@ -195,5 +196,24 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
         ],
       ),
     );
+  }
+
+  bool _getIsSetNickName() {
+    String nickName = UserProvider.shared.user.nickname ?? '';
+    if (nickName.isEmpty) {
+      return false;
+    }
+    if (nickName.length > 6) {
+      String prefix = nickName.substring(0, 6);
+      String mobile = UserProvider.shared.user.mobile!;
+      if (mobile.length > 4) {
+        String prefixMobile =
+            mobile.substring(mobile.length - 4, mobile.length);
+        if (prefix == '用户' + prefixMobile) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }
