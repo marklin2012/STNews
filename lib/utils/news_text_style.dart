@@ -31,6 +31,12 @@ class NewsTextStyle {
         fontWeight: FONTWEIGHT400,
       );
 
+  static get style14NormalSecBlue => TextStyle(
+        color: ColorConfig.baseSecBule,
+        fontSize: FONTSIZE14,
+        fontWeight: FONTWEIGHT400,
+      );
+
   static get style14NormalThrGrey => TextStyle(
         color: ColorConfig.textThrColor,
         fontSize: FONTSIZE14,
