@@ -12,6 +12,7 @@ import 'package:stnews/providers/favourited_user_provider.dart';
 import 'package:stnews/providers/home_post_provider.dart';
 import 'package:stnews/providers/notice_provider.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/providers/post_search_provider.dart';
 import 'package:stnews/providers/user_home_provider.dart';
 
 import 'package:stnews/providers/user_provider.dart';
@@ -25,7 +26,9 @@ void main() {
 
   // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({});
-  // ignore: invalid_use_of_visible_for_testing_member
+
+  /// 服务器token
+  /// ignore: invalid_use_of_visible_for_testing_member
   // SharedPreferences.setMockInitialValues({
   //   'token':
   //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM0MjI1MTA0fQ.KlwbYsyfpFcDQei72dNQ0v_6VvsqZfkjHg9XB-0-6B8',
@@ -39,6 +42,7 @@ void main() {
         ChangeNotifierProvider.value(value: ColorThemeProvider.shared),
         ChangeNotifierProvider.value(value: UserProvider.shared),
         ChangeNotifierProvider.value(value: HomePostProvider()),
+        ChangeNotifierProvider.value(value: PostSearchProvider()),
         ChangeNotifierProvider.value(value: PostDetailProvider()),
         ChangeNotifierProvider.value(value: UserHomeProvider()),
         ChangeNotifierProvider.value(value: FavouritedPostProvider()),

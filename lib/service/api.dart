@@ -415,4 +415,9 @@ class Api {
       _post('/feedback',
           data: {'content': content, 'contact': contact, 'images': images},
           showToastError: showToastError);
+
+  /// 搜索文章标题
+  static Future<ResultData> search(
+          {int page = 1, int perpage = 10, String? key}) =>
+      _get('/search?page=$page&per_page=$perpage', data: {'key': key});
 }
