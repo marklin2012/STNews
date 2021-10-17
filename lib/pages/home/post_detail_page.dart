@@ -106,7 +106,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 controller: _scrollController,
                 slivers: [
                   ScrollHeader(
-                    maxExtent: detailHeaderHeight,
+                    maxExtent: widget.model!.title!.length > 14
+                        ? detailHeaderHeight
+                        : 142,
                     minExtent: 44,
                     builder: (context, offset, __) {
                       return _consumerPostModel(
