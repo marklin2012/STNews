@@ -36,19 +36,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
   PostDetailProvider get postDetailProvider =>
       Provider.of<PostDetailProvider>(context, listen: false);
 
-  bool _isCurrentState = false;
-
   @override
   void initState() {
     super.initState();
-    _isCurrentState = true;
     _scrollController = ScrollController();
-    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-    //   /// 注册后无法注销，暂时使用
-    //   WidgetsBinding.instance?.addPersistentFrameCallback((timeStamp) {
-    //     _findRenderObject();
-    //   });
-    // });
     postDetailProvider.postModel = widget.model ?? PostModel();
     postDetailProvider.initComments();
     postDetailProvider.getFavouritedUser();
@@ -56,14 +47,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
 
   @override
   void dispose() {
-    _isCurrentState = false;
     _scrollController.dispose();
     super.dispose();
   }
 
-  /// web完后后定位评论的偏移量
+  /// 定位评论的偏移量
   void _findRenderObject() {
-    if (!_isCurrentState) return;
     RenderObject? renderobject =
         _commentsKey.currentContext?.findRenderObject();
     if (renderobject != null && renderobject is RenderBox) {
@@ -75,18 +64,6 @@ class _PostDetailPageState extends State<PostDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: STButton.icon(
-      //     backgroundColor: Colors.transparent,
-      //     icon: Icon(
-      //       STIcons.direction_leftoutlined,
-      //       color: ColorConfig.textFirColor,
-      //     ),
-      //     onTap: () {
-      //       Navigator.of(context).pop();
-      //     },
-      //   ),
-      // ),
       body: BlankPutKeyborad(
         child: buildChildWidget(),
       ),
@@ -137,6 +114,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
                   SliverToBoxAdapter(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
+                      // child: Container(
+                      //   height: 500,
+                      //   color: Colors.yellow,
+                      // ),
                       child: Html(
                         data: postDetailProvider.postModel.article,
                         style: {
@@ -215,13 +196,16 @@ class _PostDetailPageState extends State<PostDetailPage> {
 
   /// 滑动到评论
   void _scrollToComments() {
-    double visibleH = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.bottom -
-        MediaQuery.of(context).padding.top -
-        160;
-    if (_offset.dy > visibleH) {
-      double animatH = _offset.dy - 160 - MediaQuery.of(context).padding.top;
-      _scrollController.animateTo(animatH,
+    _findRenderObject();
+    double animateH = 0.0;
+    // 总偏移量
+    animateH = _scrollController.offset + _offset.dy;
+    // 测试中的极限值
+    double _space = (MediaQuery.of(context).padding.top + 56 + 30);
+    if (animateH > MediaQuery.of(context).size.height - _space) {
+      animateH -= MediaQuery.of(context).size.height;
+      animateH += _space;
+      _scrollController.animateTo(animateH,
           duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
     }
   }
