@@ -60,7 +60,7 @@ class DetailHeader extends StatelessWidget {
             Positioned(
               left: 0,
               right: 0,
-              bottom: 4,
+              bottom: 0,
               child: Container(
                 color: Colors.transparent,
                 padding: EdgeInsets.only(
