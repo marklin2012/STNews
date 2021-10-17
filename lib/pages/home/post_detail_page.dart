@@ -43,12 +43,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
     super.initState();
     _isCurrentState = true;
     _scrollController = ScrollController();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      /// 注册后无法注销，暂时使用
-      WidgetsBinding.instance?.addPersistentFrameCallback((timeStamp) {
-        _findRenderObject();
-      });
-    });
+    // WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    //   /// 注册后无法注销，暂时使用
+    //   WidgetsBinding.instance?.addPersistentFrameCallback((timeStamp) {
+    //     _findRenderObject();
+    //   });
+    // });
     postDetailProvider.postModel = widget.model ?? PostModel();
     postDetailProvider.initComments();
     postDetailProvider.getFavouritedUser();
@@ -61,6 +61,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
     super.dispose();
   }
 
+  /// web完后后定位评论的偏移量
   void _findRenderObject() {
     if (!_isCurrentState) return;
     RenderObject? renderobject =
@@ -212,18 +213,17 @@ class _PostDetailPageState extends State<PostDetailPage> {
     return Consumer(builder: builder);
   }
 
+  /// 滑动到评论
   void _scrollToComments() {
-    // double animatH = 0;
-    // double visibleH = MediaQuery.of(context).size.height -
-    //     MediaQuery.of(context).padding.bottom -
-    //     MediaQuery.of(context).padding.top -
-    //     44 -
-    //     _detailHeaderH;
-    // if (_offset.dy > visibleH) {
-    //   animatH = _offset.dy - visibleH;
-    // }
-    _scrollController.animateTo(_offset.dy,
-        duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
+    double visibleH = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.bottom -
+        MediaQuery.of(context).padding.top -
+        160;
+    if (_offset.dy > visibleH) {
+      double animatH = _offset.dy - 160 - MediaQuery.of(context).padding.top;
+      _scrollController.animateTo(animatH,
+          duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
+    }
   }
 
   Future<ResultRefreshData> _loadMore() async {
