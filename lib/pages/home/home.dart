@@ -38,6 +38,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    EasySnackbar.hide(context);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -128,23 +134,28 @@ class _HomePageState extends State<HomePage> {
 
   Future _loadAndRefresh() async {
     bool isSuc = await homePostProvider.initOrRefresh();
-    if (isSuc)
-      EasySnackbar.show(
-        context: context,
-        backgroundColor: ColorConfig.backgroundColor,
-        alignment: Alignment.topCenter,
-        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
-        padding: EdgeInsets.symmetric(vertical: 5),
-        title: Container(
-          alignment: Alignment.center,
-          color: ColorConfig.baseThrBlue,
-          height: recommendHight,
-          child: Text(
-            '为您推荐${NewsPerpage.finalPerPage}条内容',
-            style: NewsTextStyle.style14NormalWhite,
+    debugPrint('---------' + DateTime.now().toString());
+    Future.delayed(Duration(milliseconds: 1200), () {
+      debugPrint('---------' + DateTime.now().toString());
+      if (isSuc) {
+        EasySnackbar.show(
+          context: context,
+          backgroundColor: ColorConfig.backgroundColor,
+          alignment: Alignment.topCenter,
+          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
+          padding: EdgeInsets.symmetric(vertical: 5),
+          title: Container(
+            alignment: Alignment.center,
+            color: ColorConfig.baseThrBlue,
+            height: recommendHight,
+            child: Text(
+              '为您推荐${NewsPerpage.finalPerPage}条内容',
+              style: NewsTextStyle.style14NormalWhite,
+            ),
           ),
-        ),
-      );
+        );
+      }
+    });
   }
 
   Future<ResultRefreshData> _loadMore() async {

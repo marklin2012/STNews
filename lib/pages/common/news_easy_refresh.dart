@@ -80,7 +80,7 @@ class _NewsEasyRefreshState extends State<NewsEasyRefresh> {
       onRefresh: _hasHeader
           ? () async {
               if (widget.onRefresh != null) {
-                widget.onRefresh!();
+                await widget.onRefresh!();
               }
               _controller.finishRefresh();
               _controller.resetLoadState();
