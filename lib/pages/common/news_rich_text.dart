@@ -10,6 +10,7 @@ class NewsRichText extends StatelessWidget {
     this.fontSize = 16,
     this.fontColor,
     this.selectFontColor,
+    this.maxLines,
   }) : super(key: key);
 
   ///searchContent    输入的搜索内容
@@ -30,12 +31,16 @@ class NewsRichText extends StatelessWidget {
   ///selectFontColor  需要显示的搜索字体颜色
   final Color? selectFontColor;
 
+  ///
+  final int? maxLines;
+
   @override
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
         children: getTextSpanList(),
       ),
+      maxLines: maxLines,
     );
   }
 

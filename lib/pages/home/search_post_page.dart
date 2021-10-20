@@ -92,6 +92,9 @@ class _SearchPostPageState extends State<SearchPostPage> {
                         ),
                         placeholder: '请输入搜索内容',
                         controller: _controller,
+                        onChanged: (String value) {
+                          _search();
+                        },
                       ),
                     ),
                     SizedBox(width: 8.0),
@@ -145,6 +148,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                 final _model = searchProvider.posts[index];
                 return NewsHomeCell(
                   title: NewsRichText(
+                    maxLines: 2,
                     textContent: _model.title,
                     searchContent: _controller.text,
                   ),
@@ -183,7 +187,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
       _isSearched = true;
       await postSearchProvider.search(key: _controller.text);
       NewsLoading.stop();
-    }, 500);
+    });
   }
 
   void _gotoDetailPage(int index) {
