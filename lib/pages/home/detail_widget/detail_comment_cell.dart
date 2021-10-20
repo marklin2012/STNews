@@ -42,7 +42,7 @@ class _CommentCellState extends State<CommentCell> {
     }
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
-      padding: EdgeInsets.only(top: 12.0),
+      padding: EdgeInsets.only(top: 16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -106,9 +106,10 @@ class DetailHeader extends StatelessWidget {
                                       child: CachedNetworkImage(
                                         width: 36,
                                         height: 36,
-                                        imageUrl:
-                                            postDetP.postModel.author?.avatar ??
-                                                "",
+                                        imageUrl: STString.addPrefixHttp(
+                                                postDetP.postModel.author
+                                                    ?.avatar) ??
+                                            '',
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>
                                             NewsImage.defaultAvatar(),

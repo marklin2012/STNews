@@ -66,6 +66,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
     return Scaffold(
       body: BlankPutKeyborad(
         child: buildChildWidget(),
+        onTap: () {
+          postDetailProvider.footerShowEdit = false;
+        },
       ),
     );
   }

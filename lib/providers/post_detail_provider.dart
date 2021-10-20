@@ -33,6 +33,13 @@ class PostDetailProvider extends ChangeNotifier {
   bool _isLikedPost = false;
   bool get isLikedPost => _isLikedPost;
 
+  bool _footerShowEdit = false;
+  bool get footerShowEdit => _footerShowEdit;
+  set footerShowEdit(bool showEdit) {
+    _footerShowEdit = showEdit;
+    notifyListeners();
+  }
+
   Future initComments() async {
     _page = 1;
     ResultData result = await Api.getCommentList(
