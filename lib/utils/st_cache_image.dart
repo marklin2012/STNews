@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/image+.dart';
+import 'package:stnews/utils/string+.dart';
 
 class STCaCheImage {
   static Widget loadingImage({
@@ -15,7 +15,7 @@ class STCaCheImage {
       return NewsImage.defaultAvatar();
     String _url = "http://via.placeholder.com/30x30";
     if (imageUrl.isNotEmpty) {
-      _url = BaseUrl + imageUrl;
+      _url = STString.addPrefixHttp(imageUrl)!;
     }
     return CachedNetworkImage(
       imageUrl: _url,

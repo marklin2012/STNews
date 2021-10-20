@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 
+import 'package:stnews/service/api.dart';
+
 class STString {
   static String securityMobile(String mobile) {
     if (mobile.length <= 7) {
@@ -106,5 +108,14 @@ class STString {
       }
     }
     return false;
+  }
+
+  static String? addPrefixHttp(String? image) {
+    if (image == null) return null;
+    if (image.startsWith('http')) {
+      return image;
+    } else {
+      return BaseUrl + image;
+    }
   }
 }
