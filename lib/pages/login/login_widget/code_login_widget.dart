@@ -177,6 +177,7 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
             baseStr: '获取验证码',
             mobile: _phoneCon.text,
           ),
+          placeholder: '输入验证码',
         ),
       ],
     );
