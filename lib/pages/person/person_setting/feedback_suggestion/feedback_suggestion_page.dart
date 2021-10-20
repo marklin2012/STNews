@@ -218,7 +218,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
             galleryTap: _openGallery,
             cameraTap: _useCamera,
           );
-        }, 500);
+        });
       },
       child: Image(
         image: AssetImage('assets/images/default_add_picture.png'),

@@ -46,7 +46,7 @@ class _NewsActionSheetActionState extends State<NewsActionSheetAction> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        STDebounce().debounce(widget.onPressed, 300);
+        STDebounce().debounce(widget.onPressed);
       },
       onTapDown: (TapDownDetails tapDownDetails) {
         _colorNoti.value = ColorConfig.baseFirBule;
