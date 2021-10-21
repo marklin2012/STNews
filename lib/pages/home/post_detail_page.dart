@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -41,6 +42,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
     super.initState();
     _scrollController = ScrollController();
     postDetailProvider.postModel = widget.model ?? PostModel();
+    postDetailProvider.initFootShowEdit();
     postDetailProvider.initComments();
     postDetailProvider.getFavouritedUser();
   }
@@ -205,11 +207,16 @@ class _PostDetailPageState extends State<PostDetailPage> {
     double animateH = 0.0;
     // 总偏移量
     animateH = _scrollController.offset + _offset.dy;
+    double screenH = MediaQuery.of(context).size.height;
     // 测试中的极限值
     double _space = (MediaQuery.of(context).padding.top + 56 + 30);
-    if (animateH > MediaQuery.of(context).size.height - _space) {
-      animateH -= MediaQuery.of(context).size.height;
+    if (animateH > screenH - _space) {
+      animateH -= screenH;
       animateH += _space;
+      double scrollBottom = _scrollController.position.maxScrollExtent;
+      if (scrollBottom > animateH + screenH / 3) {
+        animateH += screenH / 3;
+      }
       _scrollController.animateTo(animateH,
           duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
     }

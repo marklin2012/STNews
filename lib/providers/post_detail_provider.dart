@@ -40,6 +40,10 @@ class PostDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void initFootShowEdit() {
+    _footerShowEdit = false;
+  }
+
   Future initComments() async {
     _page = 1;
     ResultData result = await Api.getCommentList(

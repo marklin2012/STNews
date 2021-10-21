@@ -73,19 +73,20 @@ class _CommentCellState extends State<CommentCell> {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    (_model?.favouriteCount ?? 0).toString(),
-                    style: NewsTextStyle.style12NormalThrGrey,
-                  ),
-                  SizedBox(width: 5.4),
-                  STButton.icon(
-                    backgroundColor: Colors.transparent,
-                    icon: _model?.isUserFavourite ?? false
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: _commentFavourite,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      (_model?.favouriteCount ?? 0).toString(),
+                      style: NewsTextStyle.style12NormalThrGrey,
+                    ),
+                    SizedBox(width: 5.4),
+                    _model?.isUserFavourite ?? false
                         ? Image(
                             width: 18,
                             height: 18,
@@ -95,10 +96,8 @@ class _CommentCellState extends State<CommentCell> {
                             STIcons.commonly_like,
                             size: 18,
                           ),
-                    padding: EdgeInsets.zero,
-                    onTap: _commentFavourite,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
