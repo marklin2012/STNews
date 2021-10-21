@@ -182,12 +182,12 @@ class _SearchPostPageState extends State<SearchPostPage> {
       STToast.show(context: context, message: '搜素内容不能为空');
       return;
     }
-    STDebounce().debounce(() async {
+    STDebounce().longDebounce(() async {
       NewsLoading.start(context);
       _isSearched = true;
       await postSearchProvider.search(key: _controller.text);
       NewsLoading.stop();
-    });
+    }, time: 600);
   }
 
   void _gotoDetailPage(int index) {
