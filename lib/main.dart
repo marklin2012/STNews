@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:saturn/saturn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/login_page.dart';
@@ -25,9 +23,6 @@ import 'package:stnews/utils/st_routers.dart';
 void main() {
   // init API dio
   Api.initAPI();
-
-  // 设置防抖时间间隔
-  STDebounce().timeInterval = 200;
 
   // ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({});

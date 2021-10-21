@@ -16,6 +16,7 @@ import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class FeedbackSuggestionPage extends StatefulWidget {
+  static const feedbackSuggestionDebounceKey = '_feedbackSuggestionDebounceKey';
   const FeedbackSuggestionPage({Key? key}) : super(key: key);
 
   @override
@@ -212,13 +213,17 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        STDebounce().debounce(() {
-          NewsImagePicker.showPicker(
-            context: context,
-            galleryTap: _openGallery,
-            cameraTap: _useCamera,
-          );
-        });
+        STDebounce().start(
+          key: FeedbackSuggestionPage.feedbackSuggestionDebounceKey,
+          func: () {
+            NewsImagePicker.showPicker(
+              context: context,
+              galleryTap: _openGallery,
+              cameraTap: _useCamera,
+            );
+          },
+          time: 500,
+        );
       },
       child: Image(
         image: AssetImage('assets/images/default_add_picture.png'),

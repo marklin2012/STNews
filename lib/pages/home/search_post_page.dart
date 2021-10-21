@@ -16,6 +16,7 @@ import 'package:stnews/utils/st_routers.dart';
 
 class SearchPostPage extends StatefulWidget {
   static const searchHeroTag = 'searchPost';
+  static const searchPostDebounceKey = '_searchPostDebounceKey';
   const SearchPostPage({Key? key}) : super(key: key);
 
   @override
@@ -182,12 +183,16 @@ class _SearchPostPageState extends State<SearchPostPage> {
       STToast.show(context: context, message: '搜素内容不能为空');
       return;
     }
-    STDebounce().longDebounce(() async {
-      NewsLoading.start(context);
-      _isSearched = true;
-      await postSearchProvider.search(key: _controller.text);
-      NewsLoading.stop();
-    }, time: 600);
+    STDebounce().start(
+      key: SearchPostPage.searchPostDebounceKey,
+      func: () async {
+        NewsLoading.start(context);
+        _isSearched = true;
+        await postSearchProvider.search(key: _controller.text);
+        NewsLoading.stop();
+      },
+      time: 600,
+    );
   }
 
   void _gotoDetailPage(int index) {

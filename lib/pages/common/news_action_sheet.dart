@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 class NewsActionSheetAction extends StatefulWidget {
+  static const newsActionSheetDebounceKey = 'NewsActionSheetDebounceKey';
   const NewsActionSheetAction(
       {Key? key,
       required this.onPressed,
@@ -46,7 +47,11 @@ class _NewsActionSheetActionState extends State<NewsActionSheetAction> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        STDebounce().debounce(widget.onPressed);
+        STDebounce().start(
+          key: NewsActionSheetAction.newsActionSheetDebounceKey,
+          func: widget.onPressed,
+          time: 200,
+        );
       },
       onTapDown: (TapDownDetails tapDownDetails) {
         _colorNoti.value = ColorConfig.baseFirBule;
