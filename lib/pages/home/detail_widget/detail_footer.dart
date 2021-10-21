@@ -184,7 +184,7 @@ class _DetailFooterState extends State<DetailFooter> {
               child: TextField(
                 controller: _controller,
                 focusNode: _commentFocus,
-                maxLines: 100,
+                maxLines: 5,
                 minLines: 3,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
