@@ -224,29 +224,29 @@ class _DetailFooterState extends State<DetailFooter> {
       STToast.show(context: context, message: '评论不可为空');
       return;
     }
-    NewsLoading.start(context);
+    // NewsLoading.start(context);
     bool isSuc = await postDetailProvider.addComment(content);
     if (isSuc) {
       _controller.text = '';
       _commentFocus.unfocus();
       postDetailProvider.footerShowEdit = false;
     }
-    NewsLoading.stop();
+    // NewsLoading.stop();
   }
 
   /// 收藏或取消收藏该文章
   void _favouritedPost() async {
     if (postDetailProvider.footerShowEdit) return;
-    NewsLoading.start(context);
+    // NewsLoading.start(context);
     await postDetailProvider.favouritedPost();
-    NewsLoading.stop();
+    // NewsLoading.stop();
   }
 
   /// 点赞或取消点赞该文章
   void _likedPost() async {
     if (postDetailProvider.footerShowEdit) return;
-    NewsLoading.start(context);
+    // NewsLoading.start(context);
     await postDetailProvider.likedPost();
-    NewsLoading.stop();
+    // NewsLoading.stop();
   }
 }
