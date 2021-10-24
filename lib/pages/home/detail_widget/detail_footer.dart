@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
-import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
@@ -210,6 +209,7 @@ class _DetailFooterState extends State<DetailFooter> {
                     onTap: () {
                       _addComment(_controller.text);
                     },
+                    debounceTime: 200,
                   );
                 }),
           ],

@@ -39,7 +39,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
         _countNoti.value = '${_feedbackCon.text.length}' + '/100';
       });
     _contactCon = TextEditingController();
-    // _images = ['0', '1', '2', '3', '4'];
     _images = [];
   }
 
@@ -222,7 +221,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
               cameraTap: _useCamera,
             );
           },
-          time: 500,
         );
       },
       child: Image(

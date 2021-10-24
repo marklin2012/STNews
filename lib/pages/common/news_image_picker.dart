@@ -45,21 +45,22 @@ class NewsImagePicker {
           ),
         ),
         NewsActionSheetAction(
-            onPressed: () {
-              STRouters.pop(context);
-            },
-            child: Container(
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                '取消',
-                style: NewsTextStyle.style18BoldBlack,
-              ),
-            )),
+          onPressed: () {
+            STRouters.pop(context);
+          },
+          child: Container(
+            height: 50,
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '取消',
+              style: NewsTextStyle.style18BoldBlack,
+            ),
+          ),
+        ),
       ],
     );
   }

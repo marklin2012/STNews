@@ -156,10 +156,6 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
   void initState() {
     super.initState();
     _lists = [];
-  }
-
-  @override
-  Widget build(BuildContext context) {
     if (widget.title != null && widget.title!.isNotEmpty) {
       final _title = Container(
         padding: EdgeInsets.symmetric(vertical: 10),
@@ -184,7 +180,10 @@ class _NewsActionSheetState extends State<NewsActionSheet> {
     if (widget.acitons != null && widget.acitons!.isNotEmpty) {
       _lists.addAll(widget.acitons!);
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
