@@ -13,6 +13,12 @@ const FONTSIZE22 = 22.0;
 const FONTSIZE28 = 28.0;
 
 class NewsTextStyle {
+  static get style12NormalSecGrey => TextStyle(
+        color: ColorConfig.textSecColor,
+        fontSize: FONTSIZE12,
+        fontWeight: FONTWEIGHT400,
+      );
+
   static get style12NormalThrGrey => TextStyle(
         color: ColorConfig.textThrColor,
         fontSize: FONTSIZE12,

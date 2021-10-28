@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/circle/circle_page.dart';
 
-import 'package:stnews/pages/home/home.dart';
+import 'package:stnews/pages/home/home_page.dart';
 import 'package:stnews/pages/person/person.dart';
 
 class TabbarPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _TabbarPageState extends State<TabbarPage> {
     return STTabbar(
       pages: [
         HomePage(),
+        CirclePage(),
         PersonPage(),
       ],
       items: [
@@ -30,6 +32,12 @@ class _TabbarPageState extends State<TabbarPage> {
               size: 28,
             ),
             label: '资讯'),
+        const BottomNavigationBarItem(
+            icon: Icon(
+              STIcons.commonly_fire,
+              size: 28,
+            ),
+            label: '圈圈'),
         const BottomNavigationBarItem(
             icon: Icon(
               STIcons.commonly_user,

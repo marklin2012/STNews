@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
+import 'package:stnews/providers/circle_provider.dart';
+import 'package:stnews/providers/circle_search_provider.dart';
 import 'package:stnews/providers/color_theme_provider.dart';
 import 'package:stnews/providers/favourited_post_provider.dart';
 import 'package:stnews/providers/favourited_user_provider.dart';
@@ -25,16 +27,16 @@ void main() {
   Api.initAPI();
 
   // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({});
+  // SharedPreferences.setMockInitialValues({});
 
   /// 服务器token
   /// ignore: invalid_use_of_visible_for_testing_member
-  // SharedPreferences.setMockInitialValues({
-  //   'token':
-  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM0MjI1MTA0fQ.KlwbYsyfpFcDQei72dNQ0v_6VvsqZfkjHg9XB-0-6B8',
-  //   'user':
-  //       '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"用户8888584","sex":0}'
-  // });
+  SharedPreferences.setMockInitialValues({
+    'token':
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM0MjI1MTA0fQ.KlwbYsyfpFcDQei72dNQ0v_6VvsqZfkjHg9XB-0-6B8',
+    'user':
+        '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"用户8888584","sex":0}'
+  });
 
   runApp(
     MultiProvider(
@@ -48,6 +50,8 @@ void main() {
         ChangeNotifierProvider.value(value: FavouritedPostProvider()),
         ChangeNotifierProvider.value(value: FavouritedUserProvider()),
         ChangeNotifierProvider.value(value: NoticeProvider()),
+        ChangeNotifierProvider.value(value: CircleProvider()),
+        ChangeNotifierProvider.value(value: CircleSearchProvider()),
       ],
       child: MyApp(),
     ),
