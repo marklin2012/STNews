@@ -4,16 +4,15 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
-import 'package:stnews/pages/common/person_home_header.dart';
-
-import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/my_favourite_user_page.dart';
 import 'package:stnews/pages/person/my_favourite_post_page.dart';
-import 'package:stnews/pages/person/person_home_page.dart';
+import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/pages/person/person_info/person_info_page.dart';
 import 'package:stnews/pages/person/person_info/show_avatar_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
+import 'package:stnews/pages/person/person_widgets/person_header.dart';
+import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
@@ -49,7 +48,7 @@ class _PersonPageState extends State<PersonPage> {
           child: Column(
             children: [
               Consumer<UserProvider>(builder: (context, userProvider, child) {
-                return PersonHomeHeader(
+                return PersonHeader(
                   leading: GestureDetector(
                     onTap: () {
                       // 查看头像
@@ -112,6 +111,7 @@ class _PersonPageState extends State<PersonPage> {
             context,
             PersonHomePage(
               userID: UserProvider.shared.user.id ?? '',
+              type: PersonHomeShowType.PersonHomeShowPost,
             ));
         break;
       case 1:

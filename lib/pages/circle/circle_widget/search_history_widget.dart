@@ -31,6 +31,7 @@ class _SearchHistoryState extends State<SearchHistory> {
         padding: EdgeInsets.fromLTRB(16, 24, 18, 24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

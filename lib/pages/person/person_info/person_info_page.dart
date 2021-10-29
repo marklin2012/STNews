@@ -10,8 +10,8 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
-import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/person/person_info/change_info_page.dart';
+import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';

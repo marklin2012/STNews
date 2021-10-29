@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/main.dart';
 
-import 'package:stnews/pages/common/person_tile.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/person/person_setting/about_me/about_me_page.dart';
 import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/pages/person/person_setting/feedback_suggestion/feedback_suggestion_page.dart';
 import 'package:stnews/pages/person/person_setting/message_setting_page.dart';
+import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';

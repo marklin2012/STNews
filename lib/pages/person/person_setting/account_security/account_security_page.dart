@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 
-import 'package:stnews/pages/common/person_tile.dart';
 import './change_mobile/change_mobile_page.dart';
 import 'change_password/check_code_page.dart';
 import 'package:stnews/providers/user_provider.dart';

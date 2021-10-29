@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_cell.dart';
 import 'package:stnews/pages/circle/search_circle_page.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_provider.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/st_scale.dart';
@@ -73,6 +75,22 @@ class _CirclePageState extends State<CirclePage> {
                     : EdgeInsets.zero,
                 child: CircleCell(
                   circleModel: circleP.lists[index],
+                  authorTap: (String? authorID) {
+                    if (authorID == null) return;
+                    // 去个人圈子主页
+                    STRouters.push(
+                      context,
+                      PersonHomePage(
+                        userID: authorID,
+                        type: PersonHomeShowType.PersonHomeShowCircle,
+                      ),
+                    );
+                  },
+                  circleTap: (String? circleID) {
+                    if (circleID == null) return;
+                    // 去圈子详情页
+                    STRouters.push(context, CircleDetailPage());
+                  },
                 ),
               );
             },

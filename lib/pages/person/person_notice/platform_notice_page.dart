@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 
-import 'package:stnews/pages/common/person_notice_cell.dart';
 import 'package:stnews/pages/login/webview_page.dart';
+import 'package:stnews/pages/person/person_widgets/person_notice_cell.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class PlatformNoticePage extends StatefulWidget {

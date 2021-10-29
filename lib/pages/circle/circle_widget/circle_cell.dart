@@ -20,16 +20,28 @@ class CircleCell extends StatelessWidget {
     Key? key,
     this.circleModel,
     this.authorTap,
-    this.isMargin = false,
+    this.circleTap,
   }) : super(key: key);
 
   final CircleModel? circleModel;
-  final Function()? authorTap;
-  final bool isMargin;
+  final Function(String? authorID)? authorTap;
+  final Function(String? circleID)? circleTap;
 
   @override
   Widget build(BuildContext context) {
     if (circleModel == null) return Container();
+    return InkWell(
+      highlightColor: ColorConfig.fourGrey,
+      onTap: () {
+        if (circleTap != null) {
+          circleTap!(circleModel?.id);
+        }
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Container(
       width: NewsScale.sw(181, context),
       height: NewsScale.sh(332, context),
@@ -95,6 +107,9 @@ class CircleCell extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               // 作者详情
+              if (authorTap != null) {
+                authorTap!(circleModel?.user?.id);
+              }
             },
             behavior: HitTestBehavior.translucent,
             child: Container(
