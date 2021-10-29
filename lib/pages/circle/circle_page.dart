@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
+import 'package:stnews/pages/circle/circle_publish_page.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_cell.dart';
 import 'package:stnews/pages/circle/search_circle_page.dart';
 import 'package:stnews/pages/common/color_config.dart';
@@ -105,7 +106,10 @@ class _CirclePageState extends State<CirclePage> {
     return FloatingActionButton(
       backgroundColor: ColorConfig.baseFirBule,
       foregroundColor: ColorConfig.accentColor,
-      onPressed: () {},
+      onPressed: () {
+        // 去发布页
+        STRouters.push(context, CirclePublishPage());
+      },
       child: Icon(
         STIcons.commonly_camera,
         size: 20,

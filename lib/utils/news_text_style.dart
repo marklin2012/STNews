@@ -116,6 +116,12 @@ class NewsTextStyle {
         color: ColorConfig.textSecColor,
       );
 
+  static get style16NormalThrGrey => TextStyle(
+        fontSize: FONTSIZE16,
+        fontWeight: FONTWEIGHT400,
+        color: ColorConfig.textThrColor,
+      );
+
   static get style16NormalFourGrey => TextStyle(
         color: ColorConfig.textFourColor,
         fontSize: FONTSIZE16,

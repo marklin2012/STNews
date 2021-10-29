@@ -15,12 +15,22 @@ import 'package:stnews/utils/st_cache_image.dart';
 /// isHead 如果不为空即有头像
 
 class PersonTile extends StatelessWidget {
-  const PersonTile({Key? key, this.onTap, required this.data, this.height = 48})
-      : super(key: key);
+  const PersonTile({
+    Key? key,
+    this.onTap,
+    required this.data,
+    this.height = 48,
+    this.iconColor,
+    this.titleStyle,
+    this.subTitleStyle,
+  }) : super(key: key);
 
   final Map data;
   final void Function()? onTap;
   final double height;
+  final Color? iconColor;
+  final TextStyle? titleStyle;
+  final TextStyle? subTitleStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +52,8 @@ class PersonTile extends StatelessWidget {
         child: STCaCheImage.loadingImage(imageUrl: _imagePath),
       );
     } else if (hasSubTitle != null) {
-      subWidget = Text(hasSubTitle, style: NewsTextStyle.style16NormalSecGrey);
+      subWidget = Text(hasSubTitle,
+          style: subTitleStyle ?? NewsTextStyle.style16NormalSecGrey);
     }
 
     final iconData = data['icon'];
@@ -69,11 +80,12 @@ class PersonTile extends StatelessWidget {
                         Icon(
                           iconData,
                           size: 20,
+                          color: iconColor ?? Colors.black,
                         ),
                       if (iconData != null) SizedBox(width: 14),
                       Text(
                         data['title'],
-                        style: NewsTextStyle.style16NormalBlack,
+                        style: titleStyle ?? NewsTextStyle.style16NormalBlack,
                       ),
                     ]),
                 Row(children: [

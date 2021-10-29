@@ -7,6 +7,8 @@ import 'package:stnews/utils/st_routers.dart';
 class NewsImagePicker {
   static showPicker({
     required BuildContext context,
+    String? firContent,
+    String? secContent,
     void Function()? galleryTap,
     void Function()? cameraTap,
   }) {
@@ -20,7 +22,7 @@ class NewsImagePicker {
             height: 50,
             alignment: Alignment.center,
             child: Text(
-              '从相册选择图片',
+              firContent ?? '从相册选择图片',
               style: NewsTextStyle.style16NormalBlack,
             ),
           ),
@@ -35,7 +37,7 @@ class NewsImagePicker {
             height: 50,
             alignment: Alignment.center,
             child: Text(
-              '拍照',
+              secContent ?? '拍照',
               style: NewsTextStyle.style16NormalBlack,
             ),
           ),
@@ -49,10 +51,12 @@ class NewsImagePicker {
             STRouters.pop(context);
           },
           child: Container(
-            height: 50,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+            height: 44,
+            width: MediaQuery.of(context).size.width - 48,
+            margin: EdgeInsets.symmetric(vertical: 8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
+              color: ColorConfig.fourGrey,
             ),
             alignment: Alignment.center,
             child: Text(
