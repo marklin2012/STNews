@@ -14,7 +14,7 @@ import 'package:stnews/pages/common/scroll_header.dart';
 import 'package:stnews/pages/home/detail_widget/deatil_header.dart';
 import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
-import 'package:stnews/pages/person/person_home_page.dart';
+import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -102,6 +102,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                 context,
                                 PersonHomePage(
                                   userID: provider.postModel.author!.id!,
+                                  type: PersonHomeShowType.PersonHomeShowPost,
                                 ),
                               );
                             }
