@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 
@@ -72,6 +73,9 @@ class _HomePageState extends State<HomePage> {
           onTap: _loadAndRefresh,
         );
       }
+      List<String> _pageLists = homePostP.banners.map((PostModel e) {
+        return e.coverImage ?? '';
+      }).toList();
       return NewsEasyRefresh(
         hasHeader: true,
         hasFooter: true,
@@ -81,7 +85,7 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverToBoxAdapter(
               child: PageViewWidget(
-                pageList: homePostP.banners,
+                pageList: _pageLists,
               ),
             ),
             SliverList(
