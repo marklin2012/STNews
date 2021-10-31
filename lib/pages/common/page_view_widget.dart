@@ -16,6 +16,7 @@ class PageViewWidget extends StatefulWidget {
     this.isAutoRoll = true,
     this.autoRollTime = 3,
     this.margin,
+    this.decoration,
   }) : super(key: key);
 
   final List<String>? pageList;
@@ -24,6 +25,7 @@ class PageViewWidget extends StatefulWidget {
   final bool isAutoRoll;
   final int autoRollTime;
   final EdgeInsets? margin;
+  final BoxDecoration? decoration;
 
   @override
   _PageViewWidgetState createState() => _PageViewWidgetState();
@@ -124,14 +126,14 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     return Container(
       margin: widget.margin ??
           EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-      ),
+      decoration: widget.decoration ??
+          BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
       padding: EdgeInsets.zero,
       alignment: Alignment.center,
-      child: Container(
-        color: Colors.yellow,
+      child: Center(
         child: CachedNetworkImage(
           width: 500,
           height: 200,

@@ -34,7 +34,7 @@ class _CommentCellState extends State<CommentCell> {
   @override
   Widget build(BuildContext context) {
     _model = widget.model;
-    late String _publishDateStr;
+    String _publishDateStr = '昨天';
     if (_model?.publisheddate != null) {
       DateTime datetime =
           STString.dateTimeFromString(dateStr: _model!.publisheddate!);
