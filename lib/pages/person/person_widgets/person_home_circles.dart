@@ -10,6 +10,7 @@ import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_scale.dart';
 import 'package:stnews/utils/string+.dart';
 
 class PersonHomeCircles extends StatefulWidget {
@@ -41,7 +42,9 @@ class _PersonHomeCirclesState extends State<PersonHomeCircles> {
       return SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return PersonHomeCirclesCell();
+            return PersonHomeCirclesCell(
+              images: index == 1 ? ['', '', '', ''] : [],
+            );
           },
           childCount: 3,
         ),
@@ -51,9 +54,15 @@ class _PersonHomeCirclesState extends State<PersonHomeCircles> {
 }
 
 class PersonHomeCirclesCell extends StatelessWidget {
-  const PersonHomeCirclesCell({Key? key, this.userModel}) : super(key: key);
+  const PersonHomeCirclesCell({
+    Key? key,
+    this.userModel,
+    this.images,
+  }) : super(key: key);
 
   final UserModel? userModel;
+
+  final List<String>? images;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +88,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           // 图片的展示
-          _buildImages(),
+          _buildImages(context),
           // 底部按钮
           _buildBottomAction(),
         ],
@@ -125,17 +134,40 @@ class PersonHomeCirclesCell extends StatelessWidget {
     );
   }
 
-  Widget _buildImages() {
+  Widget _buildImages(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 12),
-      child: Container(
+      child: _buildSubImages(context),
+    );
+  }
+
+  Widget _buildSubImages(BuildContext context) {
+    if (images == null) {
+      return Container();
+    } else if (images!.isEmpty || images!.length == 1) {
+      return Container(
         color: ColorConfig.baseFourBlue,
         height: 168,
         child: Center(
           child: NewsImage.defaultCircle(),
         ),
-      ),
-    );
+      );
+    } else {
+      return Wrap(
+        runSpacing: NewsScale.sh(3, context),
+        spacing: NewsScale.sw(3, context),
+        children: images!.map((e) {
+          return Container(
+            color: ColorConfig.baseFourBlue,
+            width: NewsScale.sw(112, context),
+            height: NewsScale.sw(112, context),
+            child: Center(
+              child: NewsImage.defaultCircle(height: 50),
+            ),
+          );
+        }).toList(),
+      );
+    }
   }
 
   Widget _buildBottomAction() {
