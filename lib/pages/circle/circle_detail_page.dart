@@ -19,11 +19,21 @@ class CircleDetailPage extends StatefulWidget {
 }
 
 class _CircleDetailPageState extends State<CircleDetailPage> {
+  DetailFooterData _data = DetailFooterData.init(true, false, false);
+  late ValueNotifier<DetailFooterData> _detailFooterNoti;
+
+  @override
+  void initState() {
+    super.initState();
+    _detailFooterNoti = ValueNotifier(_data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlankPutKeyborad(
         child: _buildBody(),
+        onTap: () {},
       ),
     );
   }
@@ -97,7 +107,16 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
       bottom: 0,
       left: 0,
       right: 0,
-      child: DetailFooter(),
+      child: DetailFooter(
+          data: _data,
+          switchCommitTap: (bool value) {
+            switchFooterCommited(value);
+          }),
     );
+  }
+
+  void switchFooterCommited(bool isCommit) {
+    _data = _data.setCommited(isCommit);
+    _detailFooterNoti.value = _data;
   }
 }

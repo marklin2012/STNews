@@ -1,19 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
-import 'package:stnews/providers/post_detail_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
+
+class DetailFooterData {
+  DetailFooterData({
+    this.isCommited = true,
+    this.isFavourited = false,
+    this.isLiked = false,
+    this.commentedCount,
+  });
+
+  bool isCommited;
+  bool isFavourited;
+  bool isLiked;
+  String? commentedCount;
+
+  DetailFooterData.init(this.isCommited, this.isFavourited, this.isLiked,
+      {this.commentedCount});
+
+  DetailFooterData setFavPost(bool isFav) {
+    return DetailFooterData(
+      isCommited: this.isCommited,
+      isFavourited: isFav,
+      isLiked: this.isLiked,
+      commentedCount: this.commentedCount,
+    );
+  }
+
+  DetailFooterData setLikePost(bool isLike) {
+    return DetailFooterData(
+      isCommited: this.isCommited,
+      isFavourited: this.isFavourited,
+      isLiked: isLike,
+      commentedCount: this.commentedCount,
+    );
+  }
+
+  DetailFooterData setCommited(bool isCommit) {
+    return DetailFooterData(
+      isCommited: isCommit,
+      isFavourited: this.isFavourited,
+      isLiked: this.isLiked,
+      commentedCount: this.commentedCount,
+    );
+  }
+
+  DetailFooterData setCommentCount(String commentCounts) {
+    return DetailFooterData(
+      isCommited: this.isCommited,
+      isFavourited: this.isFavourited,
+      isLiked: this.isLiked,
+      commentedCount: commentCounts,
+    );
+  }
+
+  DetailFooterData setCommentAndCommited(String commentCounts) {
+    return DetailFooterData(
+      isCommited: true,
+      isFavourited: this.isFavourited,
+      isLiked: this.isLiked,
+      commentedCount: commentCounts,
+    );
+  }
+}
 
 class DetailFooter extends StatefulWidget {
   const DetailFooter({
     Key? key,
+    required this.data,
+    required this.switchCommitTap,
     this.messageTap,
+    this.commentTap,
+    this.favouriteTap,
+    this.likeTap,
   }) : super(key: key);
 
+  final DetailFooterData data;
   final Function()? messageTap;
+  final Function(bool) switchCommitTap;
+  final Function(bool)? favouriteTap;
+  final Function(bool)? likeTap;
+  final Function(String)? commentTap;
 
   @override
   _DetailFooterState createState() => _DetailFooterState();
@@ -22,12 +92,11 @@ class DetailFooter extends StatefulWidget {
 class _DetailFooterState extends State<DetailFooter> {
   late TextEditingController _controller;
 
-  PostDetailProvider get postDetailProvider =>
-      Provider.of<PostDetailProvider>(context, listen: false);
-
   late ValueNotifier<bool> _sendEnableNoti;
 
   FocusNode _commentFocus = FocusNode();
+
+  late DetailFooterData _data;
 
   @override
   void initState() {
@@ -42,7 +111,6 @@ class _DetailFooterState extends State<DetailFooter> {
       });
     bool _sendEnable = false;
     _sendEnableNoti = ValueNotifier(_sendEnable);
-    postDetailProvider.getPostFavouritedAndLiked();
   }
 
   @override
@@ -53,28 +121,31 @@ class _DetailFooterState extends State<DetailFooter> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PostDetailProvider>(builder: (context, postDetP, _) {
-      return Stack(
-        children: [
-          Opacity(
-            opacity: postDetP.footerShowEdit ? 1.0 : 0.0,
-            child: _buildEditComments(),
+    _data = widget.data;
+    if (_data.isCommited) {
+      _controller.text = '';
+    }
+
+    return Stack(
+      children: [
+        Opacity(
+          opacity: _data.isCommited ? 0.0 : 1.0,
+          child: _buildEditComments(),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Opacity(
+            opacity: _data.isCommited ? 1.0 : 0.0,
+            child: _buildNormal(),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Opacity(
-              opacity: postDetP.footerShowEdit ? 0.0 : 1.0,
-              child: _buildNormal(postDetP),
-            ),
-          ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 
-  Widget _buildNormal(PostDetailProvider postDetP) {
+  Widget _buildNormal() {
     return Container(
       height: 44.0,
       padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
@@ -86,7 +157,7 @@ class _DetailFooterState extends State<DetailFooter> {
               behavior: HitTestBehavior.translucent,
               onTap: () {
                 FocusScope.of(context).requestFocus(_commentFocus);
-                postDetP.footerShowEdit = true;
+                widget.switchCommitTap(false);
               },
               child: Container(
                 height: 36,
@@ -112,13 +183,13 @@ class _DetailFooterState extends State<DetailFooter> {
               backgroundColor: Colors.transparent,
               icon: Icon(STIcons.commonly_message),
               onTap: () {
-                if (postDetP.footerShowEdit) return;
+                if (!_data.isCommited) return;
                 if (widget.messageTap != null) {
                   widget.messageTap!();
                 }
               },
             ),
-            value: postDetP.comments.length.toString(),
+            value: _data.commentedCount,
           ),
           SizedBox(
             width: 24,
@@ -126,7 +197,7 @@ class _DetailFooterState extends State<DetailFooter> {
           STButton.icon(
             padding: EdgeInsets.all(2.0),
             backgroundColor: Colors.transparent,
-            icon: postDetP.isFavouritedPost
+            icon: _data.isFavourited
                 ? Image(
                     width: 24,
                     height: 24,
@@ -135,7 +206,12 @@ class _DetailFooterState extends State<DetailFooter> {
                 : Icon(
                     STIcons.commonly_star,
                   ),
-            onTap: _favouritedPost,
+            onTap: () {
+              if (!_data.isCommited) return;
+              if (widget.favouriteTap != null) {
+                widget.favouriteTap!(_data.isFavourited);
+              }
+            },
           ),
           SizedBox(
             width: 24,
@@ -143,14 +219,19 @@ class _DetailFooterState extends State<DetailFooter> {
           STButton.icon(
             padding: EdgeInsets.all(2.0),
             backgroundColor: Colors.transparent,
-            icon: postDetP.isLikedPost
+            icon: _data.isLiked
                 ? Image(
                     width: 24,
                     height: 24,
                     image: AssetImage('assets/images/liked.png'),
                   )
                 : Icon(STIcons.commonly_like),
-            onTap: _likedPost,
+            onTap: () {
+              if (!_data.isCommited) return;
+              if (widget.likeTap != null) {
+                widget.likeTap!(_data.isLiked);
+              }
+            },
           ),
           SizedBox(
             width: 4,
@@ -165,7 +246,7 @@ class _DetailFooterState extends State<DetailFooter> {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         _commentFocus.unfocus();
-        postDetailProvider.footerShowEdit = false;
+        widget.switchCommitTap(true);
       },
       child: Container(
         padding: EdgeInsets.all(12.0),
@@ -224,29 +305,8 @@ class _DetailFooterState extends State<DetailFooter> {
       STToast.show(context: context, message: '评论不可为空');
       return;
     }
-    // NewsLoading.start(context);
-    bool isSuc = await postDetailProvider.addComment(content);
-    if (isSuc) {
-      _controller.text = '';
-      _commentFocus.unfocus();
-      postDetailProvider.footerShowEdit = false;
+    if (widget.commentTap != null) {
+      widget.commentTap!(content);
     }
-    // NewsLoading.stop();
-  }
-
-  /// 收藏或取消收藏该文章
-  void _favouritedPost() async {
-    if (postDetailProvider.footerShowEdit) return;
-    // NewsLoading.start(context);
-    await postDetailProvider.favouritedPost();
-    // NewsLoading.stop();
-  }
-
-  /// 点赞或取消点赞该文章
-  void _likedPost() async {
-    if (postDetailProvider.footerShowEdit) return;
-    // NewsLoading.start(context);
-    await postDetailProvider.likedPost();
-    // NewsLoading.stop();
   }
 }

@@ -27,24 +27,7 @@ class PostDetailProvider extends ChangeNotifier {
 
   List<UserModel> _favouritedLists = [];
 
-  bool _isFavouritedPost = false;
-  bool get isFavouritedPost => _isFavouritedPost;
-
-  bool _isLikedPost = false;
-  bool get isLikedPost => _isLikedPost;
-
-  bool _footerShowEdit = false;
-  bool get footerShowEdit => _footerShowEdit;
-  set footerShowEdit(bool showEdit) {
-    _footerShowEdit = showEdit;
-    notifyListeners();
-  }
-
-  void initFootShowEdit() {
-    _footerShowEdit = false;
-  }
-
-  Future initComments() async {
+  Future<bool> initComments() async {
     _page = 1;
     ResultData result = await Api.getCommentList(
         page: _page, perpage: _perpage, postid: postModel.id);
@@ -53,7 +36,9 @@ class PostDetailProvider extends ChangeNotifier {
       _hasMore = STList.hasMore(_temps);
       _comments = _temps.map((e) => CommentModel.fromJson(e)).toList();
       notifyListeners();
+      return Future.value(true);
     }
+    return Future.value(false);
   }
 
   Future<ResultRefreshData> loadMore() async {
@@ -78,7 +63,7 @@ class PostDetailProvider extends ChangeNotifier {
   }
 
   /// 查询是否关注了该用户
-  Future getFavouritedUser() async {
+  Future<bool> getFavouritedUser() async {
     ResultData result = await Api.getUserFavouriteList();
     if (result.success) {
       List _temp = result.data['favourites'];
@@ -90,8 +75,9 @@ class PostDetailProvider extends ChangeNotifier {
           break;
         }
       }
-      notifyListeners();
+      // notifyListeners();
     }
+    return Future.value(_isFavouritedUser);
   }
 
   /// 关注或取消关注该用户
@@ -106,16 +92,27 @@ class PostDetailProvider extends ChangeNotifier {
 
   /// 获取是否收藏或者点赞了该文章
   Future getPostFavouritedAndLiked() async {
-    if (postModel.id == null) return;
+    // notifyListeners();
+  }
+
+  Future<bool> getPostLiked() async {
+    if (postModel.id == null) return Future.value(false);
     ResultData result1 = await Api.getThumpubPost(id: postModel.id);
+    bool _isLikedPost = false;
     if (result1.success) {
       _isLikedPost = result1.data['isThumbup'] as bool;
     }
+    return Future.value(_isLikedPost);
+  }
+
+  Future<bool> getPostFavourited() async {
+    if (postModel.id == null) return Future.value(false);
     ResultData result2 = await Api.getFavouritePost(id: postModel.id);
+    bool _isFavouritedPost = false;
     if (result2.success) {
       _isFavouritedPost = result2.data['isFavourite'] as bool;
     }
-    notifyListeners();
+    return Future.value(_isFavouritedPost);
   }
 
   /// 发布评论
@@ -133,23 +130,25 @@ class PostDetailProvider extends ChangeNotifier {
   }
 
   /// 收藏或取消收藏该文章
-  Future favouritedPost() async {
-    ResultData result = await Api.favoritePost(
-        postid: postModel.id, status: !_isFavouritedPost);
+  Future<bool> favouritedPost(bool isFav) async {
+    bool _isFav = isFav;
+    ResultData result =
+        await Api.favoritePost(postid: postModel.id, status: !_isFav);
     if (result.success) {
-      _isFavouritedPost = !_isFavouritedPost;
-      notifyListeners();
+      _isFav = !_isFav;
     }
+    return Future.value(_isFav);
   }
 
   /// 点赞或取消点赞该文章
-  Future likedPost() async {
+  Future<bool> likedPost(bool isLiked) async {
+    bool _isLiked = isLiked;
     ResultData result =
-        await Api.thumbupPost(post: postModel.id, status: !_isLikedPost);
+        await Api.thumbupPost(post: postModel.id, status: !_isLiked);
     if (result.success) {
-      _isLikedPost = !_isLikedPost;
-      notifyListeners();
+      _isLiked = !_isLiked;
     }
+    return Future.value(_isLiked);
   }
 
   /// 点赞评论

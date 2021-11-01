@@ -26,16 +26,15 @@ class CircleDetailNavHeader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          STButton.icon(
-            icon: Icon(
-              STIcons.direction_leftoutlined,
-              color: ColorConfig.textFirColor,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 7),
-            backgroundColor: Colors.transparent,
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
             onTap: () {
               STRouters.pop(context);
             },
+            child: Icon(
+              STIcons.direction_leftoutlined,
+              color: ColorConfig.textFirColor,
+            ),
           ),
           if (leadingImg != null)
             Padding(

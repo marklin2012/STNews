@@ -37,14 +37,31 @@ class _PostDetailPageState extends State<PostDetailPage> {
   PostDetailProvider get postDetailProvider =>
       Provider.of<PostDetailProvider>(context, listen: false);
 
+  DetailFooterData _data = DetailFooterData.init(true, false, false);
+  late ValueNotifier<DetailFooterData> _detailFooterNoti;
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
     postDetailProvider.postModel = widget.model ?? PostModel();
-    postDetailProvider.initFootShowEdit();
     postDetailProvider.initComments();
     postDetailProvider.getFavouritedUser();
+    _detailFooterNoti = ValueNotifier(_data);
+    _initData();
+  }
+
+  Future _initData() async {
+    bool _isFavPost = await postDetailProvider.getPostFavourited();
+    bool _isLikePost = await postDetailProvider.getPostLiked();
+
+    _detailFooterNoti.value = DetailFooterData(
+      isCommited: true,
+      isFavourited: _isFavPost,
+      isLiked: _isLikePost,
+      commentedCount: postDetailProvider.comments.length.toString(),
+    );
+    _data = _detailFooterNoti.value;
   }
 
   @override
@@ -69,7 +86,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
       body: BlankPutKeyborad(
         child: buildChildWidget(),
         onTap: () {
-          postDetailProvider.footerShowEdit = false;
+          switchFooterCommited(true);
         },
       ),
     );
@@ -183,9 +200,26 @@ class _PostDetailPageState extends State<PostDetailPage> {
             bottom: 0,
             left: 0,
             right: 0,
-            child: DetailFooter(
-              messageTap: _scrollToComments,
-            ),
+            child: ValueListenableBuilder(
+                valueListenable: _detailFooterNoti,
+                builder: (BuildContext context, DetailFooterData data, _) {
+                  return DetailFooter(
+                    data: _data,
+                    switchCommitTap: (bool isCommit) {
+                      switchFooterCommited(isCommit);
+                    },
+                    messageTap: _scrollToComments,
+                    commentTap: (String content) {
+                      _addComment(content);
+                    },
+                    favouriteTap: (bool isFav) {
+                      _favouritedPost(isFav);
+                    },
+                    likeTap: (bool isLiked) {
+                      _likedPost(isLiked);
+                    },
+                  );
+                }),
           ),
         ],
       ),
@@ -223,10 +257,47 @@ class _PostDetailPageState extends State<PostDetailPage> {
     }
   }
 
+  void switchFooterCommited(bool isCommit) {
+    _data = _data.setCommited(isCommit);
+    _detailFooterNoti.value = _data;
+  }
+
+  void getCommentCount() {
+    int count = postDetailProvider.comments.length;
+    _data = _data.setCommentCount(count.toString());
+    _detailFooterNoti.value = _data;
+  }
+
   Future<ResultRefreshData> _loadMore() async {
     NewsLoading.start(context);
     ResultRefreshData data = await postDetailProvider.loadMore();
     NewsLoading.stop();
+    getCommentCount();
     return data;
+  }
+
+  /// 发布评论
+  void _addComment(String content) async {
+    bool isSuc = await postDetailProvider.addComment(content);
+    if (isSuc) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      int count = postDetailProvider.comments.length;
+      _data = _data.setCommentAndCommited(count.toString());
+      _detailFooterNoti.value = _data;
+    }
+  }
+
+  /// 收藏或取消收藏该文章
+  void _favouritedPost(bool isFav) async {
+    bool _isFav = await postDetailProvider.favouritedPost(isFav);
+    _data = _data.setFavPost(_isFav);
+    _detailFooterNoti.value = _data;
+  }
+
+  /// 点赞或取消点赞该文章
+  void _likedPost(bool isLiked) async {
+    bool _isLiked = await postDetailProvider.likedPost(isLiked);
+    _data = _data.setLikePost(_isLiked);
+    _detailFooterNoti.value = _data;
   }
 }
