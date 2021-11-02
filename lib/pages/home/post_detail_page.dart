@@ -37,36 +37,62 @@ class _PostDetailPageState extends State<PostDetailPage> {
   PostDetailProvider get postDetailProvider =>
       Provider.of<PostDetailProvider>(context, listen: false);
 
-  DetailFooterData _data = DetailFooterData.init(true, false, false);
+  late PostDetailHeaderData _headerData;
+  late ValueNotifier<PostDetailHeaderData> _detailHeaderNoti;
+
+  DetailFooterData _footerData = DetailFooterData.init(true, false, false);
   late ValueNotifier<DetailFooterData> _detailFooterNoti;
 
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    _headerData = PostDetailHeaderData(
+      publishedDate: widget.model?.publisheddate,
+      title: widget.model?.title,
+      authorAvatar: widget.model?.author?.avatar,
+      authorNickName: widget.model?.author?.nickname,
+      authorId: widget.model?.author?.id,
+      isFavedUser: false,
+    );
+    _detailHeaderNoti = ValueNotifier(_headerData);
+    _detailFooterNoti = ValueNotifier(_footerData);
     postDetailProvider.postModel = widget.model ?? PostModel();
     postDetailProvider.initComments();
-    postDetailProvider.getFavouritedUser();
-    _detailFooterNoti = ValueNotifier(_data);
-    _initData();
+    _initHeaderData();
+    _initFooterData();
   }
 
-  Future _initData() async {
+  Future _initHeaderData() async {
+    bool _isFavUser = await postDetailProvider.getFavouritedUser();
+    _headerData = PostDetailHeaderData(
+      publishedDate: postDetailProvider.postModel.publisheddate,
+      title: postDetailProvider.postModel.title,
+      authorAvatar: postDetailProvider.postModel.author?.avatar,
+      authorNickName: postDetailProvider.postModel.author?.nickname,
+      authorId: postDetailProvider.postModel.author?.id,
+      isFavedUser: _isFavUser,
+    );
+    _detailHeaderNoti.value = _headerData;
+  }
+
+  Future _initFooterData() async {
     bool _isFavPost = await postDetailProvider.getPostFavourited();
     bool _isLikePost = await postDetailProvider.getPostLiked();
-
-    _detailFooterNoti.value = DetailFooterData(
+    _footerData = DetailFooterData(
       isCommited: true,
       isFavourited: _isFavPost,
       isLiked: _isLikePost,
       commentedCount: postDetailProvider.comments.length.toString(),
     );
-    _data = _detailFooterNoti.value;
+    _detailFooterNoti.value = _footerData;
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _detailHeaderNoti.dispose();
+    _detailFooterNoti.dispose();
     super.dispose();
   }
 
@@ -110,28 +136,30 @@ class _PostDetailPageState extends State<PostDetailPage> {
                         : 142,
                     minExtent: 44,
                     builder: (context, offset, __) {
-                      return _consumerPostModel(
-                        (buildContext, provider, child) => DetailHeader(
-                          offset: offset,
-                          authorTap: () {
-                            if (provider.postModel.author?.id != null) {
-                              STRouters.push(
-                                context,
-                                PersonHomePage(
-                                  userID: provider.postModel.author!.id!,
-                                  type: PersonHomeShowType.PersonHomeShowPost,
-                                ),
-                              );
-                            }
-                          },
-                          onFavouritedUser: () async {
-                            /// 关注或取消关注该用户
-                            NewsLoading.start(context);
-                            await postDetailProvider.favouritedUser();
-                            NewsLoading.stop();
-                          },
-                        ),
-                      );
+                      return ValueListenableBuilder(
+                          valueListenable: _detailHeaderNoti,
+                          builder: (BuildContext context,
+                              PostDetailHeaderData data, _) {
+                            return DetailHeader(
+                              offset: offset,
+                              data: data,
+                              authorTap: () {
+                                if (data.authorId != null) {
+                                  STRouters.push(
+                                    context,
+                                    PersonHomePage(
+                                      userID: data.authorId,
+                                      type:
+                                          PersonHomeShowType.PersonHomeShowPost,
+                                    ),
+                                  );
+                                }
+                              },
+                              onFavouritedUser: (bool isFavedUser) {
+                                _favouritedUser(isFavedUser);
+                              },
+                            );
+                          });
                     },
                   ),
                   // 文章内容
@@ -204,7 +232,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                 valueListenable: _detailFooterNoti,
                 builder: (BuildContext context, DetailFooterData data, _) {
                   return DetailFooter(
-                    data: _data,
+                    data: _footerData,
                     switchCommitTap: (bool isCommit) {
                       switchFooterCommited(isCommit);
                     },
@@ -258,14 +286,14 @@ class _PostDetailPageState extends State<PostDetailPage> {
   }
 
   void switchFooterCommited(bool isCommit) {
-    _data = _data.setCommited(isCommit);
-    _detailFooterNoti.value = _data;
+    _footerData = _footerData.setCommited(isCommit);
+    _detailFooterNoti.value = _footerData;
   }
 
   void getCommentCount() {
     int count = postDetailProvider.comments.length;
-    _data = _data.setCommentCount(count.toString());
-    _detailFooterNoti.value = _data;
+    _footerData = _footerData.setCommentCount(count.toString());
+    _detailFooterNoti.value = _footerData;
   }
 
   Future<ResultRefreshData> _loadMore() async {
@@ -282,22 +310,33 @@ class _PostDetailPageState extends State<PostDetailPage> {
     if (isSuc) {
       FocusScope.of(context).requestFocus(FocusNode());
       int count = postDetailProvider.comments.length;
-      _data = _data.setCommentAndCommited(count.toString());
-      _detailFooterNoti.value = _data;
+      _footerData = _footerData.setCommentAndCommited(count.toString());
+      _detailFooterNoti.value = _footerData;
     }
   }
 
   /// 收藏或取消收藏该文章
   void _favouritedPost(bool isFav) async {
     bool _isFav = await postDetailProvider.favouritedPost(isFav);
-    _data = _data.setFavPost(_isFav);
-    _detailFooterNoti.value = _data;
+    _footerData = _footerData.setFavPost(_isFav);
+    _detailFooterNoti.value = _footerData;
   }
 
   /// 点赞或取消点赞该文章
   void _likedPost(bool isLiked) async {
     bool _isLiked = await postDetailProvider.likedPost(isLiked);
-    _data = _data.setLikePost(_isLiked);
-    _detailFooterNoti.value = _data;
+    _footerData = _footerData.setLikePost(_isLiked);
+    _detailFooterNoti.value = _footerData;
+  }
+
+  /// 关注或取消关注该用户
+  void _favouritedUser(bool isFav) async {
+    if (_headerData.authorId == null) return;
+    NewsLoading.start(context);
+    bool _isFav = await postDetailProvider.favouritedUser(
+        authorId: _headerData.authorId!, isFaved: isFav);
+    _headerData = _headerData.setFavedUser(_isFav);
+    _detailHeaderNoti.value = _headerData;
+    NewsLoading.stop();
   }
 }

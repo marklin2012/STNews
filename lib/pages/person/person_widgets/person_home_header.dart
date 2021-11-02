@@ -86,9 +86,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
 
   void _changeFavouriteStatus() async {
     NewsLoading.start(context);
-    bool _isFav = await userHomeProvider.changeFavouritedUserStatus();
-    Provider.of<PostDetailProvider>(context, listen: false)
-        .userHomeChangeStatus(status: _isFav, userID: userHomeProvider.userID);
+    await userHomeProvider.changeFavouritedUserStatus();
     NewsLoading.stop();
   }
 }

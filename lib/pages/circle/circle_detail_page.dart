@@ -108,10 +108,11 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
       left: 0,
       right: 0,
       child: DetailFooter(
-          data: _data,
-          switchCommitTap: (bool value) {
-            switchFooterCommited(value);
-          }),
+        data: _data,
+        switchCommitTap: (bool value) {
+          switchFooterCommited(value);
+        },
+      ),
     );
   }
 

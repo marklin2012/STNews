@@ -22,10 +22,9 @@ class PostDetailProvider extends ChangeNotifier {
   int _perpage = NewsPerpage.finalPerPage;
   bool _hasMore = true;
 
-  bool _isFavouritedUser = false;
-  bool get isFavouritedUser => _isFavouritedUser;
-
-  List<UserModel> _favouritedLists = [];
+  // bool _isFavouritedUser = false;
+  // bool get isFavouritedUser => _isFavouritedUser;
+  // List<UserModel> _favouritedLists = [];
 
   Future<bool> initComments() async {
     _page = 1;
@@ -65,36 +64,37 @@ class PostDetailProvider extends ChangeNotifier {
   /// 查询是否关注了该用户
   Future<bool> getFavouritedUser() async {
     ResultData result = await Api.getUserFavouriteList();
+    bool _isFavouritedUser = false;
     if (result.success) {
       List _temp = result.data['favourites'];
-      _favouritedLists = _temp.map((e) => UserModel.fromJson(e)).toList();
-      _isFavouritedUser = false;
+      List<UserModel> _favouritedLists =
+          _temp.map((e) => UserModel.fromJson(e)).toList();
       for (UserModel user in _favouritedLists) {
         if (user.id == postModel.author?.id) {
           _isFavouritedUser = true;
           break;
         }
       }
-      // notifyListeners();
     }
     return Future.value(_isFavouritedUser);
   }
 
   /// 关注或取消关注该用户
-  Future favouritedUser() async {
+  Future<bool> favouritedUser({
+    required String authorId,
+    bool? isFaved,
+  }) async {
+    bool _isFaved = isFaved ?? false;
     ResultData result = await Api.changeUserFavourite(
-        followeduserid: postModel.author?.id, status: !_isFavouritedUser);
+        followeduserid: authorId, status: !_isFaved);
     if (result.success) {
-      _isFavouritedUser = !_isFavouritedUser;
+      _isFaved = !_isFaved;
       notifyListeners();
     }
+    return Future.value(_isFaved);
   }
 
-  /// 获取是否收藏或者点赞了该文章
-  Future getPostFavouritedAndLiked() async {
-    // notifyListeners();
-  }
-
+  /// 获取是否点赞了该文章
   Future<bool> getPostLiked() async {
     if (postModel.id == null) return Future.value(false);
     ResultData result1 = await Api.getThumpubPost(id: postModel.id);
@@ -105,6 +105,7 @@ class PostDetailProvider extends ChangeNotifier {
     return Future.value(_isLikedPost);
   }
 
+  /// 获取是否收藏或了该文章
   Future<bool> getPostFavourited() async {
     if (postModel.id == null) return Future.value(false);
     ResultData result2 = await Api.getFavouritePost(id: postModel.id);
@@ -174,10 +175,9 @@ class PostDetailProvider extends ChangeNotifier {
   }
 
   /// 接收在用户详情点击关注或取消关注
-  void userHomeChangeStatus({String? userID, required bool status}) {
-    if (userID == null) return;
-    if (userID != _postModel.author?.id) return;
-    _isFavouritedUser = status;
-    notifyListeners();
-  }
+  // void userHomeChangeStatus({String? userID, required bool status}) {
+  //   if (userID == null) return;
+  //   if (userID != _postModel.author?.id) return;
+  //   notifyListeners();
+  // }
 }
