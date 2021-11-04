@@ -7,7 +7,14 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 
 class PublishHeader extends StatefulWidget {
-  const PublishHeader({Key? key}) : super(key: key);
+  const PublishHeader({
+    Key? key,
+    this.titleController,
+    this.contentController,
+  }) : super(key: key);
+
+  final TextEditingController? titleController;
+  final TextEditingController? contentController;
 
   @override
   _PublishHeaderState createState() => _PublishHeaderState();
@@ -22,11 +29,11 @@ class _PublishHeaderState extends State<PublishHeader> {
   void initState() {
     super.initState();
     _titleNumNoti = ValueNotifier('0/18');
-    _titleController = TextEditingController()
-      ..addListener(() {
-        _titleNumNoti.value = '${_titleController.text.length}/18';
-      });
-    _contentController = TextEditingController();
+    _titleController = widget.titleController ?? TextEditingController();
+    _titleController.addListener(() {
+      _titleNumNoti.value = '${_titleController.text.length}/18';
+    });
+    _contentController = widget.contentController ?? TextEditingController();
   }
 
   @override

@@ -12,9 +12,15 @@ import 'package:stnews/utils/st_routers.dart';
 
 class PublishImages extends StatefulWidget {
   static const publishImagesDebounceKey = '_publishImagesDebounceKey';
-  const PublishImages({Key? key, this.sucImgCallBack}) : super(key: key);
+  const PublishImages(
+      {Key? key, this.sucImgCallBack, this.backgroundColor, this.padding})
+      : super(key: key);
 
   final Function(List<String>)? sucImgCallBack;
+
+  final Color? backgroundColor;
+
+  final EdgeInsets? padding;
 
   @override
   _PublishImagesState createState() => _PublishImagesState();
@@ -22,21 +28,25 @@ class PublishImages extends StatefulWidget {
 
 class _PublishImagesState extends State<PublishImages> {
   late List<String> _images;
+  late Color _backgroundColor;
+  late EdgeInsets _padding;
 
   @override
   void initState() {
     super.initState();
     _images = [];
+    _backgroundColor = widget.backgroundColor ?? ColorConfig.backgroundColor;
+    _padding = widget.padding ?? EdgeInsets.all(16.0);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: ColorConfig.backgroundColor,
+          color: _backgroundColor,
           borderRadius: BorderRadius.all(Radius.circular(8.0))),
       height: _getGridViewHeight(),
-      padding: EdgeInsets.all(16.0),
+      padding: _padding,
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

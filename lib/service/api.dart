@@ -14,8 +14,8 @@ const TimeoutSend = 3000;
 // iOS
 // const String BaseUrl = 'http://localhost:7001/';
 // andriod
-// const String BaseUrl =  'http://localhost:7001/';
-const String BaseUrl = 'http://120.78.145.47:7001/';
+const String BaseUrl = 'http://192.168.2.125:7001/';
+// const String BaseUrl = 'http://120.78.145.47:7001/';
 
 Dio dio = Dio();
 
@@ -418,6 +418,98 @@ class Api {
 
   /// 搜索文章标题
   static Future<ResultData> search(
-          {int page = 1, int perpage = 10, String? key}) =>
-      _get('/search?page=$page&per_page=$perpage', data: {'key': key});
+          {int page = 1,
+          int perpage = 10,
+          String? key,
+          bool showToastError = true}) =>
+      _get('/search?page=$page&per_page=$perpage',
+          data: {'key': key}, showToastError: showToastError);
+
+  /* 圈子相关 */
+  /// 创建圈子评论
+  static Future<ResultData> addCommentMoment(
+          {required String moment,
+          required String content,
+          String? reference,
+          String? comment,
+          bool showToastError = true}) =>
+      _post('/comment_moment/add',
+          data: {
+            'moment': moment,
+            'content': content,
+            'reference': reference,
+            'comment': comment,
+          },
+          showToastError: showToastError);
+
+  /// 获取圈子评论列表
+  static Future<ResultData> getCommentMomentList(
+          {required String moment,
+          int page = 1,
+          int perpage = 10,
+          bool showToastError = true}) =>
+      _get('/comment_moment/list',
+          data: {'page': page, 'perpage': perpage, 'moment': moment},
+          showToastError: showToastError);
+
+  /// 点赞圈子评论
+  static Future<ResultData> changeCommentMomentFavourite(
+          {required String moment, bool? status, bool showToastError = true}) =>
+      _post('/comment_moment/favourite',
+          data: {
+            'moment': moment,
+            'status': status,
+          },
+          showToastError: showToastError);
+
+  /// 创建圈子列表
+  static Future<ResultData> addMoment(
+          {required String title,
+          required String content,
+          required List<String> visibles,
+          List<String>? images,
+          bool showToastError = true}) =>
+      _post('/moment/add',
+          data: {
+            'title': title,
+            'content': content,
+            'visibles': visibles,
+            'images': images,
+          },
+          showToastError: showToastError);
+
+  /// 获取圈子列表
+  static Future<ResultData> getMomentList(
+          {int page = 1, int perpage = 10, bool showToastError = true}) =>
+      _get('/moment/list?page=$page&per_page=$perpage',
+          showToastError: showToastError);
+
+  /// 获取圈子详情
+  static Future<ResultData> getMomentDetail(
+          {required String id, bool showToastError = true}) =>
+      _get('/moment/$id', showToastError: showToastError);
+
+  /// 收藏圈子
+  static Future<ResultData> changeMomentFavourite(
+          {required String moment, bool? status, bool showToastError = true}) =>
+      _put('/moment/favourite',
+          data: {'moment': moment, 'status': status},
+          showToastError: showToastError);
+
+  /// 点赞圈子
+  static Future<ResultData> changeMomentThumbup(
+          {required String moment, bool? status, bool showToastError = true}) =>
+      _put('/moment/thumbup',
+          data: {'moment': moment, 'status': status},
+          showToastError: showToastError);
+
+  /// 是否点赞圈子
+  static Future<ResultData> getMomentThumbup(
+          {required String moment, bool showToastError = true}) =>
+      _get('/moment/thumbup/$moment', showToastError: showToastError);
+
+  /// 是否收藏圈子
+  static Future<ResultData> getMomentFavourite(
+          {required String moment, bool showToastError = true}) =>
+      _put('/moment/favourite/$moment', showToastError: showToastError);
 }

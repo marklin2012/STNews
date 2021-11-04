@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
+import 'package:stnews/providers/circle_detail_provider.dart';
 import 'package:stnews/providers/circle_provider.dart';
 import 'package:stnews/providers/circle_search_provider.dart';
 import 'package:stnews/providers/color_theme_provider.dart';
@@ -51,6 +52,7 @@ void main() {
         ChangeNotifierProvider.value(value: FavouritedUserProvider()),
         ChangeNotifierProvider.value(value: NoticeProvider()),
         ChangeNotifierProvider.value(value: CircleProvider()),
+        ChangeNotifierProvider.value(value: CircleDetailProvider()),
         ChangeNotifierProvider.value(value: CircleSearchProvider()),
       ],
       child: MyApp(),

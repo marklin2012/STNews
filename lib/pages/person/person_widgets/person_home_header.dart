@@ -8,7 +8,6 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
-import 'package:stnews/providers/post_detail_provider.dart';
 import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';

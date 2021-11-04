@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/models/circle_model.dart';
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -23,9 +23,9 @@ class CircleCell extends StatelessWidget {
     this.circleTap,
   }) : super(key: key);
 
-  final CircleModel? circleModel;
+  final MomentModel? circleModel;
   final Function(String? authorID)? authorTap;
-  final Function(String? circleID)? circleTap;
+  final Function(MomentModel? circleModel)? circleTap;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class CircleCell extends StatelessWidget {
       highlightColor: ColorConfig.fourGrey,
       onTap: () {
         if (circleTap != null) {
-          circleTap!(circleModel?.id);
+          circleTap!(circleModel);
         }
       },
       child: _buildContent(context),
@@ -44,15 +44,15 @@ class CircleCell extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     return Container(
       width: NewsScale.sw(181, context),
-      height: NewsScale.sh(332, context),
+      // height: NewsScale.sh(332, context),
       child: Column(
         children: [
           _buildHeader(context),
           Padding(
             padding: EdgeInsets.fromLTRB(
+              NewsScale.sw(8, context),
               NewsScale.sh(8, context),
-              NewsScale.sh(8, context),
-              NewsScale.sh(8, context),
+              NewsScale.sw(8, context),
               NewsScale.sh(4, context),
             ),
             child: Text(
@@ -81,12 +81,12 @@ class CircleCell extends StatelessWidget {
             color: ColorConfig.baseThrBlue,
             borderRadius: BorderRadius.circular(4.0),
           ),
-          child: circleModel?.coverImage != null
+          child: circleModel?.images != null
               ? CachedNetworkImage(
                   width: NewsScale.sw(181, context),
                   height: NewsScale.sh(240, context),
                   imageUrl:
-                      STString.addPrefixHttp(circleModel?.coverImage) ?? '',
+                      STString.addPrefixHttp(circleModel?.images!.first) ?? '',
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: NewsImage.defaultCircle(),
@@ -114,7 +114,6 @@ class CircleCell extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             child: Container(
               alignment: Alignment.centerLeft,
-              // color: Colors.red,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -157,20 +156,19 @@ class CircleCell extends StatelessWidget {
           child: Container(
             width: NewsScale.sw(67, context),
             alignment: Alignment.center,
-            // color: Colors.yellow,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                circleModel?.isUserFavourite ?? false
-                    ? Image(
-                        width: 18,
-                        height: 18,
-                        image: AssetImage('assets/images/liked.png'),
-                      )
-                    : Icon(
-                        STIcons.commonly_like,
-                        size: 18,
-                      ),
+                // circleModel?.favouriteCount != null
+                // Image(
+                //   width: 18,
+                //   height: 18,
+                //   image: AssetImage('assets/images/liked.png'),
+                // ),
+                Icon(
+                  STIcons.commonly_like,
+                  size: 18,
+                ),
                 SizedBox(width: NewsScale.sw(5.5, context)),
                 Text(
                   (circleModel?.favouriteCount ?? 0).toString(),

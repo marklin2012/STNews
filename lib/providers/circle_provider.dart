@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stnews/models/circle_model.dart';
+import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
-import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
+import 'package:stnews/utils/list+.dart';
 
 class CircleProvider extends ChangeNotifier {
   CircleProvider({Key? key});
 
-  List<CircleModel> _lists = [];
-  List<CircleModel> get lists => _lists;
+  List<MomentModel> _lists = [];
+  List<MomentModel> get lists => _lists;
 
   int _page = 1;
   int _perpage = NewsPerpage.finalPerPage;
@@ -15,63 +18,37 @@ class CircleProvider extends ChangeNotifier {
   bool get hasMore => _hasMore;
   bool get isEmpty => _lists.length == 0;
 
-  Future<bool> initData() {
+  Future<bool> initData() async {
     _page = 1;
 
-    _lists = [
-      CircleModel(
-        id: '00000000',
-        title: '香港攻略，一日游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000001',
-        title: '香港攻略，两日一晚游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000002',
-        title: '香港攻略，三日两晚游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000003',
-        title: '香港攻略，一周游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000004',
-        title: '香港攻略，一月游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000005',
-        title: '香港攻略，一周游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-      CircleModel(
-        id: '00000006',
-        title: '香港攻略，一月游可以这样玩！',
-        user: UserProvider.shared.user,
-        isUserFavourite: false,
-        favouriteCount: 12,
-      ),
-    ];
+    ResultData result = await Api.getMomentList(page: _page, perpage: _perpage);
+    if (result.success && result.data is List) {
+      final _temps = result.data as List;
+      _hasMore = STList.hasMore(_temps);
+      _lists = _temps.map((e) => MomentModel.fromJson(e)).toList();
+      notifyListeners();
+      return Future.value(true);
+    }
+    return Future.value(false);
+  }
 
+  Future<ResultRefreshData> loadMore() async {
+    ResultRefreshData data;
+    if (!_hasMore) return Future.value(ResultRefreshData.noMore());
+    _page++;
+    ResultData result = await Api.getMomentList(page: _page, perpage: _perpage);
+    if (result.success) {
+      final _temps = result.data as List;
+      _hasMore = STList.hasMore(_temps);
+      for (Map<String, dynamic> item in _temps) {
+        final _temp = MomentModel.fromJson(item);
+        _lists.add(_temp);
+      }
+      data = ResultRefreshData(success: true, hasMore: _hasMore);
+    } else {
+      data = ResultRefreshData.error();
+    }
     notifyListeners();
-
-    return Future.value(true);
+    return Future.value(data);
   }
 }

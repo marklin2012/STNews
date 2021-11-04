@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/circle/circle_publish_page.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_cell.dart';
 import 'package:stnews/pages/circle/search_circle_page.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
+import 'package:stnews/pages/common/news_easy_refresh.dart';
+import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_provider.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -28,9 +32,7 @@ class _CirclePageState extends State<CirclePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
-      circleProvider.initData();
-    });
+    circleProvider.initData();
   }
 
   @override
@@ -58,17 +60,27 @@ class _CirclePageState extends State<CirclePage> {
       if (circleP.isEmpty) {
         return EmptyViewWidget(
           content: '暂无数据，点击重新加载',
+          onTap: () {
+            circleProvider.initData();
+          },
         );
       }
 
-      return Padding(
+      return NewsEasyRefresh(
+        hasHeader: true,
+        hasFooter: true,
+        onRefresh: () async {
+          circleProvider.initData();
+        },
+        onLoad: _loadMore,
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: NewsScale.sw(4, context)),
           child: StaggeredGridView.countBuilder(
             shrinkWrap: true,
             crossAxisCount: 2,
             itemCount: circleProvider.lists.length,
             mainAxisSpacing: NewsScale.sh(4, context),
-            crossAxisSpacing: NewsScale.sh(4, context),
+            crossAxisSpacing: NewsScale.sw(4, context),
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 margin: index == 1
@@ -87,10 +99,13 @@ class _CirclePageState extends State<CirclePage> {
                       ),
                     );
                   },
-                  circleTap: (String? circleID) {
-                    if (circleID == null) return;
+                  circleTap: (MomentModel? model) {
+                    if (model == null) return;
                     // 去圈子详情页
-                    STRouters.push(context, CircleDetailPage());
+                    STRouters.push(
+                      context,
+                      CircleDetailPage(moment: model),
+                    );
                   },
                 ),
               );
@@ -98,7 +113,9 @@ class _CirclePageState extends State<CirclePage> {
             staggeredTileBuilder: (int index) {
               return StaggeredTile.fit(1);
             },
-          ));
+          ),
+        ),
+      );
     });
   }
 
@@ -116,5 +133,12 @@ class _CirclePageState extends State<CirclePage> {
         color: ColorConfig.primaryColor,
       ),
     );
+  }
+
+  Future<ResultRefreshData> _loadMore() async {
+    NewsLoading.start(context);
+    ResultRefreshData data = await circleProvider.loadMore();
+    NewsLoading.stop();
+    return data;
   }
 }
