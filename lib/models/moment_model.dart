@@ -9,7 +9,8 @@ class MomentModel {
   String? content;
   String? createdAt;
   String? updatedAt;
-  int? favouriteCount;
+  bool? isThumbuped;
+  int? thumbUpCount;
 
   MomentModel({
     this.id,
@@ -20,7 +21,8 @@ class MomentModel {
     this.content,
     this.createdAt,
     this.updatedAt,
-    this.favouriteCount,
+    this.isThumbuped,
+    this.thumbUpCount,
   });
 
   MomentModel.fromJson(Map<String, dynamic> json) {
@@ -42,7 +44,8 @@ class MomentModel {
     content = json['content'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    favouriteCount = json['favouriteCount'];
+    isThumbuped = json['isThumbuped'];
+    thumbUpCount = json['thumbUpCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,7 +58,8 @@ class MomentModel {
     data['content'] = this.content;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    data['favouriteCount'] = this.favouriteCount;
+    data['isThumbuped'] = this.isThumbuped;
+    data['thumbUpCount'] = this.thumbUpCount;
     return data;
   }
 }

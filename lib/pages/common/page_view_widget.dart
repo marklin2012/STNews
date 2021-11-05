@@ -14,6 +14,7 @@ class PageViewWidget extends StatefulWidget {
     this.currentIndex,
     this.height,
     this.isAutoRoll = true,
+    this.isLooped = true,
     this.autoRollTime = 3,
     this.margin,
     this.decoration,
@@ -23,6 +24,7 @@ class PageViewWidget extends StatefulWidget {
   final int? currentIndex;
   final double? height;
   final bool isAutoRoll;
+  final bool isLooped;
   final int autoRollTime;
   final EdgeInsets? margin;
   final BoxDecoration? decoration;
@@ -76,10 +78,17 @@ class _PageViewWidgetState extends State<PageViewWidget> {
           PageView.builder(
             controller: _pageController,
             itemBuilder: (context, index) {
-              String? coverImage = _pageList[index % _pageList.length];
+              String? coverImage;
+              if (widget.isLooped) {
+                coverImage = _pageList[index % _pageList.length];
+              } else {
+                coverImage = _pageList[index];
+              }
               return buildPageViewItem(image: coverImage, index: index);
             },
-            itemCount: _pageList.isEmpty ? 0 : 100,
+            itemCount: _pageList.isEmpty
+                ? 0
+                : (widget.isLooped ? 100 : _pageList.length),
             onPageChanged: (value) {
               setState(() {
                 _currentIndex = value % (_pageList.length);

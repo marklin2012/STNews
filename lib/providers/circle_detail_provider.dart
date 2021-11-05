@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stnews/models/comment_model.dart';
+import 'package:stnews/models/moment_comment_model.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
@@ -16,8 +16,11 @@ class CircleDetailProvider extends ChangeNotifier {
     }
   }
 
-  List<CommentModel> _comments = [];
-  List<CommentModel> get comments => _comments;
+  int _totalCounts = 0;
+  int get totalCounts => _totalCounts;
+
+  List<MomentCommentModel> _comments = [];
+  List<MomentCommentModel> get comments => _comments;
 
   int _page = 1;
   int _perpage = NewsPerpage.finalPerPage;
@@ -108,13 +111,41 @@ class CircleDetailProvider extends ChangeNotifier {
   }
 
   /// 发布评论
-  Future<bool> addComment(String content) async {
-    ResultData result =
-        await Api.addCommentMoment(moment: _moment.id!, content: content);
+  Future<bool> addComment(
+    String content, {
+    String? reference,
+    String? comment,
+  }) async {
+    ResultData result = await Api.addCommentMoment(
+      moment: _moment.id!,
+      content: content,
+      reference: reference,
+      comment: comment,
+    );
     if (result.success) {
       Map<String, dynamic> _comment = result.data['comment'];
-      CommentModel? _model = CommentModel.fromJson(_comment);
-      comments.add(_model);
+      MomentCommentModel? _model = MomentCommentModel.fromJson(_comment);
+      if (reference != null) {
+        int index = 0;
+        for (int i = 0; i < _comments.length; i++) {
+          MomentCommentModel temp = _comments[i];
+          if (temp.id == _model.reference) {
+            index = i;
+            for (int j = i + 1; j < _comments.length; j++) {
+              MomentCommentModel _temp = _comments[j];
+              if (_temp.id != _model.reference) {
+                index = j;
+                break;
+              }
+            }
+            break;
+          }
+        }
+        _comments.insert(index, _model);
+      } else {
+        _comments.add(_model);
+      }
+      _totalCounts += 1;
       notifyListeners();
       return true;
     }
@@ -122,12 +153,15 @@ class CircleDetailProvider extends ChangeNotifier {
   }
 
   /// 点赞评论
-  Future commentLiked(String commentid, bool status) async {
+  Future commentFavourite({
+    required String commentid,
+    required bool status,
+  }) async {
     ResultData result = await Api.changeCommentMomentFavourite(
-        moment: commentid, status: !status);
+        commentID: commentid, status: !status);
     if (result.success) {
       for (int index = 0; index < _comments.length; index++) {
-        CommentModel _model = _comments[index];
+        MomentCommentModel _model = _comments[index];
         if (_model.id == commentid) {
           _model.isUserFavourite = !status;
           if (_model.isUserFavourite!) {
@@ -148,9 +182,10 @@ class CircleDetailProvider extends ChangeNotifier {
     ResultData result = await Api.getCommentMomentList(
         page: _page, perpage: _perpage, moment: _moment.id!);
     if (result.success) {
+      _totalCounts = result.data['totalCounts'] as int;
       final _temps = result.data['comments'] as List;
       _hasMore = STList.hasMore(_temps);
-      _comments = _temps.map((e) => CommentModel.fromJson(e)).toList();
+      _comments = _temps.map((e) => MomentCommentModel.fromJson(e)).toList();
       notifyListeners();
       return Future.value(true);
     }
@@ -167,7 +202,7 @@ class CircleDetailProvider extends ChangeNotifier {
       final _temps = result.data['comments'] as List;
       _hasMore = STList.hasMore(_temps);
       for (Map<String, dynamic> item in _temps) {
-        final _temp = CommentModel.fromJson(item);
+        final _temp = MomentCommentModel.fromJson(item);
         _comments.add(_temp);
       }
       data = ResultRefreshData(success: true, hasMore: _hasMore);

@@ -99,6 +99,10 @@ class _CirclePageState extends State<CirclePage> {
                       ),
                     );
                   },
+                  thumbupedTap: (bool? thumbuped) async {
+                    await circleProvider.thumbupMoment(
+                        index: index, isThumbup: thumbuped);
+                  },
                   circleTap: (MomentModel? model) {
                     if (model == null) return;
                     // 去圈子详情页

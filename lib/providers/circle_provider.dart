@@ -51,4 +51,24 @@ class CircleProvider extends ChangeNotifier {
     notifyListeners();
     return Future.value(data);
   }
+
+  /// 点赞或取消点赞圈子
+  Future<bool> thumbupMoment({int? index, bool? isThumbup}) async {
+    if (index == null) return Future.value(false);
+    MomentModel moment = _lists[index];
+    bool _isThumbup = isThumbup ?? false;
+    ResultData result =
+        await Api.changeMomentThumbup(moment: moment.id!, status: !_isThumbup);
+    if (result.success) {
+      _isThumbup = !_isThumbup;
+      moment.isThumbuped = _isThumbup;
+      if (_isThumbup) {
+        moment.thumbUpCount = (moment.thumbUpCount ?? 0) + 1;
+      } else {
+        moment.thumbUpCount = moment.thumbUpCount! - 1;
+      }
+      notifyListeners();
+    }
+    return Future.value(_isThumbup);
+  }
 }

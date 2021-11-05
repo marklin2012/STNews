@@ -27,6 +27,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlankPutKeyborad(
         child: Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -66,7 +67,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                   right: 0,
                   top: 44,
                   bottom: 0,
-                  child: cirSeaP.hasResults
+                  child: cirSeaP.hasRecords
                       ? Container(
                           color: ColorConfig.primaryColor,
                           padding: EdgeInsets.symmetric(horizontal: 16),
@@ -78,7 +79,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                                   child: NewsRichText(
                                     maxLines: 1,
                                     searchContent: _searchValue,
-                                    textContent: cirSeaP.seaResults[index],
+                                    textContent: cirSeaP.searchRecords[index],
                                   ),
                                 ),
                                 onTap: () {},
@@ -91,7 +92,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                                 color: ColorConfig.fourGrey,
                               );
                             },
-                            itemCount: cirSeaP.seaResults.length,
+                            itemCount: cirSeaP.searchRecords.length,
                           ),
                         )
                       : SizedBox(
@@ -106,10 +107,10 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
     );
   }
 
-  void _search(String value) {
+  void _search(String value) async {
     _searchValue = value;
     // 开始请求
-
+    await circleSeaProvider.searchKey(key: value);
     // 请求成功
     SharedPref.saveCircleSearchHistory(value)
         .then((value) => circleSeaProvider.getHistorys());

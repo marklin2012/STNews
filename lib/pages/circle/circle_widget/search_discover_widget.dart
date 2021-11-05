@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/providers/circle_search_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 
@@ -12,6 +14,9 @@ class SearchDiscover extends StatefulWidget {
 
 class _SearchDiscoverState extends State<SearchDiscover> {
   List<String> _discovers = [];
+
+  CircleSearchProvider get circleSearchProvider =>
+      Provider.of<CircleSearchProvider>(context, listen: false);
 
   @override
   void initState() {

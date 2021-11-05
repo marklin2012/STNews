@@ -14,7 +14,7 @@ const TimeoutSend = 3000;
 // iOS
 // const String BaseUrl = 'http://localhost:7001/';
 // andriod
-const String BaseUrl = 'http://192.168.2.125:7001/';
+const String BaseUrl = 'http://192.168.2.138:7001/';
 // const String BaseUrl = 'http://120.78.145.47:7001/';
 
 Dio dio = Dio();
@@ -454,10 +454,12 @@ class Api {
 
   /// 点赞圈子评论
   static Future<ResultData> changeCommentMomentFavourite(
-          {required String moment, bool? status, bool showToastError = true}) =>
+          {required String commentID,
+          bool? status,
+          bool showToastError = true}) =>
       _post('/comment_moment/favourite',
           data: {
-            'moment': moment,
+            'comment': commentID,
             'status': status,
           },
           showToastError: showToastError);
@@ -512,4 +514,13 @@ class Api {
   static Future<ResultData> getMomentFavourite(
           {required String moment, bool showToastError = true}) =>
       _put('/moment/favourite/$moment', showToastError: showToastError);
+
+  /// 搜索圈子
+  static Future<ResultData> searchMoment(
+          {int page = 1,
+          int perpage = 10,
+          String? key,
+          bool showToastError = true}) =>
+      _get('​/search​/moment?page=$page&per_page=$perpage',
+          data: {'key': key}, showToastError: showToastError);
 }

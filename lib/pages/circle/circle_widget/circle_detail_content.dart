@@ -4,7 +4,21 @@ import 'package:stnews/pages/common/page_view_widget.dart';
 import 'package:stnews/utils/news_text_style.dart';
 
 class CircleDetailContent extends StatelessWidget {
-  const CircleDetailContent({Key? key}) : super(key: key);
+  const CircleDetailContent({
+    Key? key,
+    this.images,
+    this.title,
+    this.content,
+    this.commentCount,
+  }) : super(key: key);
+
+  final List<String>? images;
+
+  final String? title;
+
+  final String? content;
+
+  final int? commentCount;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +27,8 @@ class CircleDetailContent extends StatelessWidget {
       children: [
         PageViewWidget(
           isAutoRoll: false,
-          pageList: [''],
+          isLooped: false,
+          pageList: images,
           margin: EdgeInsets.zero,
           height: 430,
           decoration: BoxDecoration(
@@ -21,18 +36,18 @@ class CircleDetailContent extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+          padding: EdgeInsets.fromLTRB(12, 16, 12, 4),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '这是一条标题',
+                title ?? '这是一条标题',
                 style: NewsTextStyle.style18BoldBlack,
               ),
               SizedBox(height: 8.0),
               Text(
-                '正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述！',
+                content ?? '正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述！',
                 style: NewsTextStyle.style16NormalBlack,
               ),
               SizedBox(height: 12.0),
@@ -51,7 +66,7 @@ class CircleDetailContent extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  '评论（132）',
+                  commentCount != null ? '评论（$commentCount）' : '评论',
                   style: NewsTextStyle.style16NormalBlack,
                 ),
               ),

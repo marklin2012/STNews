@@ -10,22 +10,32 @@ class DetailFooterData {
     this.isCommited = true,
     this.isFavourited = false,
     this.isLiked = false,
+    this.isReplyed = false,
+    this.replyNickName,
     this.commentedCount,
   });
 
   bool isCommited;
   bool isFavourited;
   bool isLiked;
+  bool isReplyed;
+  String? replyNickName;
   String? commentedCount;
 
-  DetailFooterData.init(this.isCommited, this.isFavourited, this.isLiked,
-      {this.commentedCount});
+  DetailFooterData.init(
+      {this.isCommited = true,
+      this.isFavourited = false,
+      this.isLiked = false,
+      this.isReplyed = false,
+      this.replyNickName,
+      this.commentedCount});
 
   DetailFooterData setFavPost(bool isFav) {
     return DetailFooterData(
       isCommited: this.isCommited,
       isFavourited: isFav,
       isLiked: this.isLiked,
+      isReplyed: false,
       commentedCount: this.commentedCount,
     );
   }
@@ -35,6 +45,7 @@ class DetailFooterData {
       isCommited: this.isCommited,
       isFavourited: this.isFavourited,
       isLiked: isLike,
+      isReplyed: false,
       commentedCount: this.commentedCount,
     );
   }
@@ -44,6 +55,7 @@ class DetailFooterData {
       isCommited: isCommit,
       isFavourited: this.isFavourited,
       isLiked: this.isLiked,
+      isReplyed: false,
       commentedCount: this.commentedCount,
     );
   }
@@ -53,6 +65,7 @@ class DetailFooterData {
       isCommited: this.isCommited,
       isFavourited: this.isFavourited,
       isLiked: this.isLiked,
+      isReplyed: this.isReplyed,
       commentedCount: commentCounts,
     );
   }
@@ -62,7 +75,19 @@ class DetailFooterData {
       isCommited: true,
       isFavourited: this.isFavourited,
       isLiked: this.isLiked,
+      isReplyed: false,
       commentedCount: commentCounts,
+    );
+  }
+
+  DetailFooterData setReplyed(bool isReply, {String? nickName}) {
+    return DetailFooterData(
+      isCommited: false,
+      isFavourited: this.isFavourited,
+      isLiked: this.isLiked,
+      isReplyed: isReply,
+      replyNickName: nickName,
+      commentedCount: this.commentedCount,
     );
   }
 }
@@ -122,27 +147,16 @@ class _DetailFooterState extends State<DetailFooter> {
   @override
   Widget build(BuildContext context) {
     _data = widget.data;
+
     if (_data.isCommited) {
       _controller.text = '';
+      return _buildNormal();
+    } else {
+      Future.delayed(Duration(milliseconds: 100), () {
+        FocusScope.of(context).requestFocus(_commentFocus);
+      });
+      return _buildEditComments();
     }
-
-    return Stack(
-      children: [
-        Opacity(
-          opacity: _data.isCommited ? 0.0 : 1.0,
-          child: _buildEditComments(),
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Opacity(
-            opacity: _data.isCommited ? 1.0 : 0.0,
-            child: _buildNormal(),
-          ),
-        ),
-      ],
-    );
   }
 
   Widget _buildNormal() {
@@ -156,7 +170,6 @@ class _DetailFooterState extends State<DetailFooter> {
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                FocusScope.of(context).requestFocus(_commentFocus);
                 widget.switchCommitTap(false);
               },
               child: Container(
@@ -183,7 +196,6 @@ class _DetailFooterState extends State<DetailFooter> {
               backgroundColor: Colors.transparent,
               icon: Icon(STIcons.commonly_message),
               onTap: () {
-                if (!_data.isCommited) return;
                 if (widget.messageTap != null) {
                   widget.messageTap!();
                 }
@@ -207,7 +219,6 @@ class _DetailFooterState extends State<DetailFooter> {
                     STIcons.commonly_star,
                   ),
             onTap: () {
-              if (!_data.isCommited) return;
               if (widget.favouriteTap != null) {
                 widget.favouriteTap!(_data.isFavourited);
               }
@@ -227,7 +238,6 @@ class _DetailFooterState extends State<DetailFooter> {
                   )
                 : Icon(STIcons.commonly_like),
             onTap: () {
-              if (!_data.isCommited) return;
               if (widget.likeTap != null) {
                 widget.likeTap!(_data.isLiked);
               }
@@ -270,7 +280,8 @@ class _DetailFooterState extends State<DetailFooter> {
                   contentPadding: EdgeInsets.zero,
                   border: OutlineInputBorder(borderSide: BorderSide.none),
                   hintMaxLines: 1,
-                  hintText: '发表评论',
+                  hintText:
+                      _data.isReplyed ? '回复 ${_data.replyNickName}:' : '发表评论',
                   hintStyle: NewsTextStyle.style14NormalFourGrey,
                 ),
                 keyboardType: TextInputType.text,

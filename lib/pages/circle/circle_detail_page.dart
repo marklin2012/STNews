@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/moment_comment_model.dart';
 import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/circle/circle_widget/circle_comment_cell.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_detail_content.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_detail_nav_header.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
-import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/providers/circle_detail_provider.dart';
 import 'package:stnews/providers/user_provider.dart';
@@ -26,21 +27,39 @@ class CircleDetailPage extends StatefulWidget {
 }
 
 class _CircleDetailPageState extends State<CircleDetailPage> {
+  late ScrollController _scrollController;
+
+  final GlobalKey _detailContentKey =
+      GlobalKey(debugLabel: 'detailContent'); // 控件的key
+  Offset _offset = Offset.zero;
+  double _detailContentH = 0;
+
   CircleDetailProvider get circleDetailProvider =>
       Provider.of<CircleDetailProvider>(context, listen: false);
 
-  DetailFooterData _data = DetailFooterData.init(true, false, false);
+  DetailFooterData _data = DetailFooterData.init();
   late ValueNotifier<DetailFooterData> _detailFooterNoti;
 
   late ValueNotifier<bool> _favAuthorNoti;
 
+  MomentCommentModel? _commentModel;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _detailFooterNoti.dispose();
+    _favAuthorNoti.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     circleDetailProvider.moment = widget.moment;
     _detailFooterNoti = ValueNotifier(_data);
     _favAuthorNoti = ValueNotifier(false);
-    // circleDetailProvider.getMomentDetail();
+    circleDetailProvider.initComments();
     _initFavAuthor();
     _initFooterData();
   }
@@ -60,6 +79,17 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
       commentedCount: circleDetailProvider.comments.length.toString(),
     );
     _detailFooterNoti.value = _data;
+  }
+
+  /// 定位偏移量
+  void _findRenderObject() {
+    RenderObject? renderobject =
+        _detailContentKey.currentContext?.findRenderObject();
+    if (renderobject != null && renderobject is RenderBox) {
+      RenderBox renderBox = renderobject;
+      _offset = renderBox.localToGlobal(Offset.zero);
+      _detailContentH = renderBox.semanticBounds.size.height;
+    }
   }
 
   @override
@@ -125,29 +155,61 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
   }
 
   Widget _buildContent() {
-    return Padding(
-      padding: EdgeInsets.only(top: 52),
-      child: Container(
-        child: NewsEasyRefresh(
-          hasFooter: true,
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: CircleDetailContent(),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return CommentCell();
-                  },
-                  childCount: 5,
+    return Consumer(
+        builder: (BuildContext context, CircleDetailProvider circleDetP, _) {
+      return Padding(
+        padding: EdgeInsets.only(top: 52, bottom: 44),
+        child: Container(
+          child: NewsEasyRefresh(
+            hasFooter: true,
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: CircleDetailContent(
+                    key: _detailContentKey,
+                    images: widget.moment.images,
+                    title: widget.moment.title,
+                    content: widget.moment.content,
+                    commentCount: circleDetP.totalCounts,
+                  ),
                 ),
-              ),
-            ],
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      MomentCommentModel? _model = circleDetP.comments[index];
+                      bool isAddHeaderLines = false;
+                      bool isAddFooterLines = false;
+                      if (index != 0 && _model.reference == null) {
+                        isAddHeaderLines = true;
+                      }
+                      if (index == circleDetP.comments.length - 1) {
+                        isAddFooterLines = true;
+                      }
+                      return CircleCommentCell(
+                        model: _model,
+                        addHeaderLine: isAddHeaderLines,
+                        addFooterLine: isAddFooterLines,
+                        replayTap: (MomentCommentModel model) {
+                          _commentModel = model;
+                          _data = _data.setReplyed(true,
+                              nickName: _model.moment?.user?.nickname);
+                          _detailFooterNoti.value = _data;
+                        },
+                        commentThumbupTap: (String commentID, bool isThumbup) {
+                          _thumbupCommentMoment(commentID, isThumbup);
+                        },
+                      );
+                    },
+                    childCount: circleDetP.comments.length,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildFooter() {
@@ -163,8 +225,10 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
               switchCommitTap: (bool value) {
                 switchFooterCommited(value);
               },
-              messageTap: () {},
-              commentTap: (String content) {},
+              messageTap: _scrollToComments,
+              commentTap: (String content) {
+                _addMomentComment(content);
+              },
               favouriteTap: (bool isFav) {
                 _favouritedMoment(isFav);
               },
@@ -177,8 +241,30 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
   }
 
   void switchFooterCommited(bool isCommit) {
+    _commentModel = null;
     _data = _data.setCommited(isCommit);
     _detailFooterNoti.value = _data;
+  }
+
+  /// 滑动到评论
+  void _scrollToComments() {
+    _findRenderObject();
+    double animateH = 0.0;
+    // 总偏移量
+    animateH = _scrollController.offset + _offset.dy + _detailContentH;
+    double screenH = MediaQuery.of(context).size.height;
+    // 测试中的极限值
+    double _space = (MediaQuery.of(context).padding.top + 56 + 30);
+    if (animateH > screenH - _space) {
+      animateH -= screenH;
+      animateH += _space;
+      double scrollBottom = _scrollController.position.maxScrollExtent;
+      if (scrollBottom > animateH + screenH / 3) {
+        animateH += screenH / 3;
+      }
+      _scrollController.animateTo(animateH,
+          duration: Duration(milliseconds: 300), curve: Curves.bounceIn);
+    }
   }
 
   void _changeFavAuthorStatus(bool value) async {
@@ -188,17 +274,46 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
     NewsLoading.stop();
   }
 
-  /// 收藏或取消收藏该文章
+  /// 收藏或取消收藏圈子
   void _favouritedMoment(bool isFav) async {
     bool _isFav = await circleDetailProvider.favouritedMoment(isFav);
     _data = _data.setFavPost(_isFav);
     _detailFooterNoti.value = _data;
   }
 
-  /// 点赞或取消点赞该文章
+  /// 点赞或取消点赞圈子
   void _thumbupMoment(bool isThumbup) async {
     bool _isThumbup = await circleDetailProvider.thumbupMoment(isThumbup);
     _data = _data.setLikePost(_isThumbup);
     _detailFooterNoti.value = _data;
+  }
+
+  /// 点赞评论
+  void _thumbupCommentMoment(String commentID, bool isThumbup) async {
+    await circleDetailProvider.commentFavourite(
+        commentid: commentID, status: isThumbup);
+  }
+
+  /// 发布圈子评论
+  void _addMomentComment(String content) async {
+    String? reference;
+    String? comment;
+    if (_commentModel != null) {
+      reference = _commentModel!.reference ?? _commentModel!.id;
+      comment = _commentModel!.comment ?? _commentModel!.id;
+    }
+    bool isSuc = await circleDetailProvider.addComment(
+      content,
+      reference: reference,
+      comment: comment,
+    );
+    if (isSuc) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      _commentModel = null;
+      _data = _data.setCommited(true);
+      _data =
+          _data.setCommentCount(circleDetailProvider.totalCounts.toString());
+      _detailFooterNoti.value = _data;
+    }
   }
 }

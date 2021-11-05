@@ -27,6 +27,7 @@ class _SearchHistoryState extends State<SearchHistory> {
   Widget build(BuildContext context) {
     return Consumer<CircleSearchProvider>(
         builder: (BuildContext context, CircleSearchProvider circleSeaP, _) {
+      if (circleSeaP.isEmpty) return Container();
       return Container(
         padding: EdgeInsets.fromLTRB(16, 24, 18, 24),
         child: Column(

@@ -21,10 +21,12 @@ class CircleCell extends StatelessWidget {
     this.circleModel,
     this.authorTap,
     this.circleTap,
+    this.thumbupedTap,
   }) : super(key: key);
 
   final MomentModel? circleModel;
   final Function(String? authorID)? authorTap;
+  final Function(bool? isThumbuped)? thumbupedTap;
   final Function(MomentModel? circleModel)? circleTap;
 
   @override
@@ -151,6 +153,9 @@ class CircleCell extends StatelessWidget {
         GestureDetector(
           onTap: () {
             // 点赞
+            if (thumbupedTap != null) {
+              thumbupedTap!(circleModel?.isThumbuped ?? false);
+            }
           },
           behavior: HitTestBehavior.translucent,
           child: Container(
@@ -159,19 +164,19 @@ class CircleCell extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // circleModel?.favouriteCount != null
-                // Image(
-                //   width: 18,
-                //   height: 18,
-                //   image: AssetImage('assets/images/liked.png'),
-                // ),
-                Icon(
-                  STIcons.commonly_like,
-                  size: 18,
-                ),
+                circleModel?.isThumbuped ?? false
+                    ? Image(
+                        width: 18,
+                        height: 18,
+                        image: AssetImage('assets/images/liked.png'),
+                      )
+                    : Icon(
+                        STIcons.commonly_like,
+                        size: 18,
+                      ),
                 SizedBox(width: NewsScale.sw(5.5, context)),
                 Text(
-                  (circleModel?.favouriteCount ?? 0).toString(),
+                  (circleModel?.thumbUpCount ?? 0).toString(),
                   style: NewsTextStyle.style12NormalThrGrey,
                 ),
               ],

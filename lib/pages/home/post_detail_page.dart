@@ -40,7 +40,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   late PostDetailHeaderData _headerData;
   late ValueNotifier<PostDetailHeaderData> _detailHeaderNoti;
 
-  DetailFooterData _footerData = DetailFooterData.init(true, false, false);
+  DetailFooterData _footerData = DetailFooterData.init();
   late ValueNotifier<DetailFooterData> _detailFooterNoti;
 
   @override
