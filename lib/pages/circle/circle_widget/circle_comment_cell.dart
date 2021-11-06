@@ -31,7 +31,7 @@ class CircleCommentCell extends StatelessWidget {
 
   bool get isReplayed => model?.reference != null;
 
-  bool get isAuthorReplayed => model?.moment?.user?.id == model?.user;
+  bool get isAuthorReplayed => model?.moment?.user?.id == model?.user?.id;
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +72,8 @@ class CircleCommentCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           NewsAvatarWidget(
-            child: STCaCheImage.loadingImage(
-                imageUrl: model?.moment?.user?.avatar ?? ''),
+            child:
+                STCaCheImage.loadingImage(imageUrl: model?.user?.avatar ?? ''),
           ),
           SizedBox(width: 8.0),
           Expanded(child: _buildCenter()),
@@ -98,7 +98,7 @@ class CircleCommentCell extends StatelessWidget {
           Row(
             children: [
               Text(
-                model?.moment?.user?.nickname ?? '用户昵称',
+                model?.user?.nickname ?? '用户昵称',
                 style: NewsTextStyle.style14NormalBlack,
               ),
               if (isReplayed && isAuthorReplayed) _buildAuthorTag(),

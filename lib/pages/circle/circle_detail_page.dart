@@ -76,7 +76,7 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
       isCommited: true,
       isFavourited: _isFavourited,
       isLiked: _isThumbup,
-      commentedCount: circleDetailProvider.comments.length.toString(),
+      commentedCount: circleDetailProvider.totalCounts.toString(),
     );
     _detailFooterNoti.value = _data;
   }

@@ -126,27 +126,12 @@ class CircleDetailProvider extends ChangeNotifier {
       Map<String, dynamic> _comment = result.data['comment'];
       MomentCommentModel? _model = MomentCommentModel.fromJson(_comment);
       if (reference != null) {
-        int index = 0;
-        for (int i = 0; i < _comments.length; i++) {
-          MomentCommentModel temp = _comments[i];
-          if (temp.id == _model.reference) {
-            index = i;
-            for (int j = i + 1; j < _comments.length; j++) {
-              MomentCommentModel _temp = _comments[j];
-              if (_temp.id != _model.reference) {
-                index = j;
-                break;
-              }
-            }
-            break;
-          }
-        }
-        _comments.insert(index, _model);
+        initComments();
       } else {
         _comments.add(_model);
+        _totalCounts += 1;
+        notifyListeners();
       }
-      _totalCounts += 1;
-      notifyListeners();
       return true;
     }
     return false;

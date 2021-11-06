@@ -1,4 +1,5 @@
 import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/models/user_model.dart';
 
 class MomentCommentModel {
   String? id;
@@ -8,7 +9,7 @@ class MomentCommentModel {
   MomentModel? moment;
   String? comment;
   String? reference;
-  String? user;
+  UserModel? user;
   String? publisheddate;
   String? createdAt;
   String? updatedAt;
@@ -39,7 +40,9 @@ class MomentCommentModel {
     }
     comment = json['comment'];
     reference = json['reference'];
-    user = json['user'];
+    if (json['user'] is Map) {
+      user = UserModel.fromJson(json['user']);
+    }
     publisheddate = json['published_date'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -56,7 +59,7 @@ class MomentCommentModel {
     data['content'] = this.content;
     data['comment'] = this.comment;
     data['reference'] = this.reference;
-    data['user'] = this.user;
+    data['user'] = this.user?.toJson();
     data['published_date'] = this.publisheddate;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;

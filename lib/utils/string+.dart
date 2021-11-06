@@ -35,7 +35,7 @@ class STString {
       final different = DateTime.now().difference(time).inDays;
       if (different == 0) {
         String hour = time.hour.toString();
-        String minute = time.minute.toString();
+        String minute = time.minute < 10 ? '0${time.minute}' : '${time.minute}';
         return hour + ':' + minute;
       } else {
         return '昨天';
