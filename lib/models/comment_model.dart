@@ -11,6 +11,12 @@ class CommentModel {
   bool? isUserFavourite;
   int? favouriteCount;
 
+  String? moment;
+  String? comment;
+  String? reference;
+  String? createdAt;
+  String? updatedAt;
+
   CommentModel({
     this.id,
     this.istop,
@@ -20,6 +26,11 @@ class CommentModel {
     this.publisheddate,
     this.isUserFavourite,
     this.favouriteCount,
+    this.moment,
+    this.comment,
+    this.reference,
+    this.createdAt,
+    this.updatedAt,
   });
 
   CommentModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +50,12 @@ class CommentModel {
     publisheddate = json['published_date'];
     isUserFavourite = json['isUserFavourite'];
     favouriteCount = json['favouriteCount'];
+
+    moment = json['moment'];
+    comment = json['comment'];
+    reference = json['reference'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +68,12 @@ class CommentModel {
     data['published_date'] = this.publisheddate;
     data['isUserFavourite'] = this.isUserFavourite;
     data['favouriteCount'] = this.favouriteCount;
+
+    data['moment'] = this.moment;
+    data['comment'] = this.comment;
+    data['reference'] = this.reference;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
     return data;
   }
 }

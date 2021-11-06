@@ -178,22 +178,12 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       MomentCommentModel? _model = circleDetP.comments[index];
-                      bool isAddHeaderLines = false;
-                      bool isAddFooterLines = false;
-                      if (index != 0 && _model.reference == null) {
-                        isAddHeaderLines = true;
-                      }
-                      if (index == circleDetP.comments.length - 1) {
-                        isAddFooterLines = true;
-                      }
                       return CircleCommentCell(
                         model: _model,
-                        addHeaderLine: isAddHeaderLines,
-                        addFooterLine: isAddFooterLines,
                         replayTap: (MomentCommentModel model) {
                           _commentModel = model;
                           _data = _data.setReplyed(true,
-                              nickName: _model.moment?.user?.nickname);
+                              nickName: model.user?.nickname);
                           _detailFooterNoti.value = _data;
                         },
                         commentThumbupTap: (String commentID, bool isThumbup) {
@@ -299,8 +289,8 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
     String? reference;
     String? comment;
     if (_commentModel != null) {
-      reference = _commentModel!.reference ?? _commentModel!.id;
-      comment = _commentModel!.comment ?? _commentModel!.id;
+      reference = _commentModel!.reference?.id ?? _commentModel!.id;
+      comment = _commentModel!.comment?.id ?? _commentModel!.id;
     }
     bool isSuc = await circleDetailProvider.addComment(
       content,

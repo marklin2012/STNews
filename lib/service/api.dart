@@ -518,9 +518,9 @@ class Api {
   /// 搜索圈子
   static Future<ResultData> searchMoment(
           {int page = 1,
-          int perpage = 10,
+          int perpage = 20,
           String? key,
           bool showToastError = true}) =>
-      _get('​/search​/moment?page=$page&per_page=$perpage',
-          data: {'key': key}, showToastError: showToastError);
+      _get('​/search/moment?key=$key&page=$page&per_page=$perpage',
+          showToastError: showToastError);
 }

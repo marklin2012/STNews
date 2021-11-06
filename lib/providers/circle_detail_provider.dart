@@ -156,6 +156,8 @@ class CircleDetailProvider extends ChangeNotifier {
           }
           _comments[index] = _model;
           break;
+        } else {
+          if (_model.references != null && _model.references!.isNotEmpty) {}
         }
       }
       notifyListeners();

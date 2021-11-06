@@ -48,6 +48,7 @@ class CircleCell extends StatelessWidget {
       width: NewsScale.sw(181, context),
       // height: NewsScale.sh(332, context),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(context),
           Padding(

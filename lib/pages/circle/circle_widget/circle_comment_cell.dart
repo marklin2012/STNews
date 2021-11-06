@@ -15,13 +15,7 @@ class CircleCommentCell extends StatelessWidget {
     this.model,
     this.replayTap,
     this.commentThumbupTap,
-    this.addHeaderLine,
-    this.addFooterLine,
   }) : super(key: key);
-
-  final bool? addHeaderLine;
-
-  final bool? addFooterLine;
 
   final MomentCommentModel? model;
 
@@ -29,67 +23,85 @@ class CircleCommentCell extends StatelessWidget {
 
   final Function(String, bool)? commentThumbupTap;
 
-  bool get isReplayed => model?.reference != null;
-
-  bool get isAuthorReplayed => model?.moment?.user?.id == model?.user?.id;
-
   @override
   Widget build(BuildContext context) {
     if (model == null) return Container();
-    return InkWell(
-      highlightColor: ColorConfig.baseFourBlue,
+    return Column(
+      children: _buildComment(context),
+    );
+  }
+
+  List<Widget> _buildComment(BuildContext context) {
+    List<Widget> _listWidgets = [];
+    Widget commentW = GestureDetector(
       onLongPress: () {
         if (replayTap != null) {
           replayTap!(model!);
         }
       },
       child: Container(
-        child: Column(
+        margin: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.only(top: 16.0, bottom: 12.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (addHeaderLine != null && addHeaderLine!) _buildLines(context),
-            _buildContent(),
-            if (addFooterLine != null && addFooterLine!) _buildLines(context),
+            NewsAvatarWidget(
+              child: STCaCheImage.loadingImage(
+                  imageUrl: model?.user?.avatar ?? ''),
+            ),
+            SizedBox(width: 8.0),
+            Expanded(child: _buildCenter(model!, isReplayed: false)),
+            SizedBox(width: 8.0),
+            _buildTriling(model!),
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildContent() {
-    EdgeInsets _margin;
-    EdgeInsets _padding;
-    if (isReplayed) {
-      _margin = EdgeInsets.only(left: 56, right: 16);
-      _padding = EdgeInsets.only(bottom: 12.0);
-    } else {
-      _margin = EdgeInsets.symmetric(horizontal: 16.0);
-      _padding = EdgeInsets.only(top: 16.0, bottom: 12.0);
-    }
-    return Container(
-      margin: _margin,
-      padding: _padding,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          NewsAvatarWidget(
-            child:
-                STCaCheImage.loadingImage(imageUrl: model?.user?.avatar ?? ''),
+    _listWidgets.add(commentW);
+    if (model?.references != null && model!.references!.isNotEmpty) {
+      model!.references!.forEach((replayed) {
+        Widget replayedW = GestureDetector(
+          onLongPress: () {
+            if (replayTap != null) {
+              replayTap!(replayed);
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(left: 56, right: 16),
+            padding: EdgeInsets.only(bottom: 12.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NewsAvatarWidget(
+                  child: STCaCheImage.loadingImage(
+                      imageUrl: replayed.user?.avatar ?? ''),
+                ),
+                SizedBox(width: 8.0),
+                Expanded(child: _buildCenter(replayed)),
+                SizedBox(width: 8.0),
+                _buildTriling(replayed),
+              ],
+            ),
           ),
-          SizedBox(width: 8.0),
-          Expanded(child: _buildCenter()),
-          SizedBox(width: 8.0),
-          _buildTriling(),
-        ],
-      ),
-    );
+        );
+        _listWidgets.add(replayedW);
+      });
+    }
+    _listWidgets.add(_buildLines(context));
+    return _listWidgets;
   }
 
-  Widget _buildCenter() {
+  Widget _buildCenter(MomentCommentModel commentModel,
+      {bool isReplayed = true}) {
     String _publishDateStr = '昨天';
-    if (model?.publisheddate != null) {
+    if (commentModel.publisheddate != null) {
       DateTime datetime =
-          STString.dateTimeFromString(dateStr: model!.publisheddate!);
+          STString.dateTimeFromString(dateStr: commentModel.publisheddate!);
       _publishDateStr = STString.getDateString(datetime);
+    }
+    bool isAuthorReplayed = false;
+    if (isReplayed && commentModel.moment?.user?.id == commentModel.user?.id) {
+      isAuthorReplayed = true;
     }
     return Container(
       child: Column(
@@ -98,13 +110,14 @@ class CircleCommentCell extends StatelessWidget {
           Row(
             children: [
               Text(
-                model?.user?.nickname ?? '用户昵称',
-                style: NewsTextStyle.style14NormalBlack,
+                commentModel.user?.nickname ?? '用户昵称',
+                style: NewsTextStyle.style12NormalSecGrey,
               ),
               if (isReplayed && isAuthorReplayed) _buildAuthorTag(),
             ],
           ),
-          Row(
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               if (isReplayed && !isAuthorReplayed)
                 Text(
@@ -114,16 +127,25 @@ class CircleCommentCell extends StatelessWidget {
               if (isReplayed && !isAuthorReplayed)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(model?.moment?.user?.nickname ?? '作者昵称'),
+                  child: Text(
+                    commentModel.moment?.user?.nickname ?? '作者昵称',
+                    style: NewsTextStyle.style12NormalSecGrey,
+                  ),
                 ),
-              Text(
-                model?.content ?? '',
-                style: NewsTextStyle.style14NormalBlack,
+              Container(
+                // color: Colors.yellow,
+                child: Text(
+                  commentModel.content ?? '',
+                  style: NewsTextStyle.style14NormalBlack,
+                ),
               ),
               SizedBox(width: 8.0),
-              Text(
-                _publishDateStr,
-                style: NewsTextStyle.style12NormalThrGrey,
+              Container(
+                // color: Colors.red,
+                child: Text(
+                  _publishDateStr,
+                  style: NewsTextStyle.style12NormalThrGrey,
+                ),
               ),
             ],
           ),
@@ -132,13 +154,14 @@ class CircleCommentCell extends StatelessWidget {
     );
   }
 
-  Widget _buildTriling() {
+  Widget _buildTriling(MomentCommentModel commentModel) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
         // 点赞圈子的评论
         if (commentThumbupTap != null) {
-          commentThumbupTap!(model!.id!, model?.isUserFavourite ?? false);
+          commentThumbupTap!(
+              commentModel.id!, commentModel.isUserFavourite ?? false);
         }
       },
       child: Row(
@@ -147,11 +170,11 @@ class CircleCommentCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            (model?.favouriteCount ?? 0).toString(),
+            (commentModel.favouriteCount ?? 0).toString(),
             style: NewsTextStyle.style12NormalThrGrey,
           ),
           SizedBox(width: 5.4),
-          model?.isUserFavourite ?? false
+          commentModel.isUserFavourite ?? false
               ? Image(
                   width: 18,
                   height: 18,
@@ -179,9 +202,10 @@ class CircleCommentCell extends StatelessWidget {
 
   Widget _buildAuthorTag() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+      margin: EdgeInsets.only(left: 8),
+      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
       decoration: BoxDecoration(
-        color: ColorConfig.baseFirBule,
+        color: ColorConfig.baseFourBlue,
         borderRadius: BorderRadius.circular(1.0),
       ),
       child: Text(
