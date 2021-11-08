@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/circle/circle_widget/search_discover_widget.dart';
 import 'package:stnews/pages/circle/circle_widget/search_history_widget.dart';
 import 'package:stnews/pages/common/color_config.dart';
@@ -21,48 +23,77 @@ class SearchCirclePage extends StatefulWidget {
 class _SearchCirclePageState extends State<SearchCirclePage> {
   String _searchValue = '';
 
+  late TextEditingController _searchController;
+
   CircleSearchProvider get circleSeaProvider =>
       Provider.of<CircleSearchProvider>(context, listen: false);
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+    _searchController.addListener(() {
+      if (_searchController.text.isEmpty) {
+        circleSeaProvider.cleanSearchRecoreds();
+      }
+    });
+    circleSeaProvider.getHistorys();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: BlankPutKeyborad(
-        child: Container(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 0,
-                height: 44,
-                child: NewsSearchHeader(
-                  heroTag: SearchCirclePage.searchCircleHeroTag,
-                  debounceKey: SearchCirclePage.searchCircleDebounceKey,
-                  searchTap: (String value) {
-                    _search(value);
-                  },
+        child: Consumer<CircleSearchProvider>(
+            builder: (BuildContext context, CircleSearchProvider cirSeaP, _) {
+          return Container(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  height: 44,
+                  child: NewsSearchHeader(
+                    heroTag: SearchCirclePage.searchCircleHeroTag,
+                    debounceKey: SearchCirclePage.searchCircleDebounceKey,
+                    controller: _searchController,
+                    searchTap: (String value) {
+                      _search(value);
+                    },
+                  ),
                 ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                top: 44,
-                bottom: 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SearchHistory(),
-                    SearchDiscover(),
-                  ],
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 44,
+                  bottom: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SearchHistory(
+                        historys: cirSeaP.historys,
+                        historyTap: (String history) {
+                          _searchController.text = history;
+                          _search(history);
+                        },
+                        cleanTap: () {
+                          cirSeaP.cleanHistorys();
+                        },
+                      ),
+                      SearchDiscover(
+                        discovers: cirSeaP.seachDiscovers,
+                        discoverTap: (MomentModel model) {
+                          _gotoCircleDetailPage(model);
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Consumer<CircleSearchProvider>(builder:
-                  (BuildContext context, CircleSearchProvider cirSeaP, _) {
-                return Positioned(
+                Positioned(
                   left: 0,
                   right: 0,
                   top: 44,
@@ -70,39 +101,46 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                   child: cirSeaP.hasRecords
                       ? Container(
                           color: ColorConfig.primaryColor,
-                          padding: EdgeInsets.symmetric(horizontal: 16),
-                          child: ListView.separated(
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                                  child: NewsRichText(
-                                    maxLines: 1,
-                                    searchContent: _searchValue,
-                                    textContent: cirSeaP.searchRecords[index],
+                          margin: EdgeInsets.only(left: 16.0, top: 16.0),
+                          child: MediaQuery.removePadding(
+                            removeTop: true,
+                            context: context,
+                            child: ListView.builder(
+                              itemBuilder: (BuildContext context, int index) {
+                                MomentModel model =
+                                    cirSeaP.searchRecords[index];
+                                return GestureDetector(
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                            color: ColorConfig.fourGrey),
+                                      ),
+                                    ),
+                                    child: NewsRichText(
+                                      maxLines: 1,
+                                      searchContent: _searchValue,
+                                      textContent: model.title,
+                                    ),
                                   ),
-                                ),
-                                onTap: () {},
-                              );
-                            },
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Divider(
-                                height: 1,
-                                color: ColorConfig.fourGrey,
-                              );
-                            },
-                            itemCount: cirSeaP.searchRecords.length,
+                                  onTap: () {
+                                    // 去详情页
+                                    _gotoCircleDetailPage(model);
+                                  },
+                                );
+                              },
+                              itemCount: cirSeaP.searchRecords.length,
+                            ),
                           ),
                         )
-                      : SizedBox(
-                          height: 1,
-                        ),
-                );
-              }),
-            ],
-          ),
-        ),
+                      : SizedBox(height: 1),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
@@ -114,5 +152,14 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
     // 请求成功
     SharedPref.saveCircleSearchHistory(value)
         .then((value) => circleSeaProvider.getHistorys());
+  }
+
+  void _gotoCircleDetailPage(MomentModel? model) {
+    if (model == null) return;
+    // 去圈子详情页
+    STRouters.push(
+      context,
+      CircleDetailPage(moment: model),
+    );
   }
 }

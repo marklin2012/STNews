@@ -108,6 +108,9 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               placeholder: _placeholder,
               controller: _controller,
               onChanged: (String value) {
+                if (value.isEmpty || value.length == 0) {
+                  return;
+                }
                 _search();
               },
             ),
@@ -135,7 +138,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
 
   void _search() {
     if (_controller.text.isEmpty || _controller.text.length == 0) {
-      STToast.show(context: context, message: '搜素内容不能为空');
+      STToast.show(context: context, message: '搜索内容不能为空');
       return;
     }
     if (widget.searchTap != null) {

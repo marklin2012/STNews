@@ -1,41 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:stnews/pages/common/color_config.dart';
-import 'package:stnews/providers/circle_search_provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 
-class SearchDiscover extends StatefulWidget {
-  const SearchDiscover({Key? key}) : super(key: key);
+class SearchDiscover extends StatelessWidget {
+  static const searchDiscoverDebounceKey = 'searchDiscoverDebounceKey';
+  const SearchDiscover({
+    Key? key,
+    this.discovers,
+    this.discoverTap,
+  }) : super(key: key);
 
-  @override
-  _SearchDiscoverState createState() => _SearchDiscoverState();
-}
+  final List<MomentModel>? discovers;
 
-class _SearchDiscoverState extends State<SearchDiscover> {
-  List<String> _discovers = [];
+  final Function(MomentModel)? discoverTap;
 
-  CircleSearchProvider get circleSearchProvider =>
-      Provider.of<CircleSearchProvider>(context, listen: false);
-
-  @override
-  void initState() {
-    super.initState();
-    _discovers = [
-      '重大发现',
-      '重大发现',
-      '头条新闻',
-      '重大发现',
-      '头条新闻',
-      '重大发现',
-      '头条新闻',
-      '重大发现',
-      '头条新闻',
-    ];
-  }
+  // [
+  //     '重大发现',
+  //     '重大发现',
+  //     '头条新闻',
+  //     '重大发现',
+  //     '头条新闻',
+  //     '重大发现',
+  //     '头条新闻',
+  //     '重大发现',
+  //     '头条新闻',
+  //   ];
 
   @override
   Widget build(BuildContext context) {
+    if (discovers == null || discovers!.isEmpty) return Container();
     return Container(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -50,14 +46,15 @@ class _SearchDiscoverState extends State<SearchDiscover> {
           Wrap(
             runSpacing: 12,
             spacing: 1,
-            children: _discovers.map((e) {
-              return InkWell(
-                highlightColor: ColorConfig.baseFourBlue,
-                onTap: () {},
+            children: discovers!.map((e) {
+              return GestureDetector(
+                onTap: () {
+                  _discoverAction(e);
+                },
                 child: Container(
                   width: NewsScale.screenW(context) / 2 - 18,
                   child: Text(
-                    e,
+                    e.title ?? '',
                     style: NewsTextStyle.style14NormalSecGrey,
                   ),
                 ),
@@ -66,6 +63,18 @@ class _SearchDiscoverState extends State<SearchDiscover> {
           ),
         ],
       ),
+    );
+  }
+
+  void _discoverAction(MomentModel? model) {
+    if (model == null) return;
+
+    STDebounce().start(
+      key: SearchDiscover.searchDiscoverDebounceKey,
+      func: () {
+        if (discoverTap != null) discoverTap!(model);
+      },
+      time: 200,
     );
   }
 }

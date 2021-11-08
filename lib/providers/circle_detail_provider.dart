@@ -147,21 +147,45 @@ class CircleDetailProvider extends ChangeNotifier {
     if (result.success) {
       for (int index = 0; index < _comments.length; index++) {
         MomentCommentModel _model = _comments[index];
-        if (_model.id == commentid) {
-          _model.isUserFavourite = !status;
-          if (_model.isUserFavourite!) {
-            _model.favouriteCount = (_model.favouriteCount ?? 0) + 1;
-          } else {
-            _model.favouriteCount = (_model.favouriteCount ?? 1) - 1;
-          }
-          _comments[index] = _model;
+        bool _isFinded = false;
+        _isFinded = _changeUserFavAndCount(
+            commentID: commentid, commentModel: _model, status: status);
+        if (_isFinded) {
           break;
-        } else {
-          if (_model.references != null && _model.references!.isNotEmpty) {}
         }
       }
       notifyListeners();
     }
+  }
+
+  bool _changeUserFavAndCount({
+    required String commentID,
+    required MomentCommentModel commentModel,
+    required bool status,
+  }) {
+    if (commentID == commentModel.id) {
+      commentModel.isUserFavourite = !status;
+      if (commentModel.isUserFavourite!) {
+        commentModel.favouriteCount = (commentModel.favouriteCount ?? 0) + 1;
+      } else {
+        commentModel.favouriteCount = (commentModel.favouriteCount ?? 1) - 1;
+      }
+      return true;
+    } else {
+      if (commentModel.references != null &&
+          commentModel.references!.isNotEmpty) {
+        bool _isFinded = false;
+        for (int i = 0; i < commentModel.references!.length; i++) {
+          MomentCommentModel subComM = commentModel.references![i];
+          _isFinded = _changeUserFavAndCount(
+              commentID: commentID, commentModel: subComM, status: status);
+          if (_isFinded) {
+            break;
+          }
+        }
+      }
+    }
+    return false;
   }
 
   Future<bool> initComments() async {
