@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
@@ -74,5 +75,49 @@ class UserHomeProvider extends ChangeNotifier {
       isFavouritedUser = !_isFaved;
     }
     return isFavouritedUser;
+  }
+
+  /// 收藏或取消收藏圈子
+  Future<bool> favouritedMoment({required String momentID, bool? isFav}) async {
+    bool _isFav = isFav ?? false;
+    ResultData result =
+        await Api.changeMomentFavourite(moment: momentID, status: !_isFav);
+    if (result.success) {
+      _isFav = !_isFav;
+      for (int i = 0; i < (_infoModel.moments?.length ?? 0); i++) {
+        MomentModel moment = _infoModel.moments?[i] ?? MomentModel();
+        if (moment.id == momentID) {
+          moment.isFavourite = _isFav;
+          break;
+        }
+      }
+      notifyListeners();
+    }
+    return Future.value(_isFav);
+  }
+
+  /// 点赞或取消点赞圈子
+  Future<bool> thumbupMoment(
+      {required String momentID, bool? isThumbup}) async {
+    bool _isThumbup = isThumbup ?? false;
+    ResultData result =
+        await Api.changeMomentThumbup(moment: momentID, status: !_isThumbup);
+    if (result.success) {
+      _isThumbup = !_isThumbup;
+      for (int i = 0; i < (_infoModel.moments?.length ?? 0); i++) {
+        MomentModel moment = _infoModel.moments?[i] ?? MomentModel();
+        if (moment.id == momentID) {
+          moment.isThumbUp = _isThumbup;
+          if (_isThumbup) {
+            moment.thumbUpCount = (moment.thumbUpCount ?? 0) + 1;
+          } else {
+            moment.thumbUpCount = (moment.thumbUpCount ?? 1) - 1;
+          }
+          break;
+        }
+      }
+      notifyListeners();
+    }
+    return Future.value(_isThumbup);
   }
 }

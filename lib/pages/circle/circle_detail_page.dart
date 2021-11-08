@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -18,9 +19,15 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class CircleDetailPage extends StatefulWidget {
-  const CircleDetailPage({Key? key, required this.moment}) : super(key: key);
+  const CircleDetailPage({
+    Key? key,
+    required this.moment,
+    this.positComment,
+  }) : super(key: key);
 
   final MomentModel moment;
+
+  final bool? positComment;
 
   @override
   _CircleDetailPageState createState() => _CircleDetailPageState();
@@ -62,6 +69,12 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
     circleDetailProvider.initComments();
     _initFavAuthor();
     _initFooterData();
+
+    if (widget.positComment ?? false) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        _scrollToComments();
+      });
+    }
   }
 
   Future _initFavAuthor() async {

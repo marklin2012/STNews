@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 
 import 'package:stnews/pages/common/news_loading.dart';
@@ -103,9 +104,17 @@ class _PersonHomePageState extends State<PersonHomePage> {
             PersonHomeCircles(
               userModel: userHomeP.infoModel.user,
               moments: userHomeP.infoModel.moments,
-              jumpCommentTap: (MomentModel model) {},
-              favourtieTap: (MomentModel model, bool isFaved) {},
-              thumbupTap: (MomentModel model, bool isThumbup) {},
+              jumpCommentTap: (MomentModel model) {
+                _jumpMomentDetailComment(moment: model);
+              },
+              favourtieTap: (MomentModel model, bool isFaved) {
+                _changeFavoriteMomentStatus(
+                    momentID: model.id, isFaved: isFaved);
+              },
+              thumbupTap: (MomentModel model, bool isThumbup) {
+                _changeThumbupMomentStatus(
+                    momentID: model.id, isThumbup: isThumbup);
+              },
             ),
           if (!userHomeP.hasMoments)
             SliverToBoxAdapter(
@@ -128,5 +137,26 @@ class _PersonHomePageState extends State<PersonHomePage> {
     NewsLoading.start(context);
     await userHomeProvider.changeFavouritedUserStatus(isFaved);
     NewsLoading.stop();
+  }
+
+  void _jumpMomentDetailComment({MomentModel? moment}) {
+    if (moment == null) return;
+    STRouters.push(
+        context,
+        CircleDetailPage(
+          moment: moment,
+          positComment: true,
+        ));
+  }
+
+  void _changeFavoriteMomentStatus({String? momentID, bool? isFaved}) async {
+    if (momentID == null || momentID.isEmpty) return;
+    await userHomeProvider.favouritedMoment(momentID: momentID, isFav: isFaved);
+  }
+
+  void _changeThumbupMomentStatus({String? momentID, bool? isThumbup}) async {
+    if (momentID == null || momentID.isEmpty) return;
+    await userHomeProvider.thumbupMoment(
+        momentID: momentID, isThumbup: isThumbup);
   }
 }
