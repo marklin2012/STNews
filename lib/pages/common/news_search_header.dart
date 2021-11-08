@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
@@ -8,7 +10,7 @@ import 'package:stnews/utils/st_routers.dart';
 class NewsSearchHeader extends StatefulWidget {
   const NewsSearchHeader({
     Key? key,
-    required this.heroTag,
+    this.heroTag,
     this.controller,
     this.searchTap,
     this.height,
@@ -17,7 +19,7 @@ class NewsSearchHeader extends StatefulWidget {
     this.debounceKey,
   }) : super(key: key);
 
-  final String heroTag;
+  final String? heroTag;
 
   final String? debounceKey;
 
@@ -41,6 +43,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
   late String _placeholder;
   late String _btnTitle;
   late ValueNotifier<bool> _btnDisableNoti;
+  late FocusNode _focusNode;
 
   @override
   void initState() {
@@ -49,6 +52,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
     _controller = widget.controller ?? TextEditingController();
     _placeholder = widget.placeholder ?? '请输入搜索内容';
     _btnTitle = widget.btnTitle ?? '搜索';
+    _focusNode = FocusNode();
     _btnDisableNoti = ValueNotifier(true);
 
     _controller.addListener(() {
@@ -57,6 +61,10 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
       } else {
         _btnDisableNoti.value = false;
       }
+    });
+    // // 激活搜索框
+    Future.delayed(Duration(milliseconds: 200), () {
+      FocusScope.of(context).requestFocus(_focusNode);
     });
   }
 
@@ -93,13 +101,10 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               padding: EdgeInsets.zero,
               cursorHeight: 24.0,
               contentPadding: EdgeInsets.only(bottom: 18.0),
-              prefixIcon: Hero(
-                tag: widget.heroTag,
-                child: Icon(
-                  STIcons.commonly_search,
-                  color: ColorConfig.textFourColor,
-                  size: 20.0,
-                ),
+              prefixIcon: Icon(
+                STIcons.commonly_search,
+                color: ColorConfig.textFourColor,
+                size: 20.0,
               ),
               decoration: BoxDecoration(
                 color: ColorConfig.fourGrey,
@@ -107,6 +112,8 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               ),
               placeholder: _placeholder,
               controller: _controller,
+              focusNode: _focusNode,
+              inputType: TextInputType.text,
               onChanged: (String value) {
                 if (value.isEmpty || value.length == 0) {
                   return;

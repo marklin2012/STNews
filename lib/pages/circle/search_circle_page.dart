@@ -12,7 +12,6 @@ import 'package:stnews/utils/shared_pref.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class SearchCirclePage extends StatefulWidget {
-  static const searchCircleHeroTag = 'searchCircleHeroTag';
   static const searchCircleDebounceKey = '_searchCircleDebounceKey';
   const SearchCirclePage({Key? key}) : super(key: key);
 
@@ -57,7 +56,6 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                   top: 0,
                   height: 44,
                   child: NewsSearchHeader(
-                    heroTag: SearchCirclePage.searchCircleHeroTag,
                     debounceKey: SearchCirclePage.searchCircleDebounceKey,
                     controller: _searchController,
                     searchTap: (String value) {
@@ -86,8 +84,9 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                       ),
                       SearchDiscover(
                         discovers: cirSeaP.seachDiscovers,
-                        discoverTap: (MomentModel model) {
-                          _gotoCircleDetailPage(model);
+                        discoverTap: (String discover) {
+                          _searchController.text = discover;
+                          _search(discover);
                         },
                       ),
                     ],

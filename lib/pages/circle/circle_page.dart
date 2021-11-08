@@ -39,14 +39,13 @@ class _CirclePageState extends State<CirclePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-            tag: SearchCirclePage.searchCircleHeroTag,
-            child: STButton.icon(
-                backgroundColor: Colors.transparent,
-                icon: Icon(STIcons.commonly_search),
-                onTap: () {
-                  STRouters.push(context, SearchCirclePage());
-                })),
+        leading: STButton.icon(
+          backgroundColor: Colors.transparent,
+          icon: Icon(STIcons.commonly_search),
+          onTap: () {
+            STRouters.push(context, SearchCirclePage());
+          },
+        ),
         title: Text('推荐'),
       ),
       body: _buildContent(),

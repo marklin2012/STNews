@@ -116,8 +116,10 @@ class CircleCommentCell extends StatelessWidget {
               if (isReplayed && isAuthorReplayed) _buildAuthorTag(),
             ],
           ),
+          SizedBox(height: 2.0),
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
+            runSpacing: 2.0,
             children: [
               if (isReplayed && !isAuthorReplayed)
                 Text(
@@ -129,23 +131,17 @@ class CircleCommentCell extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
                     commentModel.moment?.user?.nickname ?? '作者昵称',
-                    style: NewsTextStyle.style12NormalSecGrey,
+                    style: NewsTextStyle.style14NormalSecGrey,
                   ),
                 ),
-              Container(
-                // color: Colors.yellow,
-                child: Text(
-                  commentModel.content ?? '',
-                  style: NewsTextStyle.style14NormalBlack,
-                ),
+              Text(
+                commentModel.content ?? '',
+                style: NewsTextStyle.style14NormalBlack,
               ),
               SizedBox(width: 8.0),
-              Container(
-                // color: Colors.red,
-                child: Text(
-                  _publishDateStr,
-                  style: NewsTextStyle.style12NormalThrGrey,
-                ),
+              Text(
+                _publishDateStr,
+                style: NewsTextStyle.style12NormalThrGrey,
               ),
             ],
           ),
@@ -169,11 +165,15 @@ class CircleCommentCell extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Text(
-            (commentModel.favouriteCount ?? 0).toString(),
-            style: NewsTextStyle.style12NormalThrGrey,
-          ),
-          SizedBox(width: 5.4),
+          if (commentModel.favouriteCount != null &&
+              commentModel.favouriteCount! > 0)
+            Padding(
+              padding: EdgeInsets.only(right: 5.4),
+              child: Text(
+                (commentModel.favouriteCount ?? 0).toString(),
+                style: NewsTextStyle.style12NormalThrGrey,
+              ),
+            ),
           commentModel.isUserFavourite ?? false
               ? Image(
                   width: 18,

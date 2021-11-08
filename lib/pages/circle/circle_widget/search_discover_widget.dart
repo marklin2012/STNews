@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 
@@ -13,9 +12,9 @@ class SearchDiscover extends StatelessWidget {
     this.discoverTap,
   }) : super(key: key);
 
-  final List<MomentModel>? discovers;
+  final List<String>? discovers;
 
-  final Function(MomentModel)? discoverTap;
+  final Function(String)? discoverTap;
 
   // [
   //     '重大发现',
@@ -54,7 +53,7 @@ class SearchDiscover extends StatelessWidget {
                 child: Container(
                   width: NewsScale.screenW(context) / 2 - 18,
                   child: Text(
-                    e.title ?? '',
+                    e,
                     style: NewsTextStyle.style14NormalSecGrey,
                   ),
                 ),
@@ -66,13 +65,13 @@ class SearchDiscover extends StatelessWidget {
     );
   }
 
-  void _discoverAction(MomentModel? model) {
-    if (model == null) return;
+  void _discoverAction(String? key) {
+    if (key == null) return;
 
     STDebounce().start(
       key: SearchDiscover.searchDiscoverDebounceKey,
       func: () {
-        if (discoverTap != null) discoverTap!(model);
+        if (discoverTap != null) discoverTap!(key);
       },
       time: 200,
     );

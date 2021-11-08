@@ -140,11 +140,12 @@ class CircleCell extends StatelessWidget {
                           )
                         : NewsImage.defaultAvatar(height: 20),
                   ),
-                  Text(
-                    circleModel?.user?.nickname ?? '',
-                    style: NewsTextStyle.style12NormalSecGrey,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: Text(
+                      STString.limitStringLength(circleModel?.user?.nickname),
+                      style: NewsTextStyle.style12NormalSecGrey,
+                      maxLines: 1,
+                    ),
                   ),
                 ],
               ),

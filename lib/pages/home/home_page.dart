@@ -48,14 +48,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-            tag: SearchPostPage.searchHeroTag,
-            child: STButton.icon(
-                backgroundColor: Colors.transparent,
-                icon: Icon(STIcons.commonly_search),
-                onTap: () {
-                  STRouters.push(context, SearchPostPage());
-                })),
+        leading: STButton.icon(
+          backgroundColor: Colors.transparent,
+          icon: Icon(STIcons.commonly_search),
+          onTap: () {
+            STRouters.push(context, SearchPostPage());
+          },
+        ),
         title: Text(
           '资讯',
           style: TextStyle(color: Colors.black),

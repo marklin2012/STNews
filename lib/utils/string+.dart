@@ -118,4 +118,11 @@ class STString {
       return BaseUrl + image;
     }
   }
+
+  static String limitStringLength(String? string, {int length = 8}) {
+    if (string == null) return '';
+    if (string.length <= length) return string;
+    final temp = string.substring(0, 8);
+    return '$temp...';
+  }
 }

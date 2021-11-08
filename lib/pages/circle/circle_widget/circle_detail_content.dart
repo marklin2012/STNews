@@ -42,12 +42,13 @@ class CircleDetailContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                title ?? '这是一条标题',
+                title ?? '',
                 style: NewsTextStyle.style18BoldBlack,
+                maxLines: 2,
               ),
               SizedBox(height: 8.0),
               Text(
-                content ?? '正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述正文描述！',
+                content ?? '',
                 style: NewsTextStyle.style16NormalBlack,
               ),
               SizedBox(height: 12.0),

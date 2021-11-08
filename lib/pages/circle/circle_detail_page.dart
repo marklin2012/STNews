@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -12,13 +13,16 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
+import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_detail_provider.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 class CircleDetailPage extends StatefulWidget {
+  static const circleDetailDebounceKey = 'circleDetailDebounceKey';
   const CircleDetailPage({
     Key? key,
     required this.moment,
@@ -136,13 +140,45 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
       right: 0,
       height: 52,
       child: CircleDetailNavHeader(
-        leadingImg: NewsImage.defaultAvatar(),
+        leadingImg: _buildNavHeaderLeadingImg(),
         leadingTitle: Text(
           widget.moment.user?.nickname ?? '发表人',
           style: NewsTextStyle.style14NormalBlack,
         ),
         trailing: _buildHeaderTrailing(),
       ),
+    );
+  }
+
+  Widget? _buildNavHeaderLeadingImg() {
+    return GestureDetector(
+      onTap: () {
+        STDebounce().start(
+          key: CircleDetailPage.circleDetailDebounceKey,
+          func: () {
+            STRouters.push(
+                context,
+                PersonHomePage(
+                  type: PersonHomeShowType.PersonHomeShowCircle,
+                  userID: widget.moment.user?.id,
+                ));
+          },
+        );
+      },
+      behavior: HitTestBehavior.translucent,
+      child: widget.moment.user?.avatar != null
+          ? ClipOval(
+              clipBehavior: Clip.hardEdge,
+              child: CachedNetworkImage(
+                width: 36,
+                height: 36,
+                imageUrl:
+                    STString.addPrefixHttp(widget.moment.user?.avatar) ?? '',
+                fit: BoxFit.cover,
+                placeholder: (context, url) => NewsImage.defaultAvatar(),
+              ),
+            )
+          : NewsImage.defaultAvatar(),
     );
   }
 

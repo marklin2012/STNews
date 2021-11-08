@@ -15,7 +15,6 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class SearchPostPage extends StatefulWidget {
-  static const searchHeroTag = 'searchPost';
   static const searchPostDebounceKey = '_searchPostDebounceKey';
   const SearchPostPage({Key? key}) : super(key: key);
 
@@ -55,7 +54,6 @@ class _SearchPostPageState extends State<SearchPostPage> {
                 top: 0,
                 height: 44,
                 child: NewsSearchHeader(
-                  heroTag: SearchPostPage.searchHeroTag,
                   debounceKey: SearchCirclePage.searchCircleDebounceKey,
                   searchTap: (String value) {
                     _search(value);

@@ -172,33 +172,39 @@ class PersonHomeCirclesCell extends StatelessWidget {
       return Container(
         color: ColorConfig.baseFourBlue,
         height: 168,
-        child: CachedNetworkImage(
-          height: 168,
-          imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
-          fit: BoxFit.cover,
-          placeholder: (context, url) => Center(
-            child: NewsImage.defaultCircle(),
+        child: Center(
+          child: CachedNetworkImage(
+            height: 168,
+            imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Center(
+              child: NewsImage.defaultCircle(),
+            ),
           ),
         ),
       );
     } else {
-      return Wrap(
-        runSpacing: NewsScale.sh(3, context),
-        spacing: NewsScale.sw(3, context),
-        children: model!.images!.map((e) {
-          return Container(
-            color: ColorConfig.baseFourBlue,
-            width: NewsScale.sw(112, context),
-            height: NewsScale.sw(112, context),
-            child: CachedNetworkImage(
-              imageUrl: STString.addPrefixHttp(e) ?? '',
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: NewsImage.defaultCircle(height: 50),
+      return Container(
+        color: ColorConfig.baseFourBlue,
+        alignment: Alignment.centerLeft,
+        child: Wrap(
+          runSpacing: NewsScale.sh(3, context),
+          spacing: NewsScale.sw(3, context),
+          children: model!.images!.map((e) {
+            return Container(
+              color: ColorConfig.baseFourBlue,
+              width: NewsScale.sw(112, context),
+              height: NewsScale.sw(112, context),
+              child: CachedNetworkImage(
+                imageUrl: STString.addPrefixHttp(e) ?? '',
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: NewsImage.defaultCircle(height: 50),
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       );
     }
   }
@@ -216,7 +222,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
               STIcons.commonly_message,
               color: ColorConfig.textSecColor,
             ),
-            text: '12',
+            text: (model?.commentCount ?? 0).toString(),
             textStyle: NewsTextStyle.style14NormalSecGrey,
             onTap: () {
               if (jumpCommentTap != null) {
@@ -229,13 +235,19 @@ class PersonHomeCirclesCell extends StatelessWidget {
             backgroundColor: Colors.transparent,
             size: STButtonSize.small,
             padding: EdgeInsets.all(4),
-            icon: Icon(
-              STIcons.commonly_star,
-              color: ColorConfig.textSecColor,
-            ),
+            icon: model?.isFavourite ?? false
+                ? Image(
+                    width: 24,
+                    height: 24,
+                    image: AssetImage('assets/images/favourited.png'),
+                  )
+                : Icon(
+                    STIcons.commonly_star,
+                    color: ColorConfig.textSecColor,
+                  ),
             onTap: () {
               if (favourtieTap != null) {
-                favourtieTap!(model!, false);
+                favourtieTap!(model!, model?.isFavourite ?? false);
               }
             },
           ),
@@ -253,7 +265,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             unit: (model?.thumbUpCount ?? 0).toString(),
             onTap: () {
               if (thumbupTap != null) {
-                thumbupTap!(model!, false);
+                thumbupTap!(model!, model?.isThumbUp ?? false);
               }
             },
           ),

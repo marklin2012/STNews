@@ -55,11 +55,8 @@ class _PublishHeaderState extends State<PublishHeader> {
                 hintStyle: NewsTextStyle.style16NormalThrGrey,
                 border: const OutlineInputBorder(borderSide: BorderSide.none),
               ),
-              maxLines: 5,
+              maxLines: 4,
               controller: _contentController,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(80),
-              ],
             ),
           ),
         ],

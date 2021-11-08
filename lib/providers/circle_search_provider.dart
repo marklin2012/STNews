@@ -28,11 +28,11 @@ class CircleSearchProvider extends ChangeNotifier {
     historys = [];
   }
 
-  List<MomentModel> _seachDiscovers = [];
-  List<MomentModel> get seachDiscovers => _seachDiscovers;
+  List<String> _seachDiscovers = [];
+  List<String> get seachDiscovers => _seachDiscovers;
   bool get hasDiscovers => _seachDiscovers.isNotEmpty;
 
-  set seaResults(List<MomentModel> discovers) {
+  set seaResults(List<String> discovers) {
     _seachDiscovers = discovers;
 
     notifyListeners();
