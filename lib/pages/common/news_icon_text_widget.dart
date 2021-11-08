@@ -10,7 +10,7 @@ class NewsIconTextWidget extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
-  final IconData? icon;
+  final Widget? icon;
   final String? title;
   final String? unit;
   final Function()? onTap;
@@ -23,7 +23,7 @@ class NewsIconTextWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) Icon(icon, size: 24),
+          if (icon != null) icon!,
           SizedBox(width: 8.0),
           if (title != null)
             Text(

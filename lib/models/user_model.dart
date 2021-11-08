@@ -1,3 +1,4 @@
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/post_model.dart';
 
 class UserModel {
@@ -63,6 +64,7 @@ class UserInfoModel {
   int? followerCount;
   int? fansCount;
   List<PostModel>? post;
+  List<MomentModel>? moments;
 
   UserInfoModel({
     this.user,
@@ -75,8 +77,14 @@ class UserInfoModel {
     user = UserModel.fromJson(json['user']);
     followerCount = json['followerCount'];
     fansCount = json['fansCount'];
-    List _temps = json['post'] as List;
-    post = _temps.map((e) => PostModel.fromJson(e)).toList();
+    if (json['post'] is List) {
+      List _temps = json['post'] as List;
+      post = _temps.map((e) => PostModel.fromJson(e)).toList();
+    }
+    if (json['moments'] is List) {
+      List _temps = json['moments'] as List;
+      moments = _temps.map((e) => MomentModel.fromJson(e)).toList();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -85,6 +93,7 @@ class UserInfoModel {
     data['followerCount'] = this.followerCount;
     data['fansCount'] = this.fansCount;
     data['post'] = this.post?.map((e) => e.toJson()).toList();
+    data['moments'] = this.moments?.map((e) => e.toJson()).toList();
     return data;
   }
 }

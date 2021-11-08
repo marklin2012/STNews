@@ -10,7 +10,6 @@ class UserHomeProvider extends ChangeNotifier {
   set userID(String? userID) {
     if (userID != null) {
       _userID = userID;
-      notifyListeners();
     }
   }
 
@@ -37,12 +36,15 @@ class UserHomeProvider extends ChangeNotifier {
     }
   }
 
+  bool get hasMoments => _infoModel.moments?.isNotEmpty ?? false;
+
   /// 获取该用户的信息
   Future getUserInfoData() async {
     ResultData result = await Api.getUserInfo(userid: userID);
     if (result.success) {
       Map<String, dynamic> _userInfo = result.data;
       infoModel = UserInfoModel.fromJson(_userInfo);
+      notifyListeners();
     }
   }
 
@@ -64,11 +66,12 @@ class UserHomeProvider extends ChangeNotifier {
   }
 
   /// 关注或取消关注该用户
-  Future<bool> changeFavouritedUserStatus() async {
+  Future<bool> changeFavouritedUserStatus(bool isFaved) async {
+    bool _isFaved = isFaved;
     ResultData result = await Api.changeUserFavourite(
-        followeduserid: userID, status: !_isFavouritedUser);
+        followeduserid: userID, status: !_isFaved);
     if (result.success) {
-      isFavouritedUser = !_isFavouritedUser;
+      isFavouritedUser = !_isFaved;
     }
     return isFavouritedUser;
   }

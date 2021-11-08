@@ -3,12 +3,14 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/common/empty_view_widget.dart';
 
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_circles.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_header.dart';
-import 'package:stnews/pages/person/person_widgets/person_home_posts.dart';
 import 'package:stnews/providers/user_home_provider.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -49,7 +51,10 @@ class _PersonHomePageState extends State<PersonHomePage> {
   Future _requestData() async {
     NewsLoading.start(context);
     await userHomeProvider.getUserInfoData();
-    await userHomeProvider.getFavouritedUser();
+    // 非自己时查询是否关注该用户
+    if (widget.userID != UserProvider.shared.user.id) {
+      await userHomeProvider.getFavouritedUser();
+    }
     NewsLoading.stop();
   }
 
@@ -70,24 +75,58 @@ class _PersonHomePageState extends State<PersonHomePage> {
   }
 
   Widget _buildContent() {
-    return CustomScrollView(
-      slivers: [
-        PersonHomeHeader(userID: widget.userID ?? ''),
-        if (widget.type == PersonHomeShowType.PersonHomeShowPost)
-          PersonHomePosts(),
-        if (widget.type == PersonHomeShowType.PersonHomeShowCircle)
-          SliverToBoxAdapter(
-            child: Container(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'TA的作品',
-                style: NewsTextStyle.style17BoldBlack,
+    return Consumer<UserHomeProvider>(
+        builder: (BuildContext context, UserHomeProvider userHomeP, _) {
+      return CustomScrollView(
+        slivers: [
+          PersonHomeHeader(
+            user: userHomeP.infoModel.user,
+            isSelf: userHomeP.isSelf,
+            isFavouritedUser: userHomeP.isFavouritedUser,
+            followerCount: userHomeP.infoModel.followerCount,
+            fansCount: userHomeP.infoModel.fansCount,
+            favouritedTap: (bool isFav) {
+              _changeFavouriteStatus(isFav);
+            },
+          ),
+          if (userHomeP.hasMoments)
+            SliverToBoxAdapter(
+              child: Container(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'TA的作品',
+                  style: NewsTextStyle.style17BoldBlack,
+                ),
               ),
             ),
-          ),
-        if (widget.type == PersonHomeShowType.PersonHomeShowCircle)
-          PersonHomeCircles(),
-      ],
-    );
+          if (userHomeP.hasMoments)
+            PersonHomeCircles(
+              userModel: userHomeP.infoModel.user,
+              moments: userHomeP.infoModel.moments,
+              jumpCommentTap: (MomentModel model) {},
+              favourtieTap: (MomentModel model, bool isFaved) {},
+              thumbupTap: (MomentModel model, bool isThumbup) {},
+            ),
+          if (!userHomeP.hasMoments)
+            SliverToBoxAdapter(
+              child: Container(
+                height: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom -
+                    210,
+                child: EmptyViewWidget(
+                  content: '暂无发布的作品',
+                ),
+              ),
+            )
+        ],
+      );
+    });
+  }
+
+  void _changeFavouriteStatus(bool isFaved) async {
+    NewsLoading.start(context);
+    await userHomeProvider.changeFavouritedUserStatus(isFaved);
+    NewsLoading.stop();
   }
 }

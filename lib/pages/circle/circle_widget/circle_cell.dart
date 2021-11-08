@@ -89,7 +89,7 @@ class CircleCell extends StatelessWidget {
                   width: NewsScale.sw(181, context),
                   height: NewsScale.sh(240, context),
                   imageUrl:
-                      STString.addPrefixHttp(circleModel?.images!.first) ?? '',
+                      STString.addPrefixHttp(circleModel?.images?.first) ?? '',
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: NewsImage.defaultCircle(),
@@ -155,7 +155,7 @@ class CircleCell extends StatelessWidget {
           onTap: () {
             // 点赞
             if (thumbupedTap != null) {
-              thumbupedTap!(circleModel?.isThumbuped ?? false);
+              thumbupedTap!(circleModel?.isThumbUp ?? false);
             }
           },
           behavior: HitTestBehavior.translucent,
@@ -165,7 +165,7 @@ class CircleCell extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                circleModel?.isThumbuped ?? false
+                circleModel?.isThumbUp ?? false
                     ? Image(
                         width: 18,
                         height: 18,

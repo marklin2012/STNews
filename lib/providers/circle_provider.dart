@@ -61,7 +61,7 @@ class CircleProvider extends ChangeNotifier {
         await Api.changeMomentThumbup(moment: moment.id!, status: !_isThumbup);
     if (result.success) {
       _isThumbup = !_isThumbup;
-      moment.isThumbuped = _isThumbup;
+      moment.isThumbUp = _isThumbup;
       if (_isThumbup) {
         moment.thumbUpCount = (moment.thumbUpCount ?? 0) + 1;
       } else {

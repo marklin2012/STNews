@@ -1,71 +1,95 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stnews/models/moment_model.dart';
 
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
-import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 import 'package:stnews/utils/string+.dart';
 
-class PersonHomeCircles extends StatefulWidget {
-  const PersonHomeCircles({Key? key}) : super(key: key);
+class PersonHomeCircles extends StatelessWidget {
+  const PersonHomeCircles(
+      {Key? key,
+      this.userModel,
+      this.moments,
+      this.thumbupTap,
+      this.favourtieTap,
+      this.jumpCommentTap})
+      : super(key: key);
 
-  @override
-  _PersonHomeCirclesState createState() => _PersonHomeCirclesState();
-}
+  final UserModel? userModel;
 
-class _PersonHomeCirclesState extends State<PersonHomeCircles> {
+  final List<MomentModel>? moments;
+
+  final Function(MomentModel, bool)? thumbupTap;
+
+  final Function(MomentModel, bool)? favourtieTap;
+
+  final Function(MomentModel)? jumpCommentTap;
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserHomeProvider>(
-        builder: (BuildContext context, UserHomeProvider userHomeP, _) {
-      // if (userHomeP.infoModel.post == null ||
-      //     (userHomeP.infoModel.post != null &&
-      //         userHomeP.infoModel.post!.isEmpty))
-      //   return SliverToBoxAdapter(
-      //     child: Container(
-      //       height: MediaQuery.of(context).size.height -
-      //           MediaQuery.of(context).padding.top -
-      //           MediaQuery.of(context).padding.bottom -
-      //           210,
-      //       child: EmptyViewWidget(
-      //         content: '暂无发布的内容',
-      //       ),
-      //     ),
-      //   );
-      return SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            return PersonHomeCirclesCell(
-              images: index == 1 ? ['', '', '', ''] : [],
-            );
-          },
-          childCount: 3,
-        ),
-      );
-    });
+    if (userModel == null || moments == null) {
+      return SliverToBoxAdapter();
+    }
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          MomentModel? model = moments?[index];
+          return PersonHomeCirclesCell(
+            userModel: userModel,
+            model: model,
+            jumpCommentTap: (MomentModel model) {
+              if (jumpCommentTap != null) {
+                jumpCommentTap!(model);
+              }
+            },
+            favourtieTap: (MomentModel model, bool isFaved) {
+              if (favourtieTap != null) {
+                favourtieTap!(model, isFaved);
+              }
+            },
+            thumbupTap: (MomentModel model, bool isFaved) {
+              if (thumbupTap != null) {
+                thumbupTap!(model, isFaved);
+              }
+            },
+          );
+        },
+        childCount: moments?.length,
+      ),
+    );
   }
 }
 
 class PersonHomeCirclesCell extends StatelessWidget {
   const PersonHomeCirclesCell({
     Key? key,
+    this.model,
     this.userModel,
-    this.images,
+    this.thumbupTap,
+    this.favourtieTap,
+    this.jumpCommentTap,
   }) : super(key: key);
 
   final UserModel? userModel;
 
-  final List<String>? images;
+  final MomentModel? model;
+
+  final Function(MomentModel, bool)? thumbupTap;
+
+  final Function(MomentModel, bool)? favourtieTap;
+
+  final Function(MomentModel)? jumpCommentTap;
 
   @override
   Widget build(BuildContext context) {
+    if (userModel == null || model == null) return Container();
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 32),
       child: Column(
@@ -75,14 +99,14 @@ class PersonHomeCirclesCell extends StatelessWidget {
           _buildUserInfo(),
           SizedBox(height: 16),
           Text(
-            '重磅！Facebook正式改名Meta',
+            model?.title ?? '',
             style: NewsTextStyle.style18BoldBlack,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(height: 12),
           Text(
-            '正文描述正文描述正文描述正文描述正文描述正文描述正文',
+            model?.content ?? '',
             style: NewsTextStyle.style16NormalBlack,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
@@ -142,27 +166,36 @@ class PersonHomeCirclesCell extends StatelessWidget {
   }
 
   Widget _buildSubImages(BuildContext context) {
-    if (images == null) {
+    if (model?.images == null || model!.images!.isEmpty) {
       return Container();
-    } else if (images!.isEmpty || images!.length == 1) {
+    } else if (model!.images!.length == 1) {
       return Container(
         color: ColorConfig.baseFourBlue,
         height: 168,
-        child: Center(
-          child: NewsImage.defaultCircle(),
+        child: CachedNetworkImage(
+          height: 168,
+          imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Center(
+            child: NewsImage.defaultCircle(),
+          ),
         ),
       );
     } else {
       return Wrap(
         runSpacing: NewsScale.sh(3, context),
         spacing: NewsScale.sw(3, context),
-        children: images!.map((e) {
+        children: model!.images!.map((e) {
           return Container(
             color: ColorConfig.baseFourBlue,
             width: NewsScale.sw(112, context),
             height: NewsScale.sw(112, context),
-            child: Center(
-              child: NewsImage.defaultCircle(height: 50),
+            child: CachedNetworkImage(
+              imageUrl: STString.addPrefixHttp(e) ?? '',
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Center(
+                child: NewsImage.defaultCircle(height: 50),
+              ),
             ),
           );
         }).toList(),
@@ -185,7 +218,11 @@ class PersonHomeCirclesCell extends StatelessWidget {
             ),
             text: '12',
             textStyle: NewsTextStyle.style14NormalSecGrey,
-            onTap: () {},
+            onTap: () {
+              if (jumpCommentTap != null) {
+                jumpCommentTap!(model!);
+              }
+            },
           ),
           SizedBox(width: 16),
           STButton.icon(
@@ -196,12 +233,29 @@ class PersonHomeCirclesCell extends StatelessWidget {
               STIcons.commonly_star,
               color: ColorConfig.textSecColor,
             ),
-            onTap: () {},
+            onTap: () {
+              if (favourtieTap != null) {
+                favourtieTap!(model!, false);
+              }
+            },
           ),
           SizedBox(width: 16),
           NewsIconTextWidget(
-            icon: STIcons.commonly_like,
-            unit: '12',
+            icon: model?.isThumbUp ?? false
+                ? Image(
+                    width: 24,
+                    height: 24,
+                    image: AssetImage('assets/images/liked.png'),
+                  )
+                : Icon(
+                    STIcons.commonly_like,
+                  ),
+            unit: (model?.thumbUpCount ?? 0).toString(),
+            onTap: () {
+              if (thumbupTap != null) {
+                thumbupTap!(model!, false);
+              }
+            },
           ),
         ],
       ),

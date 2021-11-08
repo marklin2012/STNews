@@ -513,7 +513,7 @@ class Api {
   /// 是否收藏圈子
   static Future<ResultData> getMomentFavourite(
           {required String moment, bool showToastError = true}) =>
-      _put('/moment/favourite/$moment', showToastError: showToastError);
+      _get('/moment/favourite/$moment', showToastError: showToastError);
 
   /// 搜索圈子
   static Future<ResultData> searchMoment(
@@ -521,6 +521,6 @@ class Api {
           int perpage = 20,
           String? key,
           bool showToastError = true}) =>
-      _get('​/search/moment?key=$key&page=$page&per_page=$perpage',
+      _get('/search/moment?key=$key&page=$page&per_page=$perpage',
           showToastError: showToastError);
 }

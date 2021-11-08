@@ -9,7 +9,7 @@ class MomentModel {
   String? content;
   String? createdAt;
   String? updatedAt;
-  bool? isThumbuped;
+  bool? isThumbUp;
   int? thumbUpCount;
 
   MomentModel({
@@ -21,7 +21,7 @@ class MomentModel {
     this.content,
     this.createdAt,
     this.updatedAt,
-    this.isThumbuped,
+    this.isThumbUp,
     this.thumbUpCount,
   });
 
@@ -44,7 +44,7 @@ class MomentModel {
     content = json['content'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    isThumbuped = json['isThumbuped'];
+    isThumbUp = json['isThumbUp'];
     thumbUpCount = json['thumbUpCount'];
   }
 
@@ -58,7 +58,7 @@ class MomentModel {
     data['content'] = this.content;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
-    data['isThumbuped'] = this.isThumbuped;
+    data['isThumbUp'] = this.isThumbUp;
     data['thumbUpCount'] = this.thumbUpCount;
     return data;
   }
