@@ -32,10 +32,15 @@ class CircleSearchProvider extends ChangeNotifier {
   List<String> get seachDiscovers => _seachDiscovers;
   bool get hasDiscovers => _seachDiscovers.isNotEmpty;
 
-  set seaResults(List<String> discovers) {
-    _seachDiscovers = discovers;
-
-    notifyListeners();
+  Future searchHotMoment() async {
+    ResultData result = await Api.searchMomentHot();
+    if (result.success) {
+      if (result.data['hotKeys'] is List) {
+        final temps = result.data['hotKeys'] as List;
+        _seachDiscovers = temps.map((e) => e.toString()).toList();
+      }
+      notifyListeners();
+    }
   }
 
   List<MomentModel> _searchRecords = [];
@@ -47,13 +52,12 @@ class CircleSearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> searchKey({required String key}) async {
+  Future searchKey({required String key}) async {
     ResultData result = await Api.searchMoment(key: key);
     if (result.success && result.data['moments'] is List) {
       List temps = result.data['moments'] as List;
       _searchRecords = temps.map((e) => MomentModel.fromJson(e)).toList();
       notifyListeners();
     }
-    return Future.value(true);
   }
 }

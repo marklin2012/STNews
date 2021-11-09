@@ -10,6 +10,7 @@ import 'package:stnews/pages/common/news_search_header.dart';
 import 'package:stnews/providers/circle_search_provider.dart';
 import 'package:stnews/utils/shared_pref.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 class SearchCirclePage extends StatefulWidget {
   static const searchCircleDebounceKey = '_searchCircleDebounceKey';
@@ -37,6 +38,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
       }
     });
     circleSeaProvider.getHistorys();
+    circleSeaProvider.searchHotMoment();
   }
 
   @override
@@ -145,12 +147,13 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
   }
 
   void _search(String value) async {
-    _searchValue = value;
+    final _temp = STString.removeSpace(value);
+    _searchValue = _temp;
     // 开始请求
-    await circleSeaProvider.searchKey(key: value);
+    await circleSeaProvider.searchKey(key: _searchValue);
     // 请求成功
-    SharedPref.saveCircleSearchHistory(value)
-        .then((value) => circleSeaProvider.getHistorys());
+    SharedPref.saveCircleSearchHistory(_searchValue)
+        .then((bool suc) => circleSeaProvider.getHistorys());
   }
 
   void _gotoCircleDetailPage(MomentModel? model) {

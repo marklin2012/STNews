@@ -523,4 +523,8 @@ class Api {
           bool showToastError = true}) =>
       _get('/search/moment?key=$key&page=$page&per_page=$perpage',
           showToastError: showToastError);
+
+  /// 搜索圈子热门
+  static Future<ResultData> searchMomentHot({bool showToastError = true}) =>
+      _get('/search/moment/hot', showToastError: showToastError);
 }

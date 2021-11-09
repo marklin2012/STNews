@@ -16,18 +16,6 @@ class SearchDiscover extends StatelessWidget {
 
   final Function(String)? discoverTap;
 
-  // [
-  //     '重大发现',
-  //     '重大发现',
-  //     '头条新闻',
-  //     '重大发现',
-  //     '头条新闻',
-  //     '重大发现',
-  //     '头条新闻',
-  //     '重大发现',
-  //     '头条新闻',
-  //   ];
-
   @override
   Widget build(BuildContext context) {
     if (discovers == null || discovers!.isEmpty) return Container();
