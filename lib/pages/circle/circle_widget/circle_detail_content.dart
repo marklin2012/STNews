@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/page_view_widget.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_scale.dart';
 
 class CircleDetailContent extends StatelessWidget {
   const CircleDetailContent({
@@ -25,16 +27,24 @@ class CircleDetailContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        PageViewWidget(
-          isAutoRoll: false,
-          isLooped: false,
-          pageList: images,
-          margin: EdgeInsets.zero,
-          height: 430,
-          decoration: BoxDecoration(
-            color: ColorConfig.baseFourBlue,
-          ),
-        ),
+        (images != null && images!.length != 0)
+            ? PageViewWidget(
+                isAutoRoll: false,
+                isLooped: false,
+                pageList: images,
+                margin: EdgeInsets.zero,
+                height: 430,
+                decoration: BoxDecoration(
+                  color: ColorConfig.baseFourBlue,
+                ),
+              )
+            : Container(
+                height: NewsScale.sh(430, context),
+                color: ColorConfig.baseFourBlue,
+                child: Center(
+                  child: NewsImage.defaultCircle(height: 160),
+                ),
+              ),
         Padding(
           padding: EdgeInsets.fromLTRB(12, 16, 12, 4),
           child: Column(
