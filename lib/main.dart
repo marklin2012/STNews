@@ -28,16 +28,16 @@ void main() {
   Api.initAPI();
 
   // ignore: invalid_use_of_visible_for_testing_member
-  // SharedPreferences.setMockInitialValues({});
+  SharedPreferences.setMockInitialValues({});
 
   /// 服务器token
   /// ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({
-    'token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjM2MjA2NDM0fQ.zNMZjix-ztgHXaZWGFE8hRWzTrFOmQQnbqgttJlPrJw',
-    'user':
-        '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"用户8888990","sex":0}'
-  });
+  // SharedPreferences.setMockInitialValues({
+  //   'token':
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjM2MjA2NDM0fQ.zNMZjix-ztgHXaZWGFE8hRWzTrFOmQQnbqgttJlPrJw',
+  //   'user':
+  //       '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"用户8888990","sex":0}'
+  // });
 
   runApp(
     MultiProvider(
