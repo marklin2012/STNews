@@ -4,6 +4,8 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/st_routers.dart';
 
+const CircleDetailNavHeaderDebounceKey = 'CircleDetailNavHeaderDebounceKey';
+
 class CircleDetailNavHeader extends StatelessWidget {
   const CircleDetailNavHeader({
     Key? key,
@@ -29,7 +31,11 @@ class CircleDetailNavHeader extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              STRouters.pop(context);
+              STDebounce().start(
+                  key: CircleDetailNavHeaderDebounceKey,
+                  func: () {
+                    STRouters.pop(context);
+                  });
             },
             child: Icon(
               STIcons.direction_leftoutlined,

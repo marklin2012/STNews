@@ -12,6 +12,12 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
 import 'package:stnews/utils/string+.dart';
 
+const PersonHomeCirclesDebounceJumpKey = 'PersonHomeCirclesDebounceJumpKey';
+const PersonHomeCirclesDebounceFavouriteKey =
+    'PersonHomeCirclesDebounceFavouriteKey';
+const PersonHomeCirclesDebounceThumbupKey =
+    'PersonHomeCirclesDebounceThumbupKey';
+
 class PersonHomeCircles extends StatelessWidget {
   const PersonHomeCircles(
       {Key? key,
@@ -224,11 +230,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             ),
             text: (model?.commentCount ?? 0).toString(),
             textStyle: NewsTextStyle.style14NormalSecGrey,
-            onTap: () {
-              if (jumpCommentTap != null) {
-                jumpCommentTap!(model!);
-              }
-            },
+            onTap: _jumpAction,
           ),
           SizedBox(width: 16),
           STButton.icon(
@@ -245,11 +247,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
                     STIcons.commonly_star,
                     color: ColorConfig.textSecColor,
                   ),
-            onTap: () {
-              if (favourtieTap != null) {
-                favourtieTap!(model!, model?.isFavourite ?? false);
-              }
-            },
+            onTap: _favouritedAction,
           ),
           SizedBox(width: 16),
           NewsIconTextWidget(
@@ -263,14 +261,40 @@ class PersonHomeCirclesCell extends StatelessWidget {
                     STIcons.commonly_like,
                   ),
             unit: (model?.thumbUpCount ?? 0).toString(),
-            onTap: () {
-              if (thumbupTap != null) {
-                thumbupTap!(model!, model?.isThumbUp ?? false);
-              }
-            },
+            onTap: _thumbupAction,
           ),
         ],
       ),
+    );
+  }
+
+  void _jumpAction() {
+    if (jumpCommentTap == null) return;
+    STDebounce().start(
+      key: PersonHomeCirclesDebounceJumpKey,
+      func: () {
+        jumpCommentTap!(model!);
+      },
+    );
+  }
+
+  void _favouritedAction() {
+    if (favourtieTap == null) return;
+    STDebounce().start(
+      key: PersonHomeCirclesDebounceFavouriteKey,
+      func: () {
+        favourtieTap!(model!, model?.isFavourite ?? false);
+      },
+    );
+  }
+
+  void _thumbupAction() {
+    if (thumbupTap == null) return;
+    STDebounce().start(
+      key: PersonHomeCirclesDebounceThumbupKey,
+      func: () {
+        thumbupTap!(model!, model?.isThumbUp ?? false);
+      },
     );
   }
 }

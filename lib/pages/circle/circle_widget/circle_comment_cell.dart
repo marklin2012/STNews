@@ -9,6 +9,8 @@ import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_scale.dart';
 import 'package:stnews/utils/string+.dart';
 
+const circleCommentCellDebounceKey = 'circleCommentCellDebounceKey';
+
 class CircleCommentCell extends StatelessWidget {
   const CircleCommentCell({
     Key? key,
@@ -154,11 +156,7 @@ class CircleCommentCell extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        // 点赞圈子的评论
-        if (commentThumbupTap != null) {
-          commentThumbupTap!(
-              commentModel.id!, commentModel.isUserFavourite ?? false);
-        }
+        _thumbupComment(commentModel);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -213,5 +211,16 @@ class CircleCommentCell extends StatelessWidget {
         style: NewsTextStyle.style12NormalSecBlue,
       ),
     );
+  }
+
+  void _thumbupComment(MomentCommentModel commentModel) {
+    if (commentThumbupTap == null) return;
+    STDebounce().start(
+        key: circleCommentCellDebounceKey,
+        func: () {
+          // 点赞圈子的评论
+          commentThumbupTap!(
+              commentModel.id!, commentModel.isUserFavourite ?? false);
+        });
   }
 }

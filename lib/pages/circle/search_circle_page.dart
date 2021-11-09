@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/circle/circle_widget/search_discover_widget.dart';
@@ -158,10 +160,16 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
 
   void _gotoCircleDetailPage(MomentModel? model) {
     if (model == null) return;
-    // 去圈子详情页
-    STRouters.push(
-      context,
-      CircleDetailPage(moment: model),
+    STDebounce().start(
+      key: SearchCirclePage.searchCircleDebounceKey,
+      func: () {
+        // 去圈子详情页
+        STRouters.push(
+          context,
+          CircleDetailPage(moment: model),
+        );
+      },
+      time: 200,
     );
   }
 }

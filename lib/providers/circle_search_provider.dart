@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/moment_model.dart';
+import 'package:stnews/pages/common/news_toast.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/shared_pref.dart';
@@ -57,6 +58,9 @@ class CircleSearchProvider extends ChangeNotifier {
     if (result.success && result.data['moments'] is List) {
       List temps = result.data['moments'] as List;
       _searchRecords = temps.map((e) => MomentModel.fromJson(e)).toList();
+      if (_searchRecords.isEmpty) {
+        Newstoast.showToast(msg: '未搜索到相关内容');
+      }
       notifyListeners();
     }
   }

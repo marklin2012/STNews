@@ -15,6 +15,9 @@ enum circleFileType {
   circleFileOther,
 }
 
+const CircleCellDebounceAuthorKey = 'CircleCellDebounceAuthorKey';
+const CircleCellDebounceThunbupKey = 'CircleCellDebounceThunbupKey';
+
 class CircleCell extends StatelessWidget {
   const CircleCell({
     Key? key,
@@ -84,12 +87,13 @@ class CircleCell extends StatelessWidget {
             color: ColorConfig.baseThrBlue,
             borderRadius: BorderRadius.circular(4.0),
           ),
-          child: circleModel?.images != null
+          child: (circleModel?.images != null &&
+                  circleModel!.images!.length != 0)
               ? CachedNetworkImage(
                   width: NewsScale.sw(181, context),
                   height: NewsScale.sh(240, context),
                   imageUrl:
-                      STString.addPrefixHttp(circleModel?.images?.first) ?? '',
+                      STString.addPrefixHttp(circleModel?.images!.first) ?? '',
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: NewsImage.defaultCircle(),
@@ -108,12 +112,7 @@ class CircleCell extends StatelessWidget {
       children: [
         Expanded(
           child: GestureDetector(
-            onTap: () {
-              // 作者详情
-              if (authorTap != null) {
-                authorTap!(circleModel?.user?.id);
-              }
-            },
+            onTap: _authorAction,
             behavior: HitTestBehavior.translucent,
             child: Container(
               alignment: Alignment.centerLeft,
@@ -153,12 +152,7 @@ class CircleCell extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () {
-            // 点赞
-            if (thumbupedTap != null) {
-              thumbupedTap!(circleModel?.isThumbUp ?? false);
-            }
-          },
+          onTap: _thumbupAction,
           behavior: HitTestBehavior.translucent,
           child: Container(
             width: NewsScale.sw(67, context),
@@ -186,6 +180,28 @@ class CircleCell extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void _authorAction() {
+    if (authorTap == null) return;
+    STDebounce().start(
+      key: CircleCellDebounceAuthorKey,
+      func: () {
+        // 作者详情
+        authorTap!(circleModel?.user?.id);
+      },
+    );
+  }
+
+  void _thumbupAction() {
+    if (thumbupedTap == null) return;
+    STDebounce().start(
+      key: CircleCellDebounceThunbupKey,
+      func: () {
+        // 点赞
+        thumbupedTap!(circleModel?.isThumbUp ?? false);
+      },
     );
   }
 }
