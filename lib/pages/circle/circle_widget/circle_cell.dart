@@ -42,12 +42,15 @@ class CircleCell extends StatelessWidget {
           circleTap!(circleModel);
         }
       },
-      child: _buildContent(context),
+      child: Card(
+        child: _buildContent(context),
+      ),
     );
   }
 
   Widget _buildContent(BuildContext context) {
     return Container(
+      color: ColorConfig.backgroundColor,
       width: NewsScale.sw(181, context),
       // height: NewsScale.sh(332, context),
       child: Column(

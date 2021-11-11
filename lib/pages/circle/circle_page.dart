@@ -65,15 +65,15 @@ class _CirclePageState extends State<CirclePage> {
         );
       }
 
-      return NewsEasyRefresh(
-        hasHeader: true,
-        hasFooter: true,
-        onRefresh: () async {
-          circleProvider.initData();
-        },
-        onLoad: _loadMore,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: NewsScale.sw(4, context)),
+      return Padding(
+        padding: EdgeInsets.all(NewsScale.sw(4, context)),
+        child: NewsEasyRefresh(
+          hasHeader: true,
+          hasFooter: true,
+          onRefresh: () async {
+            circleProvider.initData();
+          },
+          onLoad: _loadMore,
           child: StaggeredGridView.countBuilder(
             shrinkWrap: true,
             crossAxisCount: 2,
