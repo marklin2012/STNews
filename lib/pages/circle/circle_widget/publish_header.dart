@@ -57,6 +57,9 @@ class _PublishHeaderState extends State<PublishHeader> {
               ),
               maxLines: 4,
               controller: _contentController,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(100),
+              ],
             ),
           ),
         ],

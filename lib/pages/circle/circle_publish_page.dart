@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/circle/circle_widget/publish_header.dart';
@@ -7,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_widgets/person_tile.dart';
+import 'package:stnews/providers/circle_provider.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
@@ -28,6 +30,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
   late ValueNotifier<Map> _tileNoti;
   late TextEditingController _titleController;
   late TextEditingController _contentController;
+  late ValueNotifier<bool> _publishNoti;
 
   @override
   void initState() {
@@ -39,6 +42,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
       'title': '谁可以看',
       'isSubTitle': '公开',
     });
+    _publishNoti = ValueNotifier(true);
   }
 
   @override
@@ -57,17 +61,25 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
           style: NewsTextStyle.style18BoldBlack,
         ),
         actions: [
-          STButton(
-            type: STButtonType.text,
-            size: STButtonSize.small,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            text: '发布',
-            textStyle: NewsTextStyle.style17NormalFirBlue,
-            onTap: _publish,
-          ),
+          ValueListenableBuilder(
+            valueListenable: _publishNoti,
+            builder: (context, bool value, _) {
+              return STButton(
+                type: STButtonType.text,
+                size: STButtonSize.small,
+                disabled: value,
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                text: '发布',
+                textStyle: NewsTextStyle.style17NormalFirBlue,
+                onTap: _publish,
+              );
+            },
+          )
         ],
       ),
-      body: BlankPutKeyborad(child: _buildContent()),
+      body: BlankPutKeyborad(
+        child: _buildContent(),
+      ),
     );
   }
 
@@ -86,6 +98,11 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             sucImgCallBack: (List<String> images) {
               _images = images;
+              if (_images.isNotEmpty) {
+                _publishNoti.value = false;
+              } else {
+                _publishNoti.value = true;
+              }
             },
           ),
         ),
@@ -174,6 +191,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
           );
           if (result.success) {
             STRouters.pop(context);
+            Provider.of<CircleProvider>(context, listen: false).initData();
           }
           NewsLoading.stop();
         },

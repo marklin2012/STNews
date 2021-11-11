@@ -54,7 +54,7 @@ class _NewsActionSheetActionState extends State<NewsActionSheetAction> {
         );
       },
       onTapDown: (TapDownDetails tapDownDetails) {
-        _colorNoti.value = ColorConfig.baseFirBule;
+        _colorNoti.value = ColorConfig.fourGrey;
       },
       onTapUp: (TapUpDetails tapUpDetails) {
         _colorNoti.value = _originColor;
