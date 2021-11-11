@@ -103,19 +103,24 @@ class PersonHomeCirclesCell extends StatelessWidget {
         children: [
           // 头像名称时间
           _buildUserInfo(),
-          SizedBox(height: 16),
-          Text(
-            model?.title ?? '',
-            style: NewsTextStyle.style18BoldBlack,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          Container(
+            padding: EdgeInsets.only(top: 16.0, bottom: 12.0),
+            // color: Colors.red,
+            child: Text(
+              model?.title ?? '',
+              style: NewsTextStyle.style18BoldBlack,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          SizedBox(height: 12),
-          Text(
-            model?.content ?? '',
-            style: NewsTextStyle.style16NormalBlack,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
+          Container(
+            // color: Colors.yellow,
+            child: Text(
+              model?.content ?? '',
+              style: NewsTextStyle.style16NormalBlack,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           // 图片的展示
           _buildImages(context),
@@ -176,22 +181,19 @@ class PersonHomeCirclesCell extends StatelessWidget {
       return Container();
     } else if (model!.images!.length == 1) {
       return Container(
-        color: ColorConfig.baseFourBlue,
         height: 168,
-        child: Center(
-          child: CachedNetworkImage(
-            height: 168,
-            imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
-            fit: BoxFit.cover,
-            placeholder: (context, url) => Center(
-              child: NewsImage.defaultCircle(),
-            ),
+        alignment: Alignment.centerLeft,
+        child: CachedNetworkImage(
+          height: 168,
+          imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Center(
+            child: NewsImage.defaultCircle(),
           ),
         ),
       );
     } else {
       return Container(
-        color: ColorConfig.baseFourBlue,
         alignment: Alignment.centerLeft,
         child: Wrap(
           runSpacing: NewsScale.sh(3, context),

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:saturn/saturn.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 
 import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/pages/common/scroll_header.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_circles.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_header.dart';
 import 'package:stnews/providers/user_home_provider.dart';
@@ -62,16 +60,9 @@ class _PersonHomePageState extends State<PersonHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+      body: SafeArea(
+        child: _buildContent(),
       ),
-      body: _buildContent(),
     );
   }
 
@@ -80,14 +71,21 @@ class _PersonHomePageState extends State<PersonHomePage> {
         builder: (BuildContext context, UserHomeProvider userHomeP, _) {
       return CustomScrollView(
         slivers: [
-          PersonHomeHeader(
-            user: userHomeP.infoModel.user,
-            isSelf: userHomeP.isSelf,
-            isFavouritedUser: userHomeP.isFavouritedUser,
-            followerCount: userHomeP.infoModel.followerCount,
-            fansCount: userHomeP.infoModel.fansCount,
-            favouritedTap: (bool isFav) {
-              _changeFavouriteStatus(isFav);
+          ScrollHeader(
+            maxExtent: 172,
+            minExtent: 44,
+            builder: (BuildContext context, double offset, _) {
+              return PersonHomeHeader(
+                offset: offset,
+                user: userHomeP.infoModel.user,
+                isSelf: userHomeP.isSelf,
+                isFavouritedUser: userHomeP.isFavouritedUser,
+                followerCount: userHomeP.infoModel.followerCount,
+                fansCount: userHomeP.infoModel.fansCount,
+                favouritedTap: (bool isFav) {
+                  _changeFavouriteStatus(isFav);
+                },
+              );
             },
           ),
           if (userHomeP.hasMoments)
