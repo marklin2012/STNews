@@ -204,10 +204,10 @@ class _DetailFooterState extends State<DetailFooter> {
             value: _data.commentedCount,
           ),
           SizedBox(
-            width: 24,
+            width: 20,
           ),
           STButton.icon(
-            padding: EdgeInsets.all(2.0),
+            padding: EdgeInsets.all(6.0),
             backgroundColor: Colors.transparent,
             icon: _data.isFavourited
                 ? Image(
@@ -225,10 +225,10 @@ class _DetailFooterState extends State<DetailFooter> {
             },
           ),
           SizedBox(
-            width: 24,
+            width: 16,
           ),
           STButton.icon(
-            padding: EdgeInsets.all(2.0),
+            padding: EdgeInsets.all(6.0),
             backgroundColor: Colors.transparent,
             icon: _data.isLiked
                 ? Image(
@@ -242,9 +242,6 @@ class _DetailFooterState extends State<DetailFooter> {
                 widget.likeTap!(_data.isLiked);
               }
             },
-          ),
-          SizedBox(
-            width: 4,
           ),
         ],
       ),
