@@ -78,7 +78,7 @@ class CircleDetailContent extends StatelessWidget {
                 ),
                 child: Text(
                   commentCount != null ? '评论（$commentCount）' : '评论',
-                  style: NewsTextStyle.style16NormalBlack,
+                  style: NewsTextStyle.style16BoldBlack,
                 ),
               ),
             ],

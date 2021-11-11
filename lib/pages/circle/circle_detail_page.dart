@@ -9,7 +9,6 @@ import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_comment_cell.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_detail_content.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_detail_nav_header.dart';
-import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
@@ -191,12 +190,11 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
         builder: (BuildContext context, bool value, _) {
           return STButton(
             type: STButtonType.outline,
-            size: STButtonSize.small,
+            height: 30,
+            padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
             text: value ? '已关注' : '关注',
-            textStyle: NewsTextStyle.style16NormalThrGrey,
-            borderColor: ColorConfig.thrGrey,
+            textStyle: NewsTextStyle.style14NormalFirBlue,
             onTap: () {
-              // 切换是否关注
               _changeFavAuthorStatus(value);
             },
           );

@@ -53,7 +53,6 @@ class CircleCommentCell extends StatelessWidget {
             ),
             SizedBox(width: 8.0),
             Expanded(child: _buildCenter(model!, isReplayed: false)),
-            SizedBox(width: 8.0),
             _buildTriling(model!),
           ],
         ),
@@ -158,31 +157,34 @@ class CircleCommentCell extends StatelessWidget {
       onTap: () {
         _thumbupComment(commentModel);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (commentModel.favouriteCount != null &&
-              commentModel.favouriteCount! > 0)
-            Padding(
-              padding: EdgeInsets.only(right: 5.4),
-              child: Text(
-                (commentModel.favouriteCount ?? 0).toString(),
-                style: NewsTextStyle.style12NormalThrGrey,
-              ),
-            ),
-          commentModel.isUserFavourite ?? false
-              ? Image(
-                  width: 18,
-                  height: 18,
-                  image: AssetImage('assets/images/liked.png'),
-                )
-              : Icon(
-                  STIcons.commonly_like,
-                  size: 18,
+      child: Padding(
+        padding: EdgeInsets.only(left: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            if (commentModel.favouriteCount != null &&
+                commentModel.favouriteCount! > 0)
+              Padding(
+                padding: EdgeInsets.only(right: 5.4),
+                child: Text(
+                  (commentModel.favouriteCount ?? 0).toString(),
+                  style: NewsTextStyle.style12NormalThrGrey,
                 ),
-        ],
+              ),
+            commentModel.isUserFavourite ?? false
+                ? Image(
+                    width: 18,
+                    height: 18,
+                    image: AssetImage('assets/images/liked.png'),
+                  )
+                : Icon(
+                    STIcons.commonly_like,
+                    size: 18,
+                  ),
+          ],
+        ),
       ),
     );
   }
