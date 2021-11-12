@@ -35,7 +35,7 @@ class CircleDetailContent extends StatelessWidget {
                 margin: EdgeInsets.zero,
                 height: 430,
                 decoration: BoxDecoration(
-                  color: ColorConfig.baseFourBlue,
+                  color: ColorConfig.primaryColor,
                 ),
               )
             : Container(

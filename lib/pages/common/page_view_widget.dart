@@ -18,11 +18,13 @@ class PageViewWidget extends StatefulWidget {
     this.autoRollTime = 3,
     this.margin,
     this.decoration,
+    this.width,
   }) : super(key: key);
 
   final List<String>? pageList;
   final int? currentIndex;
   final double? height;
+  final double? width;
   final bool isAutoRoll;
   final bool isLooped;
   final int autoRollTime;
@@ -145,8 +147,8 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       child: Center(
         child: NewsImage.networkImage(
           path: _image,
-          width: 500,
-          height: 200,
+          width: widget.width ?? MediaQuery.of(context).size.width,
+          height: _height,
           defaultChild: Container(
             color: Colors.grey,
           ),

@@ -179,69 +179,6 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
     );
   }
 
-  // double _getGridViewHeight() {
-  //   double _rows = (_images.length + 1.0) / 4.0;
-  //   int _ceil = _rows.ceil();
-  //   final _height = _ceil * 85.0 + 30;
-  //   return _height;
-  // }
-
-  // Widget _getAddBtn() {
-  //   return GestureDetector(
-  //     behavior: HitTestBehavior.translucent,
-  //     onTap: () {
-  //       STDebounce().start(
-  //         key: FeedbackSuggestionPage.feedbackSuggestionDebounceKey,
-  //         func: () {
-  //           NewsImagePicker.showPicker(
-  //             context: context,
-  //             galleryTap: _openGallery,
-  //             cameraTap: _useCamera,
-  //           );
-  //         },
-  //       );
-  //     },
-  //     child: Image(
-  //       image: AssetImage('assets/images/default_add_picture.png'),
-  //       width: 80,
-  //       height: 80,
-  //     ),
-  //   );
-  // }
-
-  // /// 拍照
-  // void _useCamera() async {
-  //   final _image = await ImagePicker().pickImage(source: ImageSource.camera);
-  //   if (_image == null) return;
-  //   _uploadFile(_image.path);
-  // }
-
-  // /// 相册
-  // void _openGallery() async {
-  //   final _temps = await ImagePicker()
-  //       .pickMultiImage(maxHeight: 80, maxWidth: 80, imageQuality: 9);
-  //   if (_temps != null) {
-  //     for (XFile _temp in _temps) {
-  //       _uploadFile(_temp.path);
-  //     }
-  //   }
-  // }
-
-  // void _uploadFile(String path) async {
-  //   FormData formData = new FormData.fromMap({
-  //     'files': [
-  //       MultipartFile.fromFileSync(path,
-  //           contentType: MediaType.parse('image/jpeg')),
-  //     ],
-  //   });
-  //   Api.uploadFile(data: formData).then((result) {
-  //     if (result.success) {
-  //       _images.add(result.data['imgUrl']);
-  //       setState(() {});
-  //     }
-  //   });
-  // }
-
   void _postFeedback() {
     if (_feedbackCon.text.isEmpty) {
       STToast.show(context: context, message: '请填写问题和建议');
