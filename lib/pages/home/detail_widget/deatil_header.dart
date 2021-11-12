@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -132,21 +131,15 @@ class DetailHeader extends StatelessWidget {
                           ),
                           STButton.icon(
                             padding: EdgeInsets.zero,
-                            icon: data.authorAvatar != null
-                                ? ClipOval(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: CachedNetworkImage(
-                                      width: 36,
-                                      height: 36,
-                                      imageUrl: STString.addPrefixHttp(
-                                              data.authorAvatar) ??
-                                          '',
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) =>
-                                          NewsImage.defaultAvatar(),
-                                    ),
-                                  )
-                                : NewsImage.defaultAvatar(),
+                            icon: ClipOval(
+                              clipBehavior: Clip.hardEdge,
+                              child: NewsImage.networkImage(
+                                path: data.authorAvatar,
+                                width: 36,
+                                height: 36,
+                                defaultChild: NewsImage.defaultAvatar(),
+                              ),
+                            ),
                             onTap: () {
                               if (authorTap != null) {
                                 authorTap!();

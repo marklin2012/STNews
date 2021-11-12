@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
-import 'package:stnews/utils/string+.dart';
 
 class CircleDetailPage extends StatefulWidget {
   static const circleDetailDebounceKey = 'circleDetailDebounceKey';
@@ -165,19 +163,15 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
         );
       },
       behavior: HitTestBehavior.translucent,
-      child: widget.moment.user?.avatar != null
-          ? ClipOval(
-              clipBehavior: Clip.hardEdge,
-              child: CachedNetworkImage(
-                width: 36,
-                height: 36,
-                imageUrl:
-                    STString.addPrefixHttp(widget.moment.user?.avatar) ?? '',
-                fit: BoxFit.cover,
-                placeholder: (context, url) => NewsImage.defaultAvatar(),
-              ),
-            )
-          : NewsImage.defaultAvatar(),
+      child: ClipOval(
+        clipBehavior: Clip.hardEdge,
+        child: NewsImage.networkImage(
+          path: widget.moment.user?.avatar,
+          width: 36,
+          height: 36,
+          defaultChild: NewsImage.defaultAvatar(),
+        ),
+      ),
     );
   }
 

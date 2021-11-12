@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
@@ -90,21 +89,15 @@ class CircleCell extends StatelessWidget {
             color: ColorConfig.baseThrBlue,
             borderRadius: BorderRadius.circular(4.0),
           ),
-          child: (circleModel?.images != null &&
-                  circleModel!.images!.length != 0)
-              ? CachedNetworkImage(
-                  width: NewsScale.sw(181, context),
-                  height: NewsScale.sh(240, context),
-                  imageUrl:
-                      STString.addPrefixHttp(circleModel?.images!.first) ?? '',
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Center(
-                    child: NewsImage.defaultCircle(),
-                  ),
-                )
-              : Center(
-                  child: NewsImage.defaultCircle(),
-                ),
+          child: NewsImage.networkImage(
+            path: (circleModel?.images != null &&
+                    circleModel!.images!.length != 0)
+                ? circleModel?.images?.first
+                : null,
+            width: NewsScale.sw(181, context),
+            height: NewsScale.sh(240, context),
+            defaultChild: NewsImage.defaultCircle(),
+          ),
         ),
       ],
     );
@@ -126,21 +119,15 @@ class CircleCell extends StatelessWidget {
                     padding: EdgeInsets.only(
                         left: NewsScale.sh(8, context),
                         right: NewsScale.sh(4, context)),
-                    child: circleModel?.user?.avatar != null
-                        ? ClipOval(
-                            clipBehavior: Clip.hardEdge,
-                            child: CachedNetworkImage(
-                              width: 20,
-                              height: 20,
-                              imageUrl: STString.addPrefixHttp(
-                                      circleModel?.user?.avatar) ??
-                                  '',
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) =>
-                                  NewsImage.defaultAvatar(height: 20),
-                            ),
-                          )
-                        : NewsImage.defaultAvatar(height: 20),
+                    child: ClipOval(
+                      clipBehavior: Clip.hardEdge,
+                      child: NewsImage.networkImage(
+                        path: circleModel?.user?.avatar,
+                        width: 20,
+                        height: 20,
+                        defaultChild: NewsImage.defaultAvatar(height: 20),
+                      ),
+                    ),
                   ),
                   Expanded(
                     child: Text(

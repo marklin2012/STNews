@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/providers/user_home_provider.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -51,13 +51,12 @@ class _PersonHomePostsState extends State<PersonHomePosts> {
                   _model?.author?.nickname ?? '',
                   style: NewsTextStyle.style12NormalThrGrey,
                 ),
-                trailing: CachedNetworkImage(
-                  imageUrl: _model?.coverImage ??
-                      'http://via.placeholder.com/500x200',
+                trailing: NewsImage.networkImage(
+                  path:
+                      _model?.coverImage ?? 'http://via.placeholder.com/102x76',
                   width: 102,
                   height: 76,
-                  fit: BoxFit.fill,
-                  placeholder: (context, url) => Container(
+                  defaultChild: Container(
                     color: Colors.grey,
                   ),
                 ),

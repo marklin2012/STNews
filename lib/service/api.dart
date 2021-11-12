@@ -51,7 +51,7 @@ Future<ResultData> _get(
   bool showToastError = true,
 }) async {
   try {
-    debugPrint('requestUri---$url');
+    debugPrint('requestUri---$BaseUrl$url');
     debugPrint('params---$data');
     final Response response = await dio.get(url,
         queryParameters: data, options: options, cancelToken: cancelToken);
@@ -82,7 +82,7 @@ Future<ResultData> _post(
   bool showToastError = true,
 }) async {
   try {
-    debugPrint('requestUri---$url');
+    debugPrint('requestUri---$BaseUrl$url');
     debugPrint('params---$data');
     final Response response = await dio.post(url,
         data: data, options: options, cancelToken: cancelToken);
@@ -122,7 +122,7 @@ Future<ResultData> _put(
   bool showToastError = true,
 }) async {
   try {
-    debugPrint('requestUri---$url');
+    debugPrint('requestUri---$BaseUrl$url');
     debugPrint('params---$data');
     final Response response = await dio.put(url,
         data: data, options: options, cancelToken: cancelToken);
@@ -162,7 +162,7 @@ Future<ResultData> _upload(
   bool showToastError = true,
 }) async {
   try {
-    debugPrint('requestUri---$url');
+    debugPrint('requestUri---$BaseUrl$url');
     debugPrint('params---$data');
     Dio uploadDio = new Dio();
     uploadDio.options.baseUrl = BaseUrl;

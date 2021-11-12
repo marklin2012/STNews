@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:stnews/models/moment_model.dart';
 
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_scale.dart';
-import 'package:stnews/utils/string+.dart';
 
 const PersonHomeCirclesDebounceJumpKey = 'PersonHomeCirclesDebounceJumpKey';
 const PersonHomeCirclesDebounceFavouriteKey =
@@ -138,18 +136,15 @@ class PersonHomeCirclesCell extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        userModel?.avatar != null
-            ? ClipOval(
-                clipBehavior: Clip.hardEdge,
-                child: CachedNetworkImage(
-                  width: 36,
-                  height: 36,
-                  imageUrl: STString.addPrefixHttp(userModel?.avatar) ?? '',
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => NewsImage.defaultAvatar(),
-                ),
-              )
-            : NewsImage.defaultAvatar(),
+        ClipOval(
+          clipBehavior: Clip.hardEdge,
+          child: NewsImage.networkImage(
+            path: userModel?.avatar,
+            width: 36,
+            height: 36,
+            defaultChild: NewsImage.defaultAvatar(),
+          ),
+        ),
         SizedBox(width: 8),
         Column(
           mainAxisSize: MainAxisSize.min,
@@ -183,13 +178,12 @@ class PersonHomeCirclesCell extends StatelessWidget {
       return Container(
         height: 168,
         alignment: Alignment.centerLeft,
-        child: CachedNetworkImage(
+        child: NewsImage.networkImage(
+          path: (model?.images != null && model!.images!.length != 0)
+              ? model!.images!.first
+              : null,
           height: 168,
-          imageUrl: STString.addPrefixHttp(model?.images?.first) ?? '',
-          fit: BoxFit.cover,
-          placeholder: (context, url) => Center(
-            child: NewsImage.defaultCircle(),
-          ),
+          defaultChild: NewsImage.defaultCircle(),
         ),
       );
     } else {
@@ -199,17 +193,11 @@ class PersonHomeCirclesCell extends StatelessWidget {
           runSpacing: NewsScale.sh(3, context),
           spacing: NewsScale.sw(3, context),
           children: model!.images!.map((e) {
-            return Container(
-              color: ColorConfig.baseFourBlue,
+            return NewsImage.networkImage(
+              path: e,
               width: NewsScale.sw(112, context),
               height: NewsScale.sw(112, context),
-              child: CachedNetworkImage(
-                imageUrl: STString.addPrefixHttp(e) ?? '',
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: NewsImage.defaultCircle(height: 50),
-                ),
-              ),
+              defaultChild: NewsImage.defaultCircle(height: 50),
             );
           }).toList(),
         ),
