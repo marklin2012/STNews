@@ -1,13 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
+
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/news_photo_view.dart';
 import 'package:stnews/utils/image+.dart';
+import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 const _horFix = 16.0;
 const _verFix = 8.0;
 
 class PageViewWidget extends StatefulWidget {
+  static const PageViewDebounceKey = 'PageViewDebounceKey';
   const PageViewWidget({
     Key? key,
     this.pageList,
@@ -19,6 +26,7 @@ class PageViewWidget extends StatefulWidget {
     this.margin,
     this.decoration,
     this.width,
+    this.canShowPhotoView = false,
   }) : super(key: key);
 
   final List<String>? pageList;
@@ -30,6 +38,7 @@ class PageViewWidget extends StatefulWidget {
   final int autoRollTime;
   final EdgeInsets? margin;
   final BoxDecoration? decoration;
+  final bool canShowPhotoView;
 
   @override
   _PageViewWidgetState createState() => _PageViewWidgetState();
@@ -37,6 +46,7 @@ class PageViewWidget extends StatefulWidget {
 
 class _PageViewWidgetState extends State<PageViewWidget> {
   late List<String> _pageList;
+  late List<String> _galleryItems;
   late int _currentIndex;
   late double _height;
   late PageController _pageController;
@@ -61,6 +71,8 @@ class _PageViewWidgetState extends State<PageViewWidget> {
             duration: Duration(milliseconds: 200), curve: Curves.ease);
       });
     }
+    _galleryItems =
+        _pageList.map((e) => STString.addPrefixHttp(e) ?? '').toList();
   }
 
   @override
@@ -145,12 +157,30 @@ class _PageViewWidgetState extends State<PageViewWidget> {
       padding: EdgeInsets.zero,
       alignment: Alignment.center,
       child: Center(
-        child: NewsImage.networkImage(
-          path: _image,
-          width: widget.width ?? MediaQuery.of(context).size.width,
-          height: _height,
-          defaultChild: Container(
-            color: Colors.grey,
+        child: GestureDetector(
+          onTap: () {
+            if (!widget.canShowPhotoView) return;
+            STDebounce().start(
+              key: PageViewWidget.PageViewDebounceKey,
+              func: () {
+                STRouters.push(
+                  context,
+                  NewsPhotoView(
+                    galleryItems: _galleryItems,
+                    defaultImage: index,
+                  ),
+                );
+              },
+              time: 200,
+            );
+          },
+          child: NewsImage.networkImage(
+            path: _image,
+            width: widget.width ?? MediaQuery.of(context).size.width,
+            height: _height,
+            defaultChild: Container(
+              color: Colors.grey,
+            ),
           ),
         ),
       ),

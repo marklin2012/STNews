@@ -110,13 +110,29 @@ class STString {
     return false;
   }
 
+  static bool isPrefixHttp(String? url) {
+    if (url == null) return false;
+    if (url.startsWith('http')) {
+      return true;
+    }
+    return false;
+  }
+
   static String? addPrefixHttp(String? image) {
     if (image == null) return null;
-    if (image.startsWith('http')) {
+    if (STString.isPrefixHttp(image)) {
       return image;
     } else {
       return BaseUrl + image;
     }
+  }
+
+  static String imageUrl({String? url, String? defaultAssets}) {
+    if (url == null || url.length == 0) {
+      return defaultAssets ?? '';
+    }
+    final _temp = STString.addPrefixHttp(url);
+    return _temp ?? '';
   }
 
   static String limitStringLength(String? string, {int length = 8}) {

@@ -6,9 +6,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
+import 'package:stnews/pages/common/news_photo_view.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/string+.dart';
 
 class PublishImages extends StatefulWidget {
   static const publishImagesDebounceKey = '_publishImagesDebounceKey';
@@ -55,10 +57,28 @@ class _PublishImagesState extends State<PublishImages> {
           if (index == _images.length) {
             return _getAddBtn();
           }
-          return Container(
-            height: 80,
-            width: 80,
-            child: STCaCheImage.loadingImage(imageUrl: _images[index]),
+          return GestureDetector(
+            onTap: () {
+              STDebounce().start(
+                key: PublishImages.publishImagesDebounceKey,
+                func: () {
+                  final _galleryItems = _images
+                      .map((e) => STString.addPrefixHttp(e) ?? '')
+                      .toList();
+                  STRouters.push(
+                    context,
+                    NewsPhotoView(
+                        galleryItems: _galleryItems, defaultImage: index),
+                  );
+                },
+                time: 200,
+              );
+            },
+            child: Container(
+              height: 80,
+              width: 80,
+              child: STCaCheImage.loadingImage(imageUrl: _images[index]),
+            ),
           );
         },
         itemCount: _images.length + 1,

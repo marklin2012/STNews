@@ -38,6 +38,7 @@ dependencies:
   fluttertoast: ^8.0.8
   flutter_html: ^2.1.2
   flutter_staggered_grid_view: ^0.4.1
+  photo_view: ^0.13.0
   saturn:
     # path: /Users/marklin/code/flutter/saturn
     path: /Users/chenming/Desktop/Saturn

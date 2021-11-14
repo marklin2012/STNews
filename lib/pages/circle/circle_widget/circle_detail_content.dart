@@ -31,6 +31,7 @@ class CircleDetailContent extends StatelessWidget {
             ? PageViewWidget(
                 isAutoRoll: false,
                 isLooped: false,
+                canShowPhotoView: true,
                 pageList: images,
                 margin: EdgeInsets.zero,
                 height: 430,

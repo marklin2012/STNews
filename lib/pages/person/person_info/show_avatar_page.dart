@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_action_sheet.dart';
-
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
@@ -99,7 +99,7 @@ class ShowAvatarPage extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width,
-              color: ColorConfig.baseSecBule,
+              color: ColorConfig.baseFourBlue,
               child: Hero(
                 tag: ShowAvatarPage.HeroTag,
                 child: Consumer<UserProvider>(

@@ -6,15 +6,19 @@ import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
+import 'package:stnews/pages/common/news_photo_view.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/st_scale.dart';
+import 'package:stnews/utils/string+.dart';
 
 const PersonHomeCirclesDebounceJumpKey = 'PersonHomeCirclesDebounceJumpKey';
 const PersonHomeCirclesDebounceFavouriteKey =
     'PersonHomeCirclesDebounceFavouriteKey';
 const PersonHomeCirclesDebounceThumbupKey =
     'PersonHomeCirclesDebounceThumbupKey';
+const PersonHomeCirclesDebounceImageKey = 'PersonHomeCirclesDebounceImageKey';
 
 class PersonHomeCircles extends StatelessWidget {
   const PersonHomeCircles(
@@ -175,32 +179,70 @@ class PersonHomeCirclesCell extends StatelessWidget {
     if (model?.images == null || model!.images!.isEmpty) {
       return Container();
     } else if (model!.images!.length == 1) {
-      return Container(
-        height: 168,
-        alignment: Alignment.centerLeft,
-        child: NewsImage.networkImage(
-          path: (model?.images != null && model!.images!.length != 0)
-              ? model!.images!.first
-              : null,
+      return GestureDetector(
+        onTap: () {
+          STDebounce().start(
+            key: PersonHomeCirclesDebounceImageKey,
+            func: () {
+              final _galleryItem =
+                  STString.addPrefixHttp(model!.images!.first) ?? '';
+              STRouters.push(
+                  context, NewsPhotoView(galleryItems: [_galleryItem]));
+            },
+            time: 200,
+          );
+        },
+        child: Container(
           height: 168,
-          defaultChild: NewsImage.defaultCircle(),
+          alignment: Alignment.centerLeft,
+          child: NewsImage.networkImage(
+            path: (model?.images != null && model!.images!.length != 0)
+                ? model!.images!.first
+                : null,
+            height: 168,
+            defaultChild: NewsImage.defaultCircle(),
+          ),
         ),
       );
     } else {
-      return Container(
-        alignment: Alignment.centerLeft,
-        child: Wrap(
-          runSpacing: NewsScale.sh(3, context),
-          spacing: NewsScale.sw(3, context),
-          children: model!.images!.map((e) {
-            return NewsImage.networkImage(
-              path: e,
+      List<Widget> _widgets = [];
+      List<String> _galleryItems = [];
+      for (var i = 0; i < model!.images!.length; i++) {
+        final _url = model!.images![i];
+        _galleryItems.add(STString.addPrefixHttp(_url) ?? '');
+      }
+      for (var i = 0; i < model!.images!.length; i++) {
+        final _url = model!.images![i];
+        _widgets.add(
+          GestureDetector(
+            onTap: () {
+              STDebounce().start(
+                key: PersonHomeCirclesDebounceImageKey,
+                func: () {
+                  STRouters.push(
+                    context,
+                    NewsPhotoView(
+                      galleryItems: _galleryItems,
+                      defaultImage: i,
+                    ),
+                  );
+                },
+                time: 200,
+              );
+            },
+            child: NewsImage.networkImage(
+              path: _url,
               width: NewsScale.sw(112, context),
               height: NewsScale.sw(112, context),
               defaultChild: NewsImage.defaultCircle(height: 50),
-            );
-          }).toList(),
-        ),
+            ),
+          ),
+        );
+      }
+      return Wrap(
+        runSpacing: NewsScale.sh(3, context),
+        spacing: NewsScale.sw(3, context),
+        children: _widgets,
       );
     }
   }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:stnews/utils/string+.dart';
 
 class NewsImage {
+  static const defaultAvatarPath = 'assets/images/default_avatar.png';
+
   static Image defaultAvatar({
     double height = 36,
   }) {
