@@ -9,7 +9,6 @@ import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
-import 'package:stnews/utils/st_scale.dart';
 
 class PublishImages extends StatefulWidget {
   static const publishImagesDebounceKey = '_publishImagesDebounceKey';
@@ -103,8 +102,6 @@ class _PublishImagesState extends State<PublishImages> {
     final _image = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 100,
-      maxWidth: NewsScale.screenW(context),
-      maxHeight: NewsScale.screenH(context),
     );
     if (_image == null) return;
     _uploadFile(_image.path);
@@ -115,8 +112,6 @@ class _PublishImagesState extends State<PublishImages> {
     STRouters.pop(context);
     final _temps = await ImagePicker().pickMultiImage(
       imageQuality: 100,
-      maxWidth: NewsScale.screenW(context),
-      maxHeight: NewsScale.screenH(context),
     );
     if (_temps != null) {
       for (XFile _temp in _temps) {

@@ -16,7 +16,6 @@ import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/st_routers.dart';
-import 'package:stnews/utils/st_scale.dart';
 
 class PersonInfoPage extends StatefulWidget {
   const PersonInfoPage({Key? key}) : super(key: key);
@@ -114,8 +113,6 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
     final _image = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 100,
-      maxWidth: NewsScale.screenW(context),
-      maxHeight: NewsScale.screenH(context),
     );
     _uploadImage(_image);
   }
@@ -125,8 +122,6 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
     final _image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 100,
-      maxWidth: NewsScale.screenW(context),
-      maxHeight: NewsScale.screenH(context),
     );
     _uploadImage(_image);
   }
