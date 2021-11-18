@@ -27,20 +27,24 @@ class NewsImage {
     double? width,
     double? height,
     Widget? defaultChild,
+    BorderRadius borderRadius = BorderRadius.zero,
   }) {
     if (path == null) {
       return Center(child: defaultChild);
     }
-    return CachedNetworkImage(
-      width: width,
-      height: height,
-      fit: BoxFit.cover,
-      imageUrl: STString.addPrefixHttp(path) ?? '',
-      placeholder: (context, url) => Container(
+    return ClipRRect(
+      borderRadius: borderRadius,
+      child: CachedNetworkImage(
         width: width,
         height: height,
-        child: Center(
-          child: defaultChild,
+        fit: BoxFit.cover,
+        imageUrl: STString.addPrefixHttp(path) ?? '',
+        placeholder: (context, url) => Container(
+          width: width,
+          height: height,
+          child: Center(
+            child: defaultChild,
+          ),
         ),
       ),
     );

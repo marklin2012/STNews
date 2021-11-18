@@ -42,6 +42,8 @@ class CircleCell extends StatelessWidget {
         }
       },
       child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
         child: _buildContent(context),
       ),
     );
@@ -87,7 +89,7 @@ class CircleCell extends StatelessWidget {
           height: NewsScale.sh(240, context),
           decoration: BoxDecoration(
             color: ColorConfig.baseThrBlue,
-            borderRadius: BorderRadius.circular(4.0),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
           ),
           child: NewsImage.networkImage(
             path: (circleModel?.images != null &&
@@ -97,6 +99,7 @@ class CircleCell extends StatelessWidget {
             width: NewsScale.sw(181, context),
             height: NewsScale.sh(240, context),
             defaultChild: NewsImage.defaultCircle(),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(4.0)),
           ),
         ),
       ],
