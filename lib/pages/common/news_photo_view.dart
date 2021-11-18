@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:saturn/st_button/st_button.dart';
+import 'package:saturn/st_icons/st_icons.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
+import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
 
 typedef PhotoViewPageChanged = void Function(int index);
@@ -105,11 +108,29 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.width / 4 - 40,
+          left: 10,
           right: 20,
-          child: Text(
-            '${_defaultSelected + 1}/${widget.galleryItems.length}',
-            style: NewsTextStyle.style14NormalWhite,
+          top: MediaQuery.of(context).size.width / 4 - 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              STButton.icon(
+                backgroundColor: Colors.transparent,
+                size: STButtonSize.small,
+                icon: Icon(
+                  STIcons.commonly_close,
+                  size: 20,
+                  color: ColorConfig.primaryColor,
+                ),
+                onTap: () {
+                  STRouters.pop(context);
+                },
+              ),
+              Text(
+                '${_defaultSelected + 1}/${widget.galleryItems.length}',
+                style: NewsTextStyle.style14NormalWhite,
+              ),
+            ],
           ),
         ),
       ],
