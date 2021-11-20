@@ -100,6 +100,7 @@ class _PublishImagesState extends State<PublishImages> {
         STDebounce().start(
           key: PublishImages.publishImagesDebounceKey,
           func: () {
+            FocusScope.of(context).requestFocus(FocusNode());
             NewsImagePicker.showPicker(
               context: context,
               galleryTap: _openGallery,

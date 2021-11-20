@@ -33,6 +33,7 @@ class PersonHomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // debugPrint('$offset');
     return Container(
       color: Colors.white,
       child: Stack(
@@ -85,23 +86,22 @@ class PersonHomeHeader extends StatelessWidget {
                       style: NewsTextStyle.style18BoldBlack,
                     ),
                   ),
-                  // isSelf ?? false
-                  //     ? null
-                  //     :
-                  Padding(
-                    padding: EdgeInsets.only(right: 16.0),
-                    child: STButton(
-                      height: 30,
-                      type: STButtonType.outline,
-                      padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-                      text: (isFavouritedUser ?? false) ? '已关注' : '关注',
-                      onTap: () {
-                        if (favouritedTap != null) {
-                          favouritedTap!(isFavouritedUser ?? false);
-                        }
-                      },
-                    ),
-                  ),
+                  isSelf ?? false
+                      ? SizedBox()
+                      : Padding(
+                          padding: EdgeInsets.only(right: 16.0),
+                          child: STButton(
+                            height: 30,
+                            type: STButtonType.outline,
+                            padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
+                            text: (isFavouritedUser ?? false) ? '已关注' : '关注',
+                            onTap: () {
+                              if (favouritedTap != null) {
+                                favouritedTap!(isFavouritedUser ?? false);
+                              }
+                            },
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -151,6 +151,27 @@ class PersonHomeHeader extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
               },
+            ),
+          ),
+          Positioned(
+            top: 44 - (offset / PersonHomeHeaderHeight * 44),
+            right: 16,
+            width: 85,
+            child: Container(
+              height: 84 - (offset / PersonHomeHeaderHeight * 40),
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  if (favouritedTap != null) {
+                    favouritedTap!(isFavouritedUser ?? false);
+                  }
+                },
+                child: Center(
+                  child: SizedBox(
+                    height: 30,
+                  ),
+                ),
+              ),
             ),
           ),
         ],

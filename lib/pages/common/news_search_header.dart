@@ -115,10 +115,10 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               focusNode: _focusNode,
               inputType: TextInputType.text,
               onChanged: (String value) {
-                if (value.isEmpty || value.length == 0) {
-                  return;
-                }
-                _search();
+                // if (value.isEmpty || value.length == 0) {
+                //   return;
+                // }
+                // _search();
               },
             ),
           ),

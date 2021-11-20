@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import 'package:saturn/st_button/st_button.dart';
-import 'package:saturn/st_icons/st_icons.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -49,8 +49,7 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
     super.initState();
     _defaultSelected = widget.defaultImage;
     _direction = widget.direction ?? Axis.horizontal;
-    _decoration =
-        widget.decoration ?? BoxDecoration(color: ColorConfig.fourGrey);
+    _decoration = widget.decoration ?? BoxDecoration(color: Colors.transparent);
     _imageSource = PhotoViewImageSource.imageSourceLocal;
     if (widget.galleryItems.isNotEmpty) {
       final _temp = widget.galleryItems.first;
