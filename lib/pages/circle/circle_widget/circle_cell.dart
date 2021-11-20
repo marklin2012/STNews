@@ -43,7 +43,6 @@ class CircleCell extends StatelessWidget {
       },
       child: Card(
         elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
         child: _buildContent(context),
       ),
     );
@@ -51,9 +50,11 @@ class CircleCell extends StatelessWidget {
 
   Widget _buildContent(BuildContext context) {
     return Container(
-      color: ColorConfig.backgroundColor,
+      decoration: BoxDecoration(
+        color: ColorConfig.backgroundColor,
+        borderRadius: BorderRadius.circular(4.0),
+      ),
       width: NewsScale.sw(181, context),
-      // height: NewsScale.sh(332, context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

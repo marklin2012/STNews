@@ -82,9 +82,9 @@ class _CirclePageState extends State<CirclePage> {
             crossAxisSpacing: NewsScale.sw(4, context),
             itemBuilder: (BuildContext context, int index) {
               return Container(
-                margin: index == 1
-                    ? EdgeInsets.only(top: NewsScale.sh(40, context))
-                    : EdgeInsets.zero,
+                // margin: index == 1
+                //     ? EdgeInsets.only(top: NewsScale.sh(40, context))
+                //     : EdgeInsets.zero,
                 child: CircleCell(
                   circleModel: circleP.lists[index],
                   authorTap: (String? authorID) {
