@@ -42,19 +42,23 @@ class _PersonHomePageState extends State<PersonHomePage> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      userHomeProvider.userID = widget.userID ?? '';
-      _requestData();
+      if (widget.userID == UserProvider.shared.user.id) {
+        userHomeProvider.infoModel = UserProvider.shared.info;
+      } else {
+        userHomeProvider.userID = widget.userID ?? '';
+        _requestData();
+      }
     });
   }
 
   Future _requestData() async {
-    NewsLoading.start(context);
+    // NewsLoading.start(context);
     await userHomeProvider.getUserInfoData();
     // 非自己时查询是否关注该用户
     if (widget.userID != UserProvider.shared.user.id) {
       await userHomeProvider.getFavouritedUser();
     }
-    NewsLoading.stop();
+    // NewsLoading.stop();
   }
 
   @override

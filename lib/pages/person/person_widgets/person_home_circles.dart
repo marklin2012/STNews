@@ -105,9 +105,8 @@ class PersonHomeCirclesCell extends StatelessWidget {
         children: [
           // 头像名称时间
           _buildUserInfo(),
-          Container(
+          Padding(
             padding: EdgeInsets.only(top: 16.0, bottom: 12.0),
-            // color: Colors.red,
             child: Text(
               model?.title ?? '',
               style: NewsTextStyle.style18BoldBlack,
@@ -115,8 +114,8 @@ class PersonHomeCirclesCell extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Container(
-            // color: Colors.yellow,
+          Padding(
+            padding: EdgeInsets.only(bottom: 12.0),
             child: Text(
               model?.content ?? '',
               style: NewsTextStyle.style16NormalBlack,
@@ -169,40 +168,34 @@ class PersonHomeCirclesCell extends StatelessWidget {
   }
 
   Widget _buildImages(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 12),
-      child: _buildSubImages(context),
-    );
-  }
-
-  Widget _buildSubImages(BuildContext context) {
     if (model?.images == null || model!.images!.isEmpty) {
-      return Container();
+      return SizedBox();
     } else if (model!.images!.length == 1) {
-      return GestureDetector(
-        onTap: () {
-          STDebounce().start(
-            key: PersonHomeCirclesDebounceImageKey,
-            func: () {
-              final _galleryItem =
-                  STString.addPrefixHttp(model!.images!.first) ?? '';
-              STRouters.push(
-                  context, NewsPhotoView(galleryItems: [_galleryItem]));
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              STDebounce().start(
+                key: PersonHomeCirclesDebounceImageKey,
+                func: () {
+                  final _galleryItem =
+                      STString.addPrefixHttp(model!.images!.first) ?? '';
+                  STRouters.push(
+                      context, NewsPhotoView(galleryItems: [_galleryItem]));
+                },
+                time: 200,
+              );
             },
-            time: 200,
-          );
-        },
-        child: Container(
-          height: 168,
-          alignment: Alignment.centerLeft,
-          child: NewsImage.networkImage(
-            path: (model?.images != null && model!.images!.length != 0)
-                ? model!.images!.first
-                : null,
-            height: 168,
-            defaultChild: NewsImage.defaultCircle(),
+            child: NewsImage.networkImage(
+              path: (model?.images != null && model!.images!.length != 0)
+                  ? model!.images!.first
+                  : null,
+              height: 168,
+              defaultChild: NewsImage.defaultCircle(),
+            ),
           ),
-        ),
+        ],
       );
     } else {
       List<Widget> _widgets = [];

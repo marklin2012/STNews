@@ -18,7 +18,7 @@ class NewsImage {
     return Image(
       image: AssetImage('assets/images/default_empty.png'),
       height: height,
-      fit: BoxFit.fitWidth,
+      fit: BoxFit.fitHeight,
     );
   }
 

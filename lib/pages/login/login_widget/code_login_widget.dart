@@ -108,9 +108,10 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
     );
     if (_resultData.success) {
       final token = _resultData.data['token'];
-      Map<String, dynamic> user = _resultData.data['user'];
       UserProvider.shared.setToken(token);
-      UserProvider.shared.user = UserModel.fromJson(user);
+      Map<String, dynamic> user = _resultData.data['user'];
+      UserModel _userM = UserModel.fromJson(user);
+      UserProvider.shared.getUserInfo(userID: _userM.id);
       TokenInvalid.resetInvalidCount();
       STRouters.pushReplace(context, TabbarPage.routeName);
     }

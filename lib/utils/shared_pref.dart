@@ -28,7 +28,8 @@ class SharedPref {
     });
   }
 
-  static Future<bool> saveUsers(Map<String, dynamic> user) async {
+  static Future<bool> saveUsers(Map<String, dynamic>? user) async {
+    if (user == null) return Future.value(false);
     String jsonStringUser = jsonEncode(user);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('user', jsonStringUser);

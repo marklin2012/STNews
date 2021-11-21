@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/shared_pref.dart';
 
 class UserProvider extends ChangeNotifier {
-  UserModel _userModel = UserModel.fromJson({});
+  UserInfoModel _infoModel = UserInfoModel();
 
-  UserModel get user => _userModel;
+  UserInfoModel get info => _infoModel;
+
+  UserModel get user => _infoModel.user ?? UserModel();
 
   static UserProvider? _shared;
 
@@ -30,8 +33,9 @@ class UserProvider extends ChangeNotifier {
       if (localToken != null && localToken.length != 0) {
         setToken(localToken);
         SharedPref.getUsers().then((localUser) {
-          user = UserModel.fromJson(localUser);
-        }).then((_) => _getUserInfo());
+          UserModel _localUserModel = UserModel.fromJson(localUser);
+          getUserInfo(userID: _localUserModel.id);
+        });
       }
     });
   }
@@ -42,14 +46,6 @@ class UserProvider extends ChangeNotifier {
       Api.setAuthHeader(token);
       SharedPref.saveToken(token);
       if (isReload) notifyListeners();
-    }
-  }
-
-  set user(UserModel? userModel) {
-    if (userModel != null) {
-      _userModel = userModel;
-      SharedPref.saveUsers(_userModel.toJson());
-      notifyListeners();
     }
   }
 
@@ -65,38 +61,40 @@ class UserProvider extends ChangeNotifier {
     int? favourites,
   }) async {
     if (username != null) {
-      _userModel.username = username;
+      _infoModel.user?.username = username;
     }
 
     if (avatar != null) {
-      _userModel.avatar = avatar;
+      _infoModel.user?.avatar = avatar;
     }
 
     if (nickname != null) {
-      _userModel.nickname = nickname;
+      _infoModel.user?.nickname = nickname;
     }
 
     if (sex != null) {
-      _userModel.sex = sex;
+      _infoModel.user?.sex = sex;
     }
 
     if (mobile != null) {
-      _userModel.mobile = mobile;
+      _infoModel.user?.mobile = mobile;
     }
 
     if (email != null) {
-      _userModel.email = email;
+      _infoModel.user?.email = email;
     }
     notifyListeners();
-    return SharedPref.saveUsers(_userModel.toJson());
+    return SharedPref.saveUsers(_infoModel.user?.toJson());
   }
 
   /// 获取用户资料
-  void _getUserInfo() {
-    Api.getUserInfo(userid: user.id).then((result) {
-      if (result.success) {
-        user = UserModel.fromJson(result.data['user']);
-      }
-    });
+  void getUserInfo({String? userID}) async {
+    ResultData result = await Api.getUserInfo(userid: userID ?? user.id);
+    if (result.success) {
+      Map<String, dynamic> _userInfo = result.data;
+      _infoModel = UserInfoModel.fromJson(_userInfo);
+      SharedPref.saveUsers(_infoModel.user?.toJson());
+      notifyListeners();
+    }
   }
 }
