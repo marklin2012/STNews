@@ -10,16 +10,14 @@ import 'package:stnews/utils/st_routers.dart';
 class NewsSearchHeader extends StatefulWidget {
   const NewsSearchHeader({
     Key? key,
-    this.heroTag,
     this.controller,
     this.searchTap,
     this.height,
     this.placeholder,
     this.btnTitle,
     this.debounceKey,
+    this.ableOnChanged = true,
   }) : super(key: key);
-
-  final String? heroTag;
 
   final String? debounceKey;
 
@@ -32,6 +30,8 @@ class NewsSearchHeader extends StatefulWidget {
   final String? placeholder;
 
   final String? btnTitle;
+
+  final bool ableOnChanged;
 
   @override
   _NewsSearchHeaderState createState() => _NewsSearchHeaderState();
@@ -115,10 +115,21 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               focusNode: _focusNode,
               inputType: TextInputType.text,
               onChanged: (String value) {
-                // if (value.isEmpty || value.length == 0) {
-                //   return;
-                // }
-                // _search();
+                if (value.isEmpty || value.length == 0) {
+                  return;
+                }
+                if (widget.ableOnChanged) {
+                  _search();
+                }
+              },
+              onSubmitted: (String value) {
+                if (value.isEmpty || value.length == 0) {
+                  return;
+                }
+                // onChanged不可用时，键盘的提交键可操作
+                if (!widget.ableOnChanged) {
+                  _search();
+                }
               },
             ),
           ),
@@ -150,7 +161,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
     }
     if (widget.searchTap != null) {
       STDebounce().start(
-        key: widget.debounceKey ?? widget.heroTag,
+        key: widget.debounceKey,
         func: () async {
           widget.searchTap!(_controller.text);
         },

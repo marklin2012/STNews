@@ -62,6 +62,7 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                   child: NewsSearchHeader(
                     debounceKey: SearchCirclePage.searchCircleDebounceKey,
                     controller: _searchController,
+                    ableOnChanged: false,
                     searchTap: (String value) {
                       _search(value);
                     },
@@ -153,9 +154,9 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
     _searchValue = _temp;
     // 开始请求
     await circleSeaProvider.searchKey(key: _searchValue);
-    // 请求成功
+    // 保存数据
     SharedPref.saveCircleSearchHistory(_searchValue)
-        .then((bool suc) => circleSeaProvider.getHistorys());
+        .then((_) => circleSeaProvider.getHistorys());
   }
 
   void _gotoCircleDetailPage(MomentModel? model) {
