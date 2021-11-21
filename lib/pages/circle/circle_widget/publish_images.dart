@@ -77,7 +77,10 @@ class _PublishImagesState extends State<PublishImages> {
             child: Container(
               height: 80,
               width: 80,
-              child: STCaCheImage.loadingImage(imageUrl: _images[index]),
+              child: STCaCheImage.loadingImage(
+                imageUrl: _images[index],
+                placeholder: STCaCheImage.publishPlaceHolder(),
+              ),
             ),
           );
         },
