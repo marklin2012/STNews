@@ -192,6 +192,8 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
           if (result.success) {
             STRouters.pop(context);
             Provider.of<CircleProvider>(context, listen: false).initData();
+            UserProvider.shared
+                .getUserInfo(userID: UserProvider.shared.info.user?.id);
           }
           NewsLoading.stop();
         },
