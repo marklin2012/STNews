@@ -16,6 +16,7 @@ import 'package:stnews/pages/common/page_view_widget.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/pages/home/search_post_page.dart';
 import 'package:stnews/providers/home_post_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -50,7 +51,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         leading: STButton.icon(
           backgroundColor: Colors.transparent,
-          icon: Icon(STIcons.commonly_search),
+          icon: Hero(
+            tag: NewsHeroTags.searchHeaderTag,
+            child: Icon(STIcons.commonly_search),
+          ),
           onTap: () {
             STRouters.push(context, SearchPostPage());
           },
@@ -85,6 +89,7 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(
               child: PageViewWidget(
                 pageList: _pageLists,
+                height: 120,
               ),
             ),
             SliverList(
@@ -144,7 +149,7 @@ class _HomePageState extends State<HomePage> {
           context: context,
           backgroundColor: ColorConfig.backgroundColor,
           alignment: Alignment.topCenter,
-          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 56),
+          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 44),
           padding: EdgeInsets.symmetric(vertical: 5),
           title: Container(
             alignment: Alignment.center,

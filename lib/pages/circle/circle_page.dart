@@ -14,6 +14,7 @@ import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/st_scale.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -38,10 +39,14 @@ class _CirclePageState extends State<CirclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.primaryColor,
       appBar: AppBar(
         leading: STButton.icon(
           backgroundColor: Colors.transparent,
-          icon: Icon(STIcons.commonly_search),
+          icon: Hero(
+            tag: NewsHeroTags.searchHeaderTag,
+            child: Icon(STIcons.commonly_search),
+          ),
           onTap: () {
             STRouters.push(context, SearchCirclePage());
           },

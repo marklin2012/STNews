@@ -34,16 +34,21 @@ class CircleCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (circleModel == null) return Container();
-    return InkWell(
-      highlightColor: ColorConfig.fourGrey,
-      onTap: () {
-        if (circleTap != null) {
-          circleTap!(circleModel);
-        }
-      },
-      child: Card(
-        elevation: 0,
-        child: _buildContent(context),
+    return Ink(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: InkWell(
+        highlightColor: ColorConfig.fourGrey,
+        onTap: () {
+          if (circleTap != null) {
+            circleTap!(circleModel);
+          }
+        },
+        child: Card(
+          elevation: 0,
+          child: _buildContent(context),
+        ),
       ),
     );
   }

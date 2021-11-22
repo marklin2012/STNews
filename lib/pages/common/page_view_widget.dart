@@ -85,8 +85,12 @@ class _PageViewWidgetState extends State<PageViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double _otherH = 2 * _verFix;
+    if (widget.margin != null) {
+      _otherH = widget.margin!.top + widget.margin!.bottom;
+    }
     return Container(
-      height: _height,
+      height: _height + _otherH,
       child: Stack(
         children: [
           PageView.builder(
@@ -149,6 +153,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     return Container(
       margin: widget.margin ??
           EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
+      height: _height,
       decoration: widget.decoration ??
           BoxDecoration(
             color: Colors.black,
@@ -178,6 +183,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
             path: _image,
             width: widget.width ?? MediaQuery.of(context).size.width,
             height: _height,
+            borderRadius: BorderRadius.circular(5.0),
             defaultChild: Container(
               color: Colors.grey,
             ),

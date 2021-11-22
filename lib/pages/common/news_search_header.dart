@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -101,10 +102,13 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               padding: EdgeInsets.zero,
               cursorHeight: 24.0,
               contentPadding: EdgeInsets.only(bottom: 18.0),
-              prefixIcon: Icon(
-                STIcons.commonly_search,
-                color: ColorConfig.textFourColor,
-                size: 20.0,
+              prefixIcon: Hero(
+                tag: NewsHeroTags.searchHeaderTag,
+                child: Icon(
+                  STIcons.commonly_search,
+                  color: ColorConfig.textFourColor,
+                  size: 20.0,
+                ),
               ),
               decoration: BoxDecoration(
                 color: ColorConfig.fourGrey,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/person/my_favourite_user_page.dart';
 import 'package:stnews/pages/person/my_favourite_post_page.dart';
@@ -14,6 +15,7 @@ import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/pages/person/person_widgets/person_header.dart';
 import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -42,6 +44,7 @@ class _PersonPageState extends State<PersonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.primaryColor,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.only(top: 44.0),
@@ -55,7 +58,7 @@ class _PersonPageState extends State<PersonPage> {
                       STRouters.push(context, ShowAvatarPage());
                     },
                     child: Hero(
-                      tag: ShowAvatarPage.HeroTag,
+                      tag: NewsHeroTags.personAvatarTag,
                       child: NewsAvatarWidget(
                         child: STCaCheImage.loadingImage(
                           imageUrl: userProvider.user.avatar,

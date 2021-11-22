@@ -7,13 +7,12 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_action_sheet.dart';
 import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 class ShowAvatarPage extends StatelessWidget {
-  static const HeroTag = 'avatar_Tag';
-
   const ShowAvatarPage({Key? key, this.canSave}) : super(key: key);
 
   /// 是否有保存图片的按钮
@@ -101,7 +100,7 @@ class ShowAvatarPage extends StatelessWidget {
               height: MediaQuery.of(context).size.width,
               color: ColorConfig.baseFourBlue,
               child: Hero(
-                tag: ShowAvatarPage.HeroTag,
+                tag: NewsHeroTags.personAvatarTag,
                 child: Consumer<UserProvider>(
                   builder: (context, userProvider, child) {
                     return STCaCheImage.loadingImage(
