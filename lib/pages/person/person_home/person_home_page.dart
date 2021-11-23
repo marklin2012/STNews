@@ -107,7 +107,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
               userModel: userHomeP.infoModel.user,
               moments: userHomeP.infoModel.moments,
               jumpCommentTap: (MomentModel model) {
-                _jumpMomentDetailComment(moment: model);
+                _jumpMomentDetailComment(moment: model, positComment: true);
               },
               favourtieTap: (MomentModel model, bool isFaved) {
                 _changeFavoriteMomentStatus(
@@ -116,6 +116,9 @@ class _PersonHomePageState extends State<PersonHomePage> {
               thumbupTap: (MomentModel model, bool isThumbup) {
                 _changeThumbupMomentStatus(
                     momentID: model.id, isThumbup: isThumbup);
+              },
+              jumpMomentTap: (MomentModel model) {
+                _jumpMomentDetailComment(moment: model);
               },
             ),
           if (!userHomeP.hasMoments)
@@ -141,14 +144,16 @@ class _PersonHomePageState extends State<PersonHomePage> {
     NewsLoading.stop();
   }
 
-  void _jumpMomentDetailComment({MomentModel? moment}) {
+  void _jumpMomentDetailComment(
+      {MomentModel? moment, bool positComment = false}) {
     if (moment == null) return;
     STRouters.push(
-        context,
-        CircleDetailPage(
-          moment: moment,
-          positComment: true,
-        ));
+      context,
+      CircleDetailPage(
+        moment: moment,
+        positComment: positComment,
+      ),
+    );
   }
 
   void _changeFavoriteMomentStatus({String? momentID, bool? isFaved}) async {
