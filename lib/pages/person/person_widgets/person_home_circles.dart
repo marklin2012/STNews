@@ -7,6 +7,7 @@ import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -21,14 +22,15 @@ const PersonHomeCirclesDebounceThumbupKey =
 const PersonHomeCirclesDebounceImageKey = 'PersonHomeCirclesDebounceImageKey';
 
 class PersonHomeCircles extends StatelessWidget {
-  const PersonHomeCircles(
-      {Key? key,
-      this.userModel,
-      this.moments,
-      this.thumbupTap,
-      this.favourtieTap,
-      this.jumpCommentTap})
-      : super(key: key);
+  const PersonHomeCircles({
+    Key? key,
+    this.userModel,
+    this.moments,
+    this.thumbupTap,
+    this.favourtieTap,
+    this.jumpCommentTap,
+    this.jumpMomentTap,
+  }) : super(key: key);
 
   final UserModel? userModel;
 
@@ -39,6 +41,8 @@ class PersonHomeCircles extends StatelessWidget {
   final Function(MomentModel, bool)? favourtieTap;
 
   final Function(MomentModel)? jumpCommentTap;
+
+  final Function(MomentModel)? jumpMomentTap;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +71,11 @@ class PersonHomeCircles extends StatelessWidget {
                 thumbupTap!(model, isFaved);
               }
             },
+            jumpMomentTap: (MomentModel model) {
+              if (jumpMomentTap != null) {
+                jumpMomentTap!(model);
+              }
+            },
           );
         },
         childCount: moments?.length,
@@ -83,6 +92,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     this.thumbupTap,
     this.favourtieTap,
     this.jumpCommentTap,
+    this.jumpMomentTap,
   }) : super(key: key);
 
   final UserModel? userModel;
@@ -95,9 +105,23 @@ class PersonHomeCirclesCell extends StatelessWidget {
 
   final Function(MomentModel)? jumpCommentTap;
 
+  final Function(MomentModel)? jumpMomentTap;
+
   @override
   Widget build(BuildContext context) {
     if (userModel == null || model == null) return Container();
+    return InkWell(
+      highlightColor: ColorConfig.fourGrey,
+      onTap: () {
+        if (jumpMomentTap != null) {
+          jumpMomentTap!(model!);
+        }
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 32),
       child: Column(
@@ -171,6 +195,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     if (model?.images == null || model!.images!.isEmpty) {
       return SizedBox();
     } else if (model!.images!.length == 1) {
+      final _galleryItem = STString.addPrefixHttp(model!.images!.first) ?? '';
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -179,20 +204,21 @@ class PersonHomeCirclesCell extends StatelessWidget {
               STDebounce().start(
                 key: PersonHomeCirclesDebounceImageKey,
                 func: () {
-                  final _galleryItem =
-                      STString.addPrefixHttp(model!.images!.first) ?? '';
                   STRouters.push(
                       context, NewsPhotoView(galleryItems: [_galleryItem]));
                 },
                 time: 200,
               );
             },
-            child: NewsImage.networkImage(
-              path: (model?.images != null && model!.images!.length != 0)
-                  ? model!.images!.first
-                  : null,
-              height: 168,
-              defaultChild: NewsImage.defaultCircle(),
+            child: Hero(
+              tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+              child: NewsImage.networkImage(
+                path: (model?.images != null && model!.images!.length != 0)
+                    ? model!.images!.first
+                    : null,
+                height: 168,
+                defaultChild: NewsImage.defaultCircle(),
+              ),
             ),
           ),
         ],
@@ -206,6 +232,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
       }
       for (var i = 0; i < model!.images!.length; i++) {
         final _url = model!.images![i];
+        final _heroTag = STString.addPrefixHttp(_url) ?? '';
         _widgets.add(
           GestureDetector(
             onTap: () {
@@ -223,11 +250,14 @@ class PersonHomeCirclesCell extends StatelessWidget {
                 time: 200,
               );
             },
-            child: NewsImage.networkImage(
-              path: _url,
-              width: NewsScale.sw(112, context),
-              height: NewsScale.sw(112, context),
-              defaultChild: NewsImage.defaultCircle(height: 50),
+            child: Hero(
+              tag: NewsHeroTags.showPhotoImageTag + _heroTag,
+              child: NewsImage.networkImage(
+                path: _url,
+                width: NewsScale.sw(112, context),
+                height: NewsScale.sw(112, context),
+                defaultChild: NewsImage.defaultCircle(height: 50),
+              ),
             ),
           ),
         );

@@ -50,7 +50,11 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
     return Scaffold(
       appBar: AppBar(
         leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
+          icon: Icon(
+            STIcons.commonly_close,
+            size: 16,
+          ),
+          padding: EdgeInsets.all(8.0),
           backgroundColor: Colors.transparent,
           onTap: () {
             STRouters.pop(context);

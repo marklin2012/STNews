@@ -6,6 +6,7 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
@@ -22,7 +23,7 @@ class PageViewWidget extends StatefulWidget {
     this.height,
     this.isAutoRoll = true,
     this.isLooped = true,
-    this.autoRollTime = 3,
+    this.autoRollTime = 2,
     this.margin,
     this.decoration,
     this.width,
@@ -68,7 +69,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         _currentIndex = (_temp + 1) % (_pageList.length);
 
         _pageController.animateToPage(_currentIndex,
-            duration: Duration(milliseconds: 200), curve: Curves.ease);
+            duration: Duration(milliseconds: 400), curve: Curves.ease);
       });
     }
     _galleryItems =
@@ -150,6 +151,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     if (image != null && image.length > 1) {
       _image = image;
     }
+    final _galleryItem = STString.addPrefixHttp(_image) ?? '';
     return Container(
       margin: widget.margin ??
           EdgeInsets.symmetric(horizontal: _horFix, vertical: _verFix),
@@ -179,13 +181,16 @@ class _PageViewWidgetState extends State<PageViewWidget> {
               time: 200,
             );
           },
-          child: NewsImage.networkImage(
-            path: _image,
-            width: widget.width ?? MediaQuery.of(context).size.width,
-            height: _height,
-            borderRadius: BorderRadius.circular(5.0),
-            defaultChild: Container(
-              color: Colors.grey,
+          child: Hero(
+            tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+            child: NewsImage.networkImage(
+              path: _image,
+              width: widget.width ?? MediaQuery.of(context).size.width,
+              height: _height,
+              borderRadius: BorderRadius.circular(5.0),
+              defaultChild: Container(
+                color: Colors.grey,
+              ),
             ),
           ),
         ),

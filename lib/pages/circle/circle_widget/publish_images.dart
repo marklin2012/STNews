@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
@@ -57,6 +58,7 @@ class _PublishImagesState extends State<PublishImages> {
           if (index == _images.length) {
             return _getAddBtn();
           }
+          final _galleryItem = STString.addPrefixHttp(_images[index]) ?? '';
           return GestureDetector(
             onTap: () {
               STDebounce().start(
@@ -77,9 +79,12 @@ class _PublishImagesState extends State<PublishImages> {
             child: Container(
               height: 80,
               width: 80,
-              child: STCaCheImage.loadingImage(
-                imageUrl: _images[index],
-                placeholder: STCaCheImage.publishPlaceHolder(),
+              child: Hero(
+                tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+                child: STCaCheImage.loadingImage(
+                  imageUrl: _images[index],
+                  placeholder: STCaCheImage.publishPlaceHolder(),
+                ),
               ),
             ),
           );
