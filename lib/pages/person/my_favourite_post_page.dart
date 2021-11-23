@@ -10,6 +10,7 @@ import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/providers/favourited_post_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -126,13 +127,17 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                           _model.author?.nickname ?? '',
                           style: NewsTextStyle.style12NormalThrGrey,
                         ),
-                        trailing: NewsImage.networkImage(
-                          path: _model.coverImage ??
-                              'http://via.placeholder.com/102x76',
-                          width: 102,
-                          height: 76,
-                          defaultChild: Container(
-                            color: Colors.grey,
+                        trailing: Hero(
+                          tag: NewsHeroTags.postDetailImageTag +
+                              (_model.id ?? ''),
+                          child: NewsImage.networkImage(
+                            path: _model.coverImage ??
+                                'http://via.placeholder.com/102x76',
+                            width: 102,
+                            height: 76,
+                            defaultChild: Container(
+                              color: Colors.grey,
+                            ),
                           ),
                         ),
                         onTap: () {

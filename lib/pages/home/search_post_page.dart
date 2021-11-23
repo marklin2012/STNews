@@ -9,6 +9,7 @@ import 'package:stnews/pages/common/news_rich_text.dart';
 import 'package:stnews/pages/common/news_search_header.dart';
 import 'package:stnews/pages/home/post_detail_page.dart';
 import 'package:stnews/providers/post_search_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -104,13 +105,16 @@ class _SearchPostPageState extends State<SearchPostPage> {
                     _model.author?.nickname ?? '',
                     style: NewsTextStyle.style12NormalThrGrey,
                   ),
-                  trailing: NewsImage.networkImage(
-                    path: _model.coverImage ??
-                        'http://via.placeholder.com/102x76',
-                    width: 102,
-                    height: 76,
-                    defaultChild: Container(
-                      color: Colors.grey,
+                  trailing: Hero(
+                    tag: NewsHeroTags.postDetailImageTag + (_model.id ?? ''),
+                    child: NewsImage.networkImage(
+                      path: _model.coverImage ??
+                          'http://via.placeholder.com/102x76',
+                      width: 102,
+                      height: 76,
+                      defaultChild: Container(
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   onTap: () {

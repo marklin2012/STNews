@@ -107,13 +107,16 @@ class _HomePageState extends State<HomePage> {
                       _model.author?.nickname ?? '',
                       style: NewsTextStyle.style12NormalThrGrey,
                     ),
-                    trailing: NewsImage.networkImage(
-                      path: _model.coverImage ??
-                          'http://via.placeholder.com/102x76',
-                      width: 102,
-                      height: 76,
-                      defaultChild: Container(
-                        color: Colors.grey,
+                    trailing: Hero(
+                      tag: NewsHeroTags.postDetailImageTag + (_model.id ?? ''),
+                      child: NewsImage.networkImage(
+                        path: _model.coverImage ??
+                            'http://via.placeholder.com/102x76',
+                        width: 102,
+                        height: 76,
+                        defaultChild: Container(
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                     onTap: () {

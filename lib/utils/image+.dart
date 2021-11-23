@@ -28,6 +28,7 @@ class NewsImage {
     double? height,
     Widget? defaultChild,
     BorderRadius borderRadius = BorderRadius.zero,
+    BoxFit fit = BoxFit.cover,
   }) {
     if (path == null) {
       return Center(child: defaultChild);
@@ -37,7 +38,7 @@ class NewsImage {
       child: CachedNetworkImage(
         width: width,
         height: height,
-        fit: BoxFit.cover,
+        fit: fit,
         imageUrl: STString.addPrefixHttp(path) ?? '',
         placeholder: (context, url) => Container(
           width: width,

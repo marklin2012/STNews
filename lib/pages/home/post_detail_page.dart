@@ -16,6 +16,8 @@ import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -162,15 +164,31 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           });
                     },
                   ),
+                  // 文章的头部图片
+                  SliverToBoxAdapter(
+                    child: Container(
+                      height: 168,
+                      margin: EdgeInsets.only(top: 16.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Hero(
+                        tag: NewsHeroTags.postDetailImageTag +
+                            (widget.model?.id ?? ''),
+                        child: NewsImage.networkImage(
+                          path: widget.model?.coverImage ??
+                              'http://via.placeholder.com/343x168',
+                          width: 343,
+                          height: 168,
+                          defaultChild: Container(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   // 文章内容
-
                   SliverToBoxAdapter(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
-                      // child: Container(
-                      //   height: 500,
-                      //   color: Colors.yellow,
-                      // ),
                       child: Html(
                         data: postDetailProvider.postModel.article,
                         style: {
