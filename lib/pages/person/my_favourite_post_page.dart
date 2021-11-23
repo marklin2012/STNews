@@ -138,6 +138,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
                             defaultChild: Container(
                               color: Colors.grey,
                             ),
+                            borderRadius: BorderRadius.circular(3.0),
                           ),
                         ),
                         onTap: () {

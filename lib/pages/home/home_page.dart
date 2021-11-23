@@ -117,6 +117,7 @@ class _HomePageState extends State<HomePage> {
                         defaultChild: Container(
                           color: Colors.grey,
                         ),
+                        borderRadius: BorderRadius.circular(3.0),
                       ),
                     ),
                     onTap: () {

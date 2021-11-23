@@ -62,6 +62,7 @@ class _PersonHomePostsState extends State<PersonHomePosts> {
                     defaultChild: Container(
                       color: Colors.grey,
                     ),
+                    borderRadius: BorderRadius.circular(3.0),
                   ),
                 ),
                 onTap: () {

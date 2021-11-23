@@ -115,6 +115,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
                       defaultChild: Container(
                         color: Colors.grey,
                       ),
+                      borderRadius: BorderRadius.circular(3.0),
                     ),
                   ),
                   onTap: () {
