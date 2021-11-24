@@ -55,7 +55,11 @@ class _PersonPageState extends State<PersonPage> {
                   leading: GestureDetector(
                     onTap: () {
                       // 查看头像
-                      STRouters.push(context, ShowAvatarPage());
+                      STRouters.push(
+                        context,
+                        ShowAvatarPage(),
+                        direction: STRoutersDirection.bottomToTop,
+                      );
                     },
                     child: Hero(
                       tag: NewsHeroTags.personAvatarTag,
@@ -77,7 +81,11 @@ class _PersonPageState extends State<PersonPage> {
                   ),
                   onTap: () {
                     // 去个人信息
-                    STRouters.push(context, PersonInfoPage());
+                    STRouters.push(
+                      context,
+                      PersonInfoPage(),
+                      direction: STRoutersDirection.rightToLeft,
+                    );
                   },
                 );
               }),
@@ -111,30 +119,45 @@ class _PersonPageState extends State<PersonPage> {
       case 0:
         // 去我的主页
         STRouters.push(
-            context,
-            PersonHomePage(
-              userID: UserProvider.shared.user.id ?? '',
-              type: PersonHomeShowType.PersonHomeShowPost,
-            ));
+          context,
+          PersonHomePage(
+            userID: UserProvider.shared.user.id ?? '',
+            type: PersonHomeShowType.PersonHomeShowPost,
+          ),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 1:
         // 去我的收藏
-        STRouters.push(context, MyFavouritePostPage());
+        STRouters.push(
+          context,
+          MyFavouritePostPage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 2:
         // 去我的关注
-        STRouters.push(context, MyFavouriteUserPage());
+        STRouters.push(
+          context,
+          MyFavouriteUserPage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 3:
         // 去消息中心
         STRouters.push(
           context,
           PersonNoticePage(),
+          direction: STRoutersDirection.rightToLeft,
         );
         break;
       case 4:
         // 去设置
-        STRouters.push(context, PersonSetingPage());
+        STRouters.push(
+          context,
+          PersonSetingPage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
 
       default:

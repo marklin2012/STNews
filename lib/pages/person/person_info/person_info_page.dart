@@ -97,11 +97,19 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
         break;
       case 1:
         // 修改昵称
-        STRouters.push(context, ChangeInfoPage(isChangeSex: false));
+        STRouters.push(
+          context,
+          ChangeInfoPage(isChangeSex: false),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 2:
         // 修改性别
-        STRouters.push(context, ChangeInfoPage(isChangeSex: true));
+        STRouters.push(
+          context,
+          ChangeInfoPage(isChangeSex: true),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
 
       default:

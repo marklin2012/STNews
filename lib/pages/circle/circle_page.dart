@@ -133,7 +133,11 @@ class _CirclePageState extends State<CirclePage> {
       foregroundColor: ColorConfig.accentColor,
       onPressed: () {
         // 去发布页
-        STRouters.push(context, CirclePublishPage());
+        STRouters.push(
+          context,
+          CirclePublishPage(),
+          direction: STRoutersDirection.bottomToTop,
+        );
       },
       child: Icon(
         STIcons.commonly_camera,

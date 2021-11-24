@@ -65,9 +65,17 @@ class AccountSecurityPage extends StatelessWidget {
 
   void _goNextPage(BuildContext context, int index) {
     if (index == 0) {
-      STRouters.push(context, ChangeMobilePage());
+      STRouters.push(
+        context,
+        ChangeMobilePage(),
+        direction: STRoutersDirection.rightToLeft,
+      );
     } else if (index == 1) {
-      STRouters.push(context, CheckCodePage());
+      STRouters.push(
+        context,
+        CheckCodePage(),
+        direction: STRoutersDirection.rightToLeft,
+      );
     }
   }
 }
