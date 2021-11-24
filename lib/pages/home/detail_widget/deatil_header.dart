@@ -71,7 +71,6 @@ class DetailHeader extends StatelessWidget {
             right: 0,
             child: Container(
               height: 44,
-              // color: Colors.white,
               child: Row(
                 children: [
                   IconButton(
@@ -101,13 +100,17 @@ class DetailHeader extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Opacity(
-                    opacity: 1 - offset / detailHeaderHeight,
-                    child: Text(
-                      data.title ?? '',
-                      style: NewsTextStyle.style28BoldBlack,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                  Padding(
+                    padding:
+                        EdgeInsets.only(left: offset / detailHeaderHeight * 80),
+                    child: Opacity(
+                      opacity: _calculateTitleOpacity(),
+                      child: Text(
+                        data.title ?? '',
+                        style: NewsTextStyle.style28BoldBlack,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   SizedBox(height: 12.0),
@@ -190,5 +193,13 @@ class DetailHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  double _calculateTitleOpacity() {
+    if (offset < detailHeaderHeight / 2) {
+      return 1 - offset / detailHeaderHeight * 2;
+    } else {
+      return 0;
+    }
   }
 }
