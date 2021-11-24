@@ -110,11 +110,11 @@ class PersonHomeHeader extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
+            height: _claculateBottomHeight(),
             child: Opacity(
-              opacity: 1 - offset / PersonHomeHeaderHeight,
+              opacity: _claculateBottomOpacity(),
               child: Container(
                 color: ColorConfig.backgroundColor,
-                height: 44,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -144,38 +144,53 @@ class PersonHomeHeader extends StatelessWidget {
             width: 44,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              child: SizedBox(
+              child: Container(
                 width: offset / PersonHomeHeaderHeight * 44,
                 height: 44,
+                // color: Colors.yellow,
               ),
               onTap: () {
                 Navigator.of(context).pop();
               },
             ),
           ),
-          Positioned(
-            top: 44 - (offset / PersonHomeHeaderHeight * 44),
-            right: 16,
-            width: 85,
-            child: Container(
-              height: 84 - (offset / PersonHomeHeaderHeight * 40),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  if (favouritedTap != null) {
-                    favouritedTap!(isFavouritedUser ?? false);
-                  }
-                },
-                child: Center(
-                  child: SizedBox(
-                    height: 30,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 44 - (offset / PersonHomeHeaderHeight * 44),
+          //   right: 16,
+          //   width: 85,
+          //   child: Container(
+          //     height: 84 - (offset / PersonHomeHeaderHeight * 40),
+          //     child: GestureDetector(
+          //       behavior: HitTestBehavior.opaque,
+          //       onTap: () {
+          //         if (favouritedTap != null) {
+          //           favouritedTap!(isFavouritedUser ?? false);
+          //         }
+          //       },
+          //       child: Center(
+          //         child: SizedBox(
+          //           height: 30,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
+  }
+
+  double _claculateBottomHeight() {
+    if (offset < 60) {
+      return 44 - offset / PersonHomeHeaderHeight * 44;
+    }
+    return 0;
+  }
+
+  double _claculateBottomOpacity() {
+    if (offset < 60) {
+      return 1 - offset / 60;
+    }
+    return 0;
   }
 }
