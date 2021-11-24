@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -32,6 +34,9 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   TextEditingController _phoneCon = TextEditingController();
   TextEditingController _passwordCon = TextEditingController();
   late ValueNotifier<bool> _btnNotifier;
+  int _limitLength = 11;
+  FocusNode _phoneNode = FocusNode(debugLabel: 'phone');
+  FocusNode _passwordNode = FocusNode(debugLabel: 'password');
 
   @override
   void initState() {
@@ -153,14 +158,21 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           onTap: () {
             final areaCodePage = AreaCodePage(
               onChanged: (Map<String, String> selected) {
-                setState(() {
-                  _selectedArea = selected;
-                });
+                _switchAreaCode(selected);
               },
             );
             STRouters.push(context, areaCodePage);
           },
           controller: _phoneCon,
+          focusNode: _phoneNode,
+          phoneLength: _limitLength,
+          onChanged: (String value) {
+            if (STString.removeSpace(value).length == _limitLength) {
+              Future.delayed(Duration(milliseconds: 50), () {
+                FocusScope.of(context).requestFocus(_passwordNode);
+              });
+            }
+          },
         ),
         SizedBox(height: NewsLoginConstant.horFix16),
         STInput.password(
@@ -169,8 +181,22 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           textStyle: NewsTextStyle.style16NormalBlack,
           backgoundColor: ColorConfig.primaryColor,
           inputFormatters: [LengthLimitingTextInputFormatter(20)],
+          focusNode: _passwordNode,
+          onSubmitted: (String value) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
         ),
       ],
     );
+  }
+
+  Future _switchAreaCode(Map<String, String> selected) async {
+    _selectedArea = selected;
+    final _selectedKey = _selectedArea.keys.first;
+    final lengthValue = await DefaultAssetBundle.of(context)
+        .loadString('assets/json/worldcodelength.json');
+    final _temps = json.decode(lengthValue);
+    _limitLength = int.tryParse(_temps[_selectedKey]) ?? 11;
+    setState(() {});
   }
 }

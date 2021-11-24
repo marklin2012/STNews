@@ -10,28 +10,36 @@ class PhoneInput extends StatelessWidget {
   const PhoneInput({
     Key? key,
     this.onTap,
+    this.onChanged,
     required this.areaStr,
     required this.controller,
     this.inputType,
     this.inputFormatters,
     this.placeholder = '输入手机号',
+    this.focusNode,
+    this.phoneLength = 11,
   }) : super(key: key);
 
   final String areaStr;
   final void Function()? onTap;
+  final void Function(String)? onChanged;
   final TextEditingController controller;
   final TextInputType? inputType;
   final List<TextInputFormatter>? inputFormatters;
   final String? placeholder;
+  final FocusNode? focusNode;
+  final int phoneLength;
 
   @override
   Widget build(BuildContext context) {
+    final _focusNode = focusNode ?? FocusNode();
     final _inputType = inputType ?? TextInputType.number;
+    final _limitLength = _calculateLimitLength();
     final _inputFormatters = inputFormatters ??
         [
           FilteringTextInputFormatter.allow(RegExp("[ |　]*([0-9])[ |　]*")),
           PhoneInputFormatter(),
-          LengthLimitingTextInputFormatter(14)
+          LengthLimitingTextInputFormatter(_limitLength),
         ];
     return STInput(
       backgoundColor: ColorConfig.primaryColor,
@@ -62,6 +70,22 @@ class PhoneInput extends StatelessWidget {
       controller: controller,
       inputType: _inputType,
       inputFormatters: _inputFormatters,
+      focusNode: _focusNode,
+      onChanged: (String value) {
+        if (onChanged != null) {
+          onChanged!(value);
+        }
+      },
     );
+  }
+
+  int _calculateLimitLength() {
+    if (phoneLength > 7) {
+      return phoneLength + 2;
+    } else if (phoneLength > 3) {
+      return phoneLength + 1;
+    } else {
+      return phoneLength;
+    }
   }
 }
