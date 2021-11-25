@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
@@ -336,6 +338,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   /// 收藏或取消收藏该文章
   void _favouritedPost(bool isFav) async {
     bool _isFav = await postDetailProvider.favouritedPost(isFav);
+    STToast.show(context: context, message: _isFav ? '收藏成功' : '取消收藏');
     _footerData = _footerData.setFavPost(_isFav);
     _detailFooterNoti.value = _footerData;
   }
@@ -350,11 +353,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
   /// 关注或取消关注该用户
   void _favouritedUser(bool isFav) async {
     if (_headerData.authorId == null) return;
-    NewsLoading.start(context);
     bool _isFav = await postDetailProvider.favouritedUser(
         authorId: _headerData.authorId!, isFaved: isFav);
     _headerData = _headerData.setFavedUser(_isFav);
     _detailHeaderNoti.value = _headerData;
-    NewsLoading.stop();
   }
 }

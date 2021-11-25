@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_loading.dart';
+import 'package:stnews/pages/person/person_setting/account_security/account_security_page.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -135,7 +136,9 @@ class _EditPasswordPageState extends State<EditPasswordPage> {
       Api.setPassword(_newCon.text).then((reslutData) {
         NewsLoading.stop();
         if (reslutData.success) {
-          STRouters.pop(context);
+          Navigator.of(context)
+              .popUntil(ModalRoute.withName(AccountSecurityPage.routeName));
+          STToast.show(context: context, message: '密码设置成功');
         }
       });
     }

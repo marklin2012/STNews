@@ -195,6 +195,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
           );
           if (result.success) {
             STRouters.pop(context);
+            STToast.show(context: context, message: '发布成功');
             Provider.of<CircleProvider>(context, listen: false).initData();
             UserProvider.shared
                 .getUserInfo(userID: UserProvider.shared.info.user?.id);
