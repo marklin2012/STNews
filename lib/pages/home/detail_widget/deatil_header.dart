@@ -38,7 +38,7 @@ class PostDetailHeaderData {
 
 const double detailHeaderHeight = 186;
 
-class DetailHeader extends StatelessWidget {
+class DetailHeader extends StatefulWidget {
   const DetailHeader({
     Key? key,
     this.authorTap,
@@ -49,15 +49,32 @@ class DetailHeader extends StatelessWidget {
   final double offset;
   final Function()? authorTap;
   final Function(bool)? onFavouritedUser;
-
   final PostDetailHeaderData data;
 
   @override
+  _DetailHeaderState createState() => _DetailHeaderState();
+}
+
+class _DetailHeaderState extends State<DetailHeader> {
+  ValueNotifier<bool> _loadingNoti = ValueNotifier(false);
+  PostDetailHeaderData _lastData = PostDetailHeaderData();
+
+  @override
+  void initState() {
+    super.initState();
+    _lastData = widget.data;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_lastData.isFavedUser != widget.data.isFavedUser) {
+      _loadingNoti.value = false;
+      _lastData = widget.data;
+    }
     String _publishedDate = '';
-    if (data.publishedDate != null) {
+    if (widget.data.publishedDate != null) {
       DateTime _temp =
-          STString.dateTimeFromString(dateStr: data.publishedDate!);
+          STString.dateTimeFromString(dateStr: widget.data.publishedDate!);
       _publishedDate = STString.getDateString(_temp);
     }
     return Container(
@@ -101,12 +118,12 @@ class DetailHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:
-                        EdgeInsets.only(left: offset / detailHeaderHeight * 80),
+                    padding: EdgeInsets.only(
+                        left: widget.offset / detailHeaderHeight * 80),
                     child: Opacity(
                       opacity: _calculateTitleOpacity(),
                       child: Text(
-                        data.title ?? '',
+                        widget.data.title ?? '',
                         style: NewsTextStyle.style28BoldBlack,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -125,7 +142,7 @@ class DetailHeader extends StatelessWidget {
                           GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             child: SizedBox(
-                              width: offset / detailHeaderHeight * 32,
+                              width: widget.offset / detailHeaderHeight * 32,
                               height: 44,
                             ),
                             onTap: () {
@@ -137,15 +154,15 @@ class DetailHeader extends StatelessWidget {
                             icon: ClipOval(
                               clipBehavior: Clip.hardEdge,
                               child: NewsImage.networkImage(
-                                path: data.authorAvatar,
+                                path: widget.data.authorAvatar,
                                 width: 36,
                                 height: 36,
                                 defaultChild: NewsImage.defaultAvatar(),
                               ),
                             ),
                             onTap: () {
-                              if (authorTap != null) {
-                                authorTap!();
+                              if (widget.authorTap != null) {
+                                widget.authorTap!();
                               }
                             },
                           ),
@@ -155,12 +172,13 @@ class DetailHeader extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                data.authorNickName ?? '',
+                                widget.data.authorNickName ?? '',
                                 style: NewsTextStyle.style14NormalBlack,
                               ),
-                              if (offset < 125)
+                              if (widget.offset < 125)
                                 Opacity(
-                                  opacity: 1 - offset / detailHeaderHeight,
+                                  opacity:
+                                      1 - widget.offset / detailHeaderHeight,
                                   child: Text(
                                     _publishedDate,
                                     style: NewsTextStyle.style12NormalThrGrey,
@@ -170,20 +188,36 @@ class DetailHeader extends StatelessWidget {
                           )
                         ],
                       ),
-                      if (data.authorId != null &&
-                          data.authorId! != UserProvider.shared.user.id)
-                        STButton(
-                          type: STButtonType.outline,
-                          height: 30,
-                          padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-                          text: (data.isFavedUser ?? false) ? '已关注' : '关注',
-                          textStyle: NewsTextStyle.style14NormalFirBlue,
-                          onTap: () {
-                            if (onFavouritedUser != null) {
-                              onFavouritedUser!(data.isFavedUser ?? false);
-                            }
-                          },
-                        ),
+                      if (widget.data.authorId != null &&
+                          widget.data.authorId! != UserProvider.shared.user.id)
+                        ValueListenableBuilder(
+                            valueListenable: _loadingNoti,
+                            builder: (context, bool loading, _) {
+                              return STButton(
+                                type: STButtonType.outline,
+                                height: 30,
+                                loading: loading,
+                                loadingIconSize: 15,
+                                padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
+                                text: (widget.data.isFavedUser ?? false)
+                                    ? '已关注'
+                                    : '关注',
+                                textStyle: (widget.data.isFavedUser ?? false)
+                                    ? NewsTextStyle.style14NormalThrGrey
+                                    : NewsTextStyle.style14NormalFirBlue,
+                                borderColor: (widget.data.isFavedUser ??
+                                        false || !loading)
+                                    ? ColorConfig.textThrColor
+                                    : ColorConfig.baseFirBule,
+                                onTap: () {
+                                  _loadingNoti.value = true;
+                                  if (widget.onFavouritedUser != null) {
+                                    widget.onFavouritedUser!(
+                                        widget.data.isFavedUser ?? false);
+                                  }
+                                },
+                              );
+                            })
                     ],
                   ),
                 ],
@@ -196,8 +230,8 @@ class DetailHeader extends StatelessWidget {
   }
 
   double _calculateTitleOpacity() {
-    if (offset < detailHeaderHeight / 2) {
-      return 1 - offset / detailHeaderHeight * 2;
+    if (widget.offset < detailHeaderHeight / 2) {
+      return 1 - widget.offset / detailHeaderHeight * 2;
     } else {
       return 0;
     }

@@ -11,7 +11,7 @@ import 'package:stnews/utils/st_cache_image.dart';
 
 const PersonHomeHeaderHeight = 172.0;
 
-class PersonHomeHeader extends StatelessWidget {
+class PersonHomeHeader extends StatefulWidget {
   const PersonHomeHeader({
     Key? key,
     required this.offset,
@@ -32,8 +32,25 @@ class PersonHomeHeader extends StatelessWidget {
   final double offset;
 
   @override
+  _PersonHomeHeaderState createState() => _PersonHomeHeaderState();
+}
+
+class _PersonHomeHeaderState extends State<PersonHomeHeader> {
+  ValueNotifier<bool> _loadingNoti = ValueNotifier(false);
+  bool _lastFav = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastFav = widget.isFavouritedUser ?? false;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // debugPrint('$offset');
+    if (_lastFav != widget.isFavouritedUser) {
+      _loadingNoti.value = false;
+      _lastFav = widget.isFavouritedUser ?? false;
+    }
     return Container(
       color: Colors.white,
       child: Stack(
@@ -64,43 +81,61 @@ class PersonHomeHeader extends StatelessWidget {
           Positioned(
             left: 0,
             right: 0,
-            top: 44 - (offset / PersonHomeHeaderHeight * 44),
+            top: 44 - (widget.offset / PersonHomeHeaderHeight * 44),
             child: Container(
-              height: 84 - (offset / PersonHomeHeaderHeight * 40),
+              height: 84 - (widget.offset / PersonHomeHeaderHeight * 40),
               child: Row(
                 children: [
                   SizedBox(
-                    width: offset / PersonHomeHeaderHeight * 32,
+                    width: widget.offset / PersonHomeHeaderHeight * 32,
                     height: 44,
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 16.0, right: 12.0),
                     child: NewsAvatarWidget(
-                      size: 60 - (offset / PersonHomeHeaderHeight * 24),
-                      child: STCaCheImage.loadingImage(imageUrl: user?.avatar),
+                      size: 60 - (widget.offset / PersonHomeHeaderHeight * 24),
+                      child: STCaCheImage.loadingImage(
+                          imageUrl: widget.user?.avatar),
                     ),
                   ),
                   Expanded(
                     child: Text(
-                      user?.nickname ?? '',
+                      widget.user?.nickname ?? '',
                       style: NewsTextStyle.style18BoldBlack,
                     ),
                   ),
-                  isSelf ?? false
+                  widget.isSelf ?? true
                       ? SizedBox()
                       : Padding(
                           padding: EdgeInsets.only(right: 16.0),
-                          child: STButton(
-                            height: 30,
-                            type: STButtonType.outline,
-                            padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
-                            text: (isFavouritedUser ?? false) ? '已关注' : '关注',
-                            onTap: () {
-                              if (favouritedTap != null) {
-                                favouritedTap!(isFavouritedUser ?? false);
-                              }
-                            },
-                          ),
+                          child: ValueListenableBuilder(
+                              valueListenable: _loadingNoti,
+                              builder: (context, bool loading, _) {
+                                return STButton(
+                                  type: STButtonType.outline,
+                                  height: 30,
+                                  loading: loading,
+                                  loadingIconSize: 15,
+                                  padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
+                                  text: (widget.isFavouritedUser ?? false)
+                                      ? '已关注'
+                                      : '关注',
+                                  textStyle: (widget.isFavouritedUser ?? false)
+                                      ? NewsTextStyle.style14NormalThrGrey
+                                      : NewsTextStyle.style14NormalFirBlue,
+                                  borderColor: (widget.isFavouritedUser ??
+                                          false || !loading)
+                                      ? ColorConfig.textThrColor
+                                      : ColorConfig.baseFirBule,
+                                  onTap: () {
+                                    _loadingNoti.value = true;
+                                    if (widget.favouritedTap != null) {
+                                      widget.favouritedTap!(
+                                          widget.isFavouritedUser ?? false);
+                                    }
+                                  },
+                                );
+                              }),
                         ),
                 ],
               ),
@@ -120,7 +155,7 @@ class PersonHomeHeader extends StatelessWidget {
                   children: [
                     NewsIconTextWidget(
                       icon: Icon(Icons.favorite),
-                      title: (followerCount ?? 0).toString(),
+                      title: (widget.followerCount ?? 0).toString(),
                       unit: '关注',
                     ),
                     Container(
@@ -130,7 +165,7 @@ class PersonHomeHeader extends StatelessWidget {
                     ),
                     NewsIconTextWidget(
                       icon: Icon(Icons.favorite_outline),
-                      title: (fansCount ?? 0).toString(),
+                      title: (widget.fansCount ?? 0).toString(),
                       unit: '粉丝',
                     ),
                   ],
@@ -145,7 +180,7 @@ class PersonHomeHeader extends StatelessWidget {
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               child: Container(
-                width: offset / PersonHomeHeaderHeight * 44,
+                width: widget.offset / PersonHomeHeaderHeight * 44,
                 height: 44,
                 // color: Colors.yellow,
               ),
@@ -181,15 +216,15 @@ class PersonHomeHeader extends StatelessWidget {
   }
 
   double _claculateBottomHeight() {
-    if (offset < 60) {
-      return 44 - offset / PersonHomeHeaderHeight * 44;
+    if (widget.offset < 60) {
+      return 44 - widget.offset / PersonHomeHeaderHeight * 44;
     }
     return 0;
   }
 
   double _claculateBottomOpacity() {
-    if (offset < 60) {
-      return 1 - offset / 60;
+    if (widget.offset < 60) {
+      return 1 - widget.offset / 60;
     }
     return 0;
   }

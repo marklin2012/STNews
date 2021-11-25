@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
-
-import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/scroll_header.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_circles.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_header.dart';
@@ -139,9 +137,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
   }
 
   void _changeFavouriteStatus(bool isFaved) async {
-    NewsLoading.start(context);
     await userHomeProvider.changeFavouritedUserStatus(isFaved);
-    NewsLoading.stop();
   }
 
   void _jumpMomentDetailComment(
