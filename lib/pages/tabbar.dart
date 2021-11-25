@@ -27,23 +27,11 @@ class _TabbarPageState extends State<TabbarPage> {
       ],
       items: [
         const BottomNavigationBarItem(
-            icon: Icon(
-              STIcons.commonly_home,
-              size: 28,
-            ),
-            label: '资讯'),
+            icon: Icon(STIcons.commonly_home), label: '资讯'),
         const BottomNavigationBarItem(
-            icon: Icon(
-              STIcons.commonly_fire,
-              size: 28,
-            ),
-            label: '圈圈'),
+            icon: Icon(STIcons.commonly_fire), label: '圈圈'),
         const BottomNavigationBarItem(
-            icon: Icon(
-              STIcons.commonly_user,
-              size: 28,
-            ),
-            label: '我的'),
+            icon: Icon(STIcons.commonly_user), label: '我的'),
       ],
     );
   }
