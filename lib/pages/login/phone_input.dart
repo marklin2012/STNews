@@ -5,6 +5,7 @@ import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/phone_input_formatter.dart';
+import 'package:stnews/utils/string+.dart';
 
 class PhoneInput extends StatelessWidget {
   const PhoneInput({
@@ -73,7 +74,7 @@ class PhoneInput extends StatelessWidget {
       focusNode: _focusNode,
       onChanged: (String value) {
         if (onChanged != null) {
-          onChanged!(value);
+          onChanged!(STString.removeSpace(value));
         }
       },
     );

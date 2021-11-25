@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/news_toast.dart';
 import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/find_password_page.dart';
@@ -167,7 +168,8 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           focusNode: _phoneNode,
           phoneLength: _limitLength,
           onChanged: (String value) {
-            if (STString.removeSpace(value).length == _limitLength) {
+            if (value.length == _limitLength) {
+              if (!_checkPhoneNumber(value)) return;
               Future.delayed(Duration(milliseconds: 50), () {
                 FocusScope.of(context).requestFocus(_passwordNode);
               });
@@ -198,5 +200,16 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
     final _temps = json.decode(lengthValue);
     _limitLength = int.tryParse(_temps[_selectedKey]) ?? 11;
     setState(() {});
+  }
+
+  bool _checkPhoneNumber(String value) {
+    if (!NewsLoginConstant.checkPhoneNumber(
+      value: value,
+      area: _selectedArea.values.first,
+    )) {
+      Newstoast.showToast(msg: '手机号输入错误');
+      return false;
+    }
+    return true;
   }
 }
