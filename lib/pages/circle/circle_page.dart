@@ -86,36 +86,31 @@ class _CirclePageState extends State<CirclePage> {
             mainAxisSpacing: NewsScale.sh(4, context),
             crossAxisSpacing: NewsScale.sw(4, context),
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                // margin: index == 1
-                //     ? EdgeInsets.only(top: NewsScale.sh(40, context))
-                //     : EdgeInsets.zero,
-                child: CircleCell(
-                  circleModel: circleP.lists[index],
-                  authorTap: (String? authorID) {
-                    if (authorID == null) return;
-                    // 去个人圈子主页
-                    STRouters.push(
-                      context,
-                      PersonHomePage(
-                        userID: authorID,
-                        type: PersonHomeShowType.PersonHomeShowCircle,
-                      ),
-                    );
-                  },
-                  thumbupedTap: (bool? thumbuped) async {
-                    await circleProvider.thumbupMoment(
-                        index: index, isThumbup: thumbuped);
-                  },
-                  circleTap: (MomentModel? model) {
-                    if (model == null) return;
-                    // 去圈子详情页
-                    STRouters.push(
-                      context,
-                      CircleDetailPage(moment: model),
-                    );
-                  },
-                ),
+              return CircleCell(
+                circleModel: circleP.lists[index],
+                authorTap: (String? authorID) {
+                  if (authorID == null) return;
+                  // 去个人圈子主页
+                  STRouters.push(
+                    context,
+                    PersonHomePage(
+                      userID: authorID,
+                      type: PersonHomeShowType.PersonHomeShowCircle,
+                    ),
+                  );
+                },
+                thumbupedTap: (bool? thumbuped) async {
+                  await circleProvider.thumbupMoment(
+                      index: index, isThumbup: thumbuped);
+                },
+                circleTap: (MomentModel? model) {
+                  if (model == null) return;
+                  // 去圈子详情页
+                  STRouters.push(
+                    context,
+                    CircleDetailPage(moment: model),
+                  );
+                },
               );
             },
             staggeredTileBuilder: (int index) {

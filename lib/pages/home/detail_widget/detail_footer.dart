@@ -152,7 +152,7 @@ class _DetailFooterState extends State<DetailFooter> {
       _controller.text = '';
       return _buildNormal();
     } else {
-      Future.delayed(Duration(milliseconds: 20), () {
+      Future.delayed(Duration(milliseconds: 50), () {
         FocusScope.of(context).requestFocus(_commentFocus);
       });
       return _buildEditComments();
