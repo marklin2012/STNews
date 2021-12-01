@@ -113,6 +113,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       body: BlankPutKeyborad(
         child: buildChildWidget(),
         onTap: () {
@@ -332,6 +333,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
       int count = postDetailProvider.comments.length;
       _footerData = _footerData.setCommentAndCommited(count.toString());
       _detailFooterNoti.value = _footerData;
+      Future.delayed(Duration(milliseconds: 800), () {
+        _scrollToComments();
+      });
     }
   }
 
