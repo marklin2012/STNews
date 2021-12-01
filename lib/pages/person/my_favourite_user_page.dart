@@ -76,8 +76,10 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
                       ],
                     ),
                     STButton(
-                      type: STButtonType.outline,
+                      height: 30,
                       text: '已关注',
+                      type: STButtonType.outline,
+                      padding: EdgeInsets.fromLTRB(16, 3, 16, 3),
                       borderColor: ColorConfig.textThrColor,
                       textStyle: NewsTextStyle.style16NormalSecGrey,
                       onTap: () {
