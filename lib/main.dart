@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,6 +61,15 @@ void main() {
       child: MyApp(),
     ),
   );
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  if (Platform.isAndroid) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: ColorConfig.primaryColor,
+      ),
+    );
+  }
 }
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -84,7 +96,7 @@ class MyApp extends StatelessWidget {
           ),
           primaryColor: ColorConfig.primaryColor,
           backgroundColor: ColorConfig.primaryColor,
-          scaffoldBackgroundColor: ColorConfig.backgroundColor,
+          scaffoldBackgroundColor: ColorConfig.primaryColor,
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: ColorConfig.accentColor),
           fontFamily: 'PingFang',
