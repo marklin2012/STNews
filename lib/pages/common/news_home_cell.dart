@@ -35,7 +35,7 @@ class NewsHomeCell extends StatelessWidget {
           ),
           margin: EdgeInsets.fromLTRB(8, 0, 8, 4),
           child: Card(
-            elevation: 0.01,
+            elevation: .0,
             child: _buildConent(),
           ),
         ),
