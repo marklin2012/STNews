@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:stnews/pages/circle/search_circle_page.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/news_home_cell.dart';
 import 'package:stnews/pages/common/news_loading.dart';
@@ -43,6 +44,7 @@ class _SearchPostPageState extends State<SearchPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       body: BlankPutKeyborad(
         child: Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),

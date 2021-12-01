@@ -48,6 +48,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       appBar: AppBar(
         leading: STButton.icon(
           backgroundColor: Colors.transparent,

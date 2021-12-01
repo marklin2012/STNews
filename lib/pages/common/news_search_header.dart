@@ -80,6 +80,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
   Widget build(BuildContext context) {
     return Container(
       height: _height,
+      color: ColorConfig.primaryColor,
       child: Row(
         children: [
           GestureDetector(

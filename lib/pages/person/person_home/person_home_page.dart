@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
 import 'package:stnews/pages/common/scroll_header.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_circles.dart';
@@ -62,6 +63,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       body: SafeArea(
         child: _buildContent(),
       ),
@@ -90,10 +92,17 @@ class _PersonHomePageState extends State<PersonHomePage> {
               );
             },
           ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: ColorConfig.backgroundColor,
+              height: 12.0,
+            ),
+          ),
           if (userHomeP.hasMoments)
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.all(16),
+                color: ColorConfig.primaryColor,
                 child: Text(
                   'TA的作品',
                   style: NewsTextStyle.style17BoldBlack,

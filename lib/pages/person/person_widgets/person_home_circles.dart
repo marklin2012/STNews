@@ -124,6 +124,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
   Widget _buildContent(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 32),
+      color: ColorConfig.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

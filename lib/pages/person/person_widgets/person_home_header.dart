@@ -52,7 +52,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
       _lastFav = widget.isFavouritedUser ?? false;
     }
     return Container(
-      color: Colors.white,
+      color: ColorConfig.backgroundColor,
       child: Stack(
         fit: StackFit.passthrough,
         children: [
@@ -149,7 +149,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
             child: Opacity(
               opacity: _claculateBottomOpacity(),
               child: Container(
-                color: ColorConfig.backgroundColor,
+                color: ColorConfig.primaryColor,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -182,34 +182,12 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
               child: Container(
                 width: widget.offset / PersonHomeHeaderHeight * 44,
                 height: 44,
-                // color: Colors.yellow,
               ),
               onTap: () {
                 Navigator.of(context).pop();
               },
             ),
           ),
-          // Positioned(
-          //   top: 44 - (offset / PersonHomeHeaderHeight * 44),
-          //   right: 16,
-          //   width: 85,
-          //   child: Container(
-          //     height: 84 - (offset / PersonHomeHeaderHeight * 40),
-          //     child: GestureDetector(
-          //       behavior: HitTestBehavior.opaque,
-          //       onTap: () {
-          //         if (favouritedTap != null) {
-          //           favouritedTap!(isFavouritedUser ?? false);
-          //         }
-          //       },
-          //       child: Center(
-          //         child: SizedBox(
-          //           height: 30,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
