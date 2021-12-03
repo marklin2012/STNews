@@ -15,15 +15,21 @@ import 'package:stnews/utils/string+.dart';
 
 class PublishImages extends StatefulWidget {
   static const publishImagesDebounceKey = '_publishImagesDebounceKey';
-  const PublishImages(
-      {Key? key, this.sucImgCallBack, this.backgroundColor, this.padding})
-      : super(key: key);
+  const PublishImages({
+    Key? key,
+    this.sucImgCallBack,
+    this.backgroundColor,
+    this.padding,
+    this.images,
+  }) : super(key: key);
 
   final Function(List<String>)? sucImgCallBack;
 
   final Color? backgroundColor;
 
   final EdgeInsets? padding;
+
+  final List<String>? images;
 
   @override
   _PublishImagesState createState() => _PublishImagesState();
@@ -37,7 +43,7 @@ class _PublishImagesState extends State<PublishImages> {
   @override
   void initState() {
     super.initState();
-    _images = [];
+    _images = widget.images ?? [];
     _backgroundColor = widget.backgroundColor ?? ColorConfig.backgroundColor;
     _padding = widget.padding ?? EdgeInsets.all(16.0);
   }
@@ -76,14 +82,19 @@ class _PublishImagesState extends State<PublishImages> {
                 time: 200,
               );
             },
-            child: Container(
-              height: 80,
-              width: 80,
-              child: Hero(
-                tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
-                child: STCaCheImage.loadingImage(
-                  imageUrl: _images[index],
-                  placeholder: STCaCheImage.publishPlaceHolder(),
+            child: GestureDetector(
+              onLongPress: () {
+                _showDeletePhoto(index);
+              },
+              child: Container(
+                height: 80,
+                width: 80,
+                child: Hero(
+                  tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+                  child: STCaCheImage.loadingImage(
+                    imageUrl: _images[index],
+                    placeholder: STCaCheImage.publishPlaceHolder(),
+                  ),
                 ),
               ),
             ),
@@ -110,6 +121,8 @@ class _PublishImagesState extends State<PublishImages> {
           func: () {
             FocusScope.of(context).requestFocus(FocusNode());
             NewsImagePicker.showPicker(
+              firContent: '从相册选择图片',
+              secContent: '拍照',
               context: context,
               galleryTap: _openGallery,
               cameraTap: _useCamera,
@@ -122,6 +135,25 @@ class _PublishImagesState extends State<PublishImages> {
         width: 80,
         height: 80,
       ),
+    );
+  }
+
+  // 长按删除
+  void _showDeletePhoto(int index) {
+    STDebounce().start(
+      key: PublishImages.publishImagesDebounceKey,
+      func: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        NewsImagePicker.showPicker(
+          context: context,
+          firContent: '删除',
+          galleryTap: () {
+            STRouters.pop(context);
+            _images.removeAt(index);
+            setState(() {});
+          },
+        );
+      },
     );
   }
 

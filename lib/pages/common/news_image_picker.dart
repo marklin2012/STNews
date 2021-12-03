@@ -16,36 +16,38 @@ class NewsImagePicker {
     NewsActionSheet.show(
       context: context,
       actions: [
-        NewsActionSheetAction(
-          onPressed: galleryTap ?? () {},
-          child: Container(
-            height: 50,
-            alignment: Alignment.center,
-            child: Text(
-              firContent ?? '从相册选择图片',
-              style: NewsTextStyle.style16NormalBlack,
+        if (firContent != null)
+          NewsActionSheetAction(
+            onPressed: galleryTap ?? () {},
+            child: Container(
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                firContent,
+                style: NewsTextStyle.style16NormalBlack,
+              ),
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24), topRight: Radius.circular(24)),
             ),
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24), topRight: Radius.circular(24)),
-          ),
-        ),
-        NewsActionSheetAction(
-          onPressed: cameraTap ?? () {},
-          child: Container(
-            height: 50,
-            alignment: Alignment.center,
-            child: Text(
-              secContent ?? '拍照',
-              style: NewsTextStyle.style16NormalBlack,
+        if (secContent != null)
+          NewsActionSheetAction(
+            onPressed: cameraTap ?? () {},
+            child: Container(
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                secContent,
+                style: NewsTextStyle.style16NormalBlack,
+              ),
+            ),
+            decoration: BoxDecoration(
+              border: Border(
+                  top: BorderSide(color: ColorConfig.fourGrey, width: 1)),
             ),
           ),
-          decoration: BoxDecoration(
-            border:
-                Border(top: BorderSide(color: ColorConfig.fourGrey, width: 1)),
-          ),
-        ),
         NewsActionSheetAction(
           onPressed: () {
             STRouters.pop(context);

@@ -91,6 +91,8 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
       case 0:
         NewsImagePicker.showPicker(
           context: context,
+          firContent: '从相册选择图片',
+          secContent: '拍照',
           galleryTap: _openGallery,
           cameraTap: _useCamera,
         );
