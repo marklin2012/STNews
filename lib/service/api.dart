@@ -154,6 +154,46 @@ Future<ResultData> _put(
   }
 }
 
+Future<ResultData> _delete(
+  String url, {
+  Map<String, dynamic>? data,
+  Options? options,
+  CancelToken? cancelToken,
+  bool showToastError = true,
+}) async {
+  try {
+    debugPrint('requestUri---$BaseUrl$url');
+    debugPrint('params---$data');
+    final Response response = await dio.delete(url,
+        data: data, options: options, cancelToken: cancelToken);
+    debugPrint('requestUri ------- ${response.realUri}');
+    debugPrint('requestHeader-------${response.headers}');
+    debugPrint('post success---------${response.statusCode}');
+    debugPrint('post success---------${response.data}');
+    if (response.statusCode == 200) {
+      var mapData;
+      if (response.data is String) {
+        mapData = json.decode(response.data);
+      } else {
+        mapData = response.data;
+      }
+      return ResultData(
+        success: true,
+        data: mapData['data'],
+        message: mapData['message'].toString(),
+        code: mapData['code'] as int,
+      );
+    }
+    if (showToastError) Newstoast.showToast(msg: '请求失败');
+    return ResultData.error('请求异常');
+  } on DioError catch (error) {
+    debugPrint('post error -------- $error');
+    TokenInvalid.isTokenInvalid(error.response?.statusCode);
+    if (showToastError) Newstoast.showToast(msg: _formatError(error));
+    return ResultData.error(_formatError(error));
+  }
+}
+
 Future<ResultData> _upload(
   String url, {
   FormData? data,
@@ -527,4 +567,28 @@ class Api {
   /// 搜索圈子热门
   static Future<ResultData> searchMomentHot({bool showToastError = true}) =>
       _get('/search/moment/hot', showToastError: showToastError);
+
+  /// 更新圈子
+  static Future<ResultData> updateMoment(
+          {required String moment,
+          String? title,
+          String? content,
+          required List<String> visibles,
+          List<String>? images,
+          bool showToastError = true}) =>
+      _put('/moment/update',
+          data: {
+            'moment': moment,
+            'title': title,
+            'content': content,
+            'visibles': visibles,
+            'images': images,
+          },
+          showToastError: showToastError);
+
+  ///删除圈子
+  static Future<ResultData> deleteMoment(
+          {required String moment, bool showToastError = true}) =>
+      _delete('/moment/delete',
+          data: {'moment': moment}, showToastError: showToastError);
 }

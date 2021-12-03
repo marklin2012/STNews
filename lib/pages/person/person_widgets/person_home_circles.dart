@@ -4,9 +4,12 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/circle/circle_publish_page.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
+import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
@@ -30,6 +33,7 @@ class PersonHomeCircles extends StatelessWidget {
     this.favourtieTap,
     this.jumpCommentTap,
     this.jumpMomentTap,
+    this.deleteMomentTap,
   }) : super(key: key);
 
   final UserModel? userModel;
@@ -43,6 +47,8 @@ class PersonHomeCircles extends StatelessWidget {
   final Function(MomentModel)? jumpCommentTap;
 
   final Function(MomentModel)? jumpMomentTap;
+
+  final Function(String)? deleteMomentTap;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +82,11 @@ class PersonHomeCircles extends StatelessWidget {
                 jumpMomentTap!(model);
               }
             },
+            deleteMomentTap: (String moment) {
+              if (deleteMomentTap != null) {
+                deleteMomentTap!(moment);
+              }
+            },
           );
         },
         childCount: moments?.length,
@@ -93,6 +104,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     this.favourtieTap,
     this.jumpCommentTap,
     this.jumpMomentTap,
+    this.deleteMomentTap,
   }) : super(key: key);
 
   final UserModel? userModel;
@@ -106,6 +118,8 @@ class PersonHomeCirclesCell extends StatelessWidget {
   final Function(MomentModel)? jumpCommentTap;
 
   final Function(MomentModel)? jumpMomentTap;
+
+  final Function(String)? deleteMomentTap;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +143,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 头像名称时间
-          _buildUserInfo(),
+          _buildUserInfo(context),
           Padding(
             padding: EdgeInsets.only(top: 16.0, bottom: 12.0),
             child: Text(
@@ -157,7 +171,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     );
   }
 
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(BuildContext context) {
     String _publishedDate = '昨天';
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -174,20 +188,57 @@ class PersonHomeCirclesCell extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              userModel?.nickname ?? '林老师',
-              style: NewsTextStyle.style14NormalBlack,
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userModel?.nickname ?? '林老师',
+                style: NewsTextStyle.style14NormalBlack,
+              ),
+              Text(
+                _publishedDate,
+                style: NewsTextStyle.style12NormalThrGrey,
+              ),
+            ],
+          ),
+        ),
+        if (userModel?.id == UserProvider.shared.user.id)
+          STButton.icon(
+            backgroundColor: Colors.transparent,
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              STIcons.commonly_pointmenu,
+              color: ColorConfig.baseFirBule,
             ),
-            Text(
-              _publishedDate,
-              style: NewsTextStyle.style12NormalThrGrey,
-            ),
-          ],
-        )
+            onTap: () {
+              NewsImagePicker.showPicker(
+                  context: context,
+                  firContent: '编辑动态',
+                  secContent: '删除',
+                  galleryTap: () {
+                    /// 编辑动态
+                    STRouters.pop(context);
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      STRouters.push(
+                        context,
+                        CirclePublishPage(model: model),
+                        direction: STRoutersDirection.bottomToTop,
+                      );
+                    });
+                  },
+                  cameraTap: () {
+                    /// 删除动态
+                    STRouters.pop(context);
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      if (deleteMomentTap != null && model?.id != null) {
+                        deleteMomentTap!(model!.id!);
+                      }
+                    });
+                  });
+            },
+          ),
       ],
     );
   }

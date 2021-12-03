@@ -127,6 +127,9 @@ class _PersonHomePageState extends State<PersonHomePage> {
               jumpMomentTap: (MomentModel model) {
                 _jumpMomentDetailComment(moment: model);
               },
+              deleteMomentTap: (String moment) {
+                _deleteMoment(moment);
+              },
             ),
           if (!userHomeP.hasMoments)
             SliverToBoxAdapter(
@@ -170,5 +173,9 @@ class _PersonHomePageState extends State<PersonHomePage> {
     if (momentID == null || momentID.isEmpty) return;
     await userHomeProvider.thumbupMoment(
         momentID: momentID, isThumbup: isThumbup);
+  }
+
+  void _deleteMoment(String moment) async {
+    await userHomeProvider.deleteMoment(moment);
   }
 }

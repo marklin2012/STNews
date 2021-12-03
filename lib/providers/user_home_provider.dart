@@ -120,4 +120,24 @@ class UserHomeProvider extends ChangeNotifier {
     }
     return Future.value(_isThumbup);
   }
+
+  Future deleteMoment(String moment) async {
+    ResultData result = await Api.deleteMoment(moment: moment);
+    if (result.success) {
+      if (infoModel.moments != null && infoModel.moments!.isNotEmpty) {
+        for (final temp in infoModel.moments!) {
+          if (temp.id == moment) {
+            infoModel.moments!.remove(temp);
+            break;
+          }
+        }
+        notifyListeners();
+      }
+    }
+  }
+
+  Future updateMoment() async {
+    _infoModel = UserProvider.shared.infoModel;
+    notifyListeners();
+  }
 }

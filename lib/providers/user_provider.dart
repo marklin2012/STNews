@@ -6,6 +6,7 @@ import 'package:stnews/utils/shared_pref.dart';
 
 class UserProvider extends ChangeNotifier {
   UserInfoModel _infoModel = UserInfoModel();
+  UserInfoModel get infoModel => _infoModel;
 
   UserInfoModel get info => _infoModel;
 
@@ -88,7 +89,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   /// 获取用户资料
-  void getUserInfo({String? userID}) async {
+  Future getUserInfo({String? userID}) async {
     ResultData result = await Api.getUserInfo(userid: userID ?? user.id);
     if (result.success) {
       Map<String, dynamic> _userInfo = result.data;

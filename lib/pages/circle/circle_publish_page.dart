@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
+import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_widget/publish_header.dart';
 import 'package:stnews/pages/circle/circle_widget/publish_images.dart';
 import 'package:stnews/pages/common/color_config.dart';
@@ -9,6 +10,7 @@ import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/circle_provider.dart';
+import 'package:stnews/providers/user_home_provider.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
@@ -18,7 +20,8 @@ import 'package:stnews/utils/st_routers.dart';
 
 class CirclePublishPage extends StatefulWidget {
   static const circlePublishDebounceKey = '_circlePublishDebounceKey';
-  const CirclePublishPage({Key? key}) : super(key: key);
+  const CirclePublishPage({Key? key, this.model}) : super(key: key);
+  final MomentModel? model;
 
   @override
   _CirclePublishPageState createState() => _CirclePublishPageState();
@@ -37,12 +40,28 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
     super.initState();
     _titleController = TextEditingController();
     _contentController = TextEditingController();
-    _tileNoti = ValueNotifier({
+    bool _publishDisable = true;
+    Map _tileMap = {
       'icon': STIcons.commonly_user,
       'title': '谁可以看',
       'isSubTitle': '公开',
-    });
-    _publishNoti = ValueNotifier(true);
+    };
+    if (widget.model != null) {
+      _publishDisable = false;
+      _titleController.text = widget.model!.title ?? '';
+      _contentController.text = widget.model!.content ?? '';
+      _images = widget.model!.images ?? [];
+      if (widget.model?.visibles != null) {
+        for (final temp in widget.model!.visibles!) {
+          if (temp == UserProvider.shared.user.id) {
+            _tileMap['isSubTitle'] = '仅自己可见';
+            break;
+          }
+        }
+      }
+    }
+    _publishNoti = ValueNotifier(_publishDisable);
+    _tileNoti = ValueNotifier(_tileMap);
   }
 
   @override
@@ -75,7 +94,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 text: '发布',
                 textStyle: NewsTextStyle.style17NormalFirBlue,
-                onTap: _publish,
+                onTap: _publishAction,
               );
             },
           )
@@ -98,6 +117,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
         ),
         SliverToBoxAdapter(
           child: PublishImages(
+            images: _images,
             backgroundColor: Colors.transparent,
             padding: EdgeInsets.symmetric(horizontal: 16),
             sucImgCallBack: (List<String> images) {
@@ -174,6 +194,48 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
     );
   }
 
+  void _publishAction() {
+    if (widget.model == null) {
+      _publish();
+    } else {
+      _update();
+    }
+  }
+
+  void _update() {
+    if (_titleController.text.isEmpty) {
+      STToast.show(context: context, message: '标题不能为空');
+      return;
+    }
+    if (_contentController.text.isEmpty) {
+      STToast.show(context: context, message: '内容不能为空');
+      return;
+    }
+    STDebounce().start(
+      key: CirclePublishPage.circlePublishDebounceKey,
+      func: () async {
+        NewsLoading.start(context);
+        ResultData result = await Api.updateMoment(
+          moment: widget.model!.id!,
+          title: _titleController.text,
+          content: _contentController.text,
+          visibles: _visibles,
+          images: _images,
+        );
+        if (result.success) {
+          STRouters.pop(context);
+          STToast.show(context: context, message: '更新成功');
+          Provider.of<CircleProvider>(context, listen: false).initData();
+          await UserProvider.shared
+              .getUserInfo(userID: UserProvider.shared.info.user?.id);
+          Provider.of<UserHomeProvider>(context, listen: false).updateMoment();
+        }
+        NewsLoading.stop();
+      },
+      time: 200,
+    );
+  }
+
   void _publish() {
     if (_titleController.text.isEmpty) {
       STToast.show(context: context, message: '标题不能为空');
@@ -184,24 +246,26 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
       return;
     }
     STDebounce().start(
-        key: CirclePublishPage.circlePublishDebounceKey,
-        func: () async {
-          NewsLoading.start(context);
-          ResultData result = await Api.addMoment(
-            title: _titleController.text,
-            content: _contentController.text,
-            visibles: _visibles,
-            images: _images,
-          );
-          if (result.success) {
-            STRouters.pop(context);
-            STToast.show(context: context, message: '发布成功');
-            Provider.of<CircleProvider>(context, listen: false).initData();
-            UserProvider.shared
-                .getUserInfo(userID: UserProvider.shared.info.user?.id);
-          }
-          NewsLoading.stop();
-        },
-        time: 200);
+      key: CirclePublishPage.circlePublishDebounceKey,
+      func: () async {
+        NewsLoading.start(context);
+        ResultData result = await Api.addMoment(
+          title: _titleController.text,
+          content: _contentController.text,
+          visibles: _visibles,
+          images: _images,
+        );
+        if (result.success) {
+          STRouters.pop(context);
+          STToast.show(context: context, message: '发布成功');
+          Provider.of<CircleProvider>(context, listen: false).initData();
+          await UserProvider.shared
+              .getUserInfo(userID: UserProvider.shared.info.user?.id);
+          Provider.of<UserHomeProvider>(context, listen: false).updateMoment();
+        }
+        NewsLoading.stop();
+      },
+      time: 200,
+    );
   }
 }
