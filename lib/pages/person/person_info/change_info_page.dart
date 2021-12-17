@@ -155,7 +155,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
               title ?? '',
               style: NewsTextStyle.style16NormalBlack,
             ),
-            if (isSelected) Icon(STIcons.commonly_selected),
+            if (isSelected) Icon(STIcons.commonly_selected_outline),
           ],
         ),
       ),

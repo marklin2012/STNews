@@ -106,7 +106,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               prefixIcon: Hero(
                 tag: NewsHeroTags.searchHeaderTag,
                 child: Icon(
-                  STIcons.commonly_search,
+                  STIcons.commonly_search_outline,
                   color: ColorConfig.textFourColor,
                   size: 20.0,
                 ),

@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.transparent,
           icon: Hero(
             tag: NewsHeroTags.searchHeaderTag,
-            child: Icon(STIcons.commonly_search),
+            child: Icon(STIcons.commonly_search_outline),
           ),
           onTap: () {
             STRouters.push(context, SearchPostPage());

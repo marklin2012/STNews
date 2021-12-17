@@ -154,7 +154,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     NewsIconTextWidget(
-                      icon: Icon(Icons.favorite),
+                      icon: Icon(STIcons.label_star),
                       title: (widget.followerCount ?? 0).toString(),
                       unit: '关注',
                     ),
@@ -164,7 +164,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
                       color: ColorConfig.thrGrey,
                     ),
                     NewsIconTextWidget(
-                      icon: Icon(Icons.favorite_outline),
+                      icon: Icon(STIcons.label_heart_outline),
                       title: (widget.fansCount ?? 0).toString(),
                       unit: '粉丝',
                     ),

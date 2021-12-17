@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/comment_model.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
@@ -87,13 +88,13 @@ class _CommentCellState extends State<CommentCell> {
                     ),
                     SizedBox(width: 5.4),
                     _model?.isUserFavourite ?? false
-                        ? Image(
-                            width: 18,
-                            height: 18,
-                            image: AssetImage('assets/images/liked.png'),
+                        ? Icon(
+                            STIcons.label_like,
+                            size: 18,
+                            color: ColorConfig.redColor,
                           )
                         : Icon(
-                            STIcons.commonly_like,
+                            STIcons.label_like_outline,
                             size: 18,
                           ),
                   ],

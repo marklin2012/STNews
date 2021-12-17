@@ -29,11 +29,11 @@ class PersonPage extends StatefulWidget {
 
 class _PersonPageState extends State<PersonPage> {
   List<Map<String, dynamic>> _datas = [
-    {'icon': STIcons.commonly_home, 'title': '我的主页'},
-    {'icon': STIcons.commonly_heart, 'title': '我的收藏'},
-    {'icon': STIcons.commonly_star, 'title': '我的关注'},
-    {'icon': STIcons.commonly_message, 'title': '消息中心', 'isDot': true},
-    {'icon': STIcons.commonly_setting, 'title': '设置'}
+    {'icon': STIcons.commonly_home_outline, 'title': '我的主页'},
+    {'icon': STIcons.label_star_outline, 'title': '我的收藏'},
+    {'icon': STIcons.label_heart_outline, 'title': '我的关注'},
+    {'icon': STIcons.commonly_message_outline, 'title': '消息中心', 'isDot': true},
+    {'icon': STIcons.commonly_setting_outline, 'title': '设置'}
   ];
 
   @override

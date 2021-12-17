@@ -70,7 +70,7 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
       appBar: AppBar(
         leading: STButton.icon(
           icon: Icon(
-            STIcons.commonly_close,
+            STIcons.commonly_close_outline,
             size: 16,
           ),
           padding: EdgeInsets.all(8.0),

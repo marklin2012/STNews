@@ -26,12 +26,12 @@ class _TabbarPageState extends State<TabbarPage> {
         PersonPage(),
       ],
       items: [
-        const BottomNavigationBarItem(
-            icon: Icon(STIcons.commonly_home), label: '资讯'),
-        const BottomNavigationBarItem(
-            icon: Icon(STIcons.commonly_fire), label: '圈圈'),
-        const BottomNavigationBarItem(
-            icon: Icon(STIcons.commonly_user), label: '我的'),
+        const STBottomNavigationBarItem(
+            icon: Icon(STIcons.commonly_home_outline), label: '资讯'),
+        const STBottomNavigationBarItem(
+            icon: Icon(STIcons.label_fire_outline), label: '圈圈'),
+        const STBottomNavigationBarItem(
+            icon: Icon(STIcons.commonly_user_outline), label: '我的'),
       ],
     );
   }

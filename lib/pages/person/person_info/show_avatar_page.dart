@@ -41,7 +41,7 @@ class ShowAvatarPage extends StatelessWidget {
               child: STButton.icon(
                 backgroundColor: Colors.transparent,
                 icon: Icon(
-                  STIcons.commonly_pointmenu,
+                  STIcons.commonly_pointmenu_outline,
                   color: ColorConfig.primaryColor,
                 ),
                 onTap: () {

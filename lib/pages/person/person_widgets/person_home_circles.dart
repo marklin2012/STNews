@@ -209,7 +209,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             backgroundColor: Colors.transparent,
             padding: EdgeInsets.zero,
             icon: Icon(
-              STIcons.commonly_pointmenu,
+              STIcons.commonly_pointmenu_outline,
               color: ColorConfig.baseFirBule,
             ),
             onTap: () {
@@ -332,7 +332,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             backgroundColor: Colors.transparent,
             padding: EdgeInsets.all(4.0),
             icon: Icon(
-              STIcons.commonly_message,
+              STIcons.commonly_message_outline,
               color: ColorConfig.textSecColor,
             ),
             text: (model?.commentCount ?? 0).toString(),
@@ -345,13 +345,12 @@ class PersonHomeCirclesCell extends StatelessWidget {
             size: STButtonSize.small,
             padding: EdgeInsets.all(4),
             icon: model?.isFavourite ?? false
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/favourited.png'),
+                ? Icon(
+                    STIcons.label_star,
+                    color: ColorConfig.orangeColor,
                   )
                 : Icon(
-                    STIcons.commonly_star,
+                    STIcons.label_star_outline,
                     color: ColorConfig.textSecColor,
                   ),
             onTap: _favouritedAction,
@@ -359,13 +358,12 @@ class PersonHomeCirclesCell extends StatelessWidget {
           SizedBox(width: 16),
           NewsIconTextWidget(
             icon: model?.isThumbUp ?? false
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/liked.png'),
+                ? Icon(
+                    STIcons.label_like,
+                    color: ColorConfig.redColor,
                   )
                 : Icon(
-                    STIcons.commonly_like,
+                    STIcons.label_like_outline,
                   ),
             unit: (model?.thumbUpCount ?? 0).toString(),
             onTap: _thumbupAction,

@@ -16,10 +16,10 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 const _datas = [
-  {'icon': STIcons.commonly_safetycertificate, 'title': '账号安全'},
-  {'icon': STIcons.commonly_bell, 'title': '消息设置'},
-  {'icon': STIcons.commonly_editsquare, 'title': '反馈与建议'},
-  {'icon': STIcons.commonly_usergroup, 'title': '关于我们'}
+  {'icon': STIcons.label_safetycertificate_outline, 'title': '账号安全'},
+  {'icon': STIcons.commonly_bell_outline, 'title': '消息设置'},
+  {'icon': STIcons.commonly_edit_outline, 'title': '反馈与建议'},
+  {'icon': STIcons.commonly_usergroup_outline, 'title': '关于我们'}
 ];
 
 class PersonSetingPage extends StatelessWidget {

@@ -194,7 +194,7 @@ class _DetailFooterState extends State<DetailFooter> {
             child: STButton.icon(
               padding: EdgeInsets.zero,
               backgroundColor: Colors.transparent,
-              icon: Icon(STIcons.commonly_message),
+              icon: Icon(STIcons.commonly_message_outline),
               onTap: () {
                 if (widget.messageTap != null) {
                   widget.messageTap!();
@@ -210,13 +210,12 @@ class _DetailFooterState extends State<DetailFooter> {
             padding: EdgeInsets.all(6.0),
             backgroundColor: Colors.transparent,
             icon: _data.isFavourited
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/favourited.png'),
+                ? Icon(
+                    STIcons.label_star,
+                    color: ColorConfig.orangeColor,
                   )
                 : Icon(
-                    STIcons.commonly_star,
+                    STIcons.label_star_outline,
                   ),
             onTap: () {
               if (widget.favouriteTap != null) {
@@ -231,12 +230,11 @@ class _DetailFooterState extends State<DetailFooter> {
             padding: EdgeInsets.all(6.0),
             backgroundColor: Colors.transparent,
             icon: _data.isLiked
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/liked.png'),
+                ? Icon(
+                    STIcons.label_like,
+                    color: ColorConfig.redColor,
                   )
-                : Icon(STIcons.commonly_like),
+                : Icon(STIcons.label_like_outline),
             onTap: () {
               if (widget.likeTap != null) {
                 widget.likeTap!(_data.isLiked);

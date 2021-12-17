@@ -123,7 +123,7 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
                 backgroundColor: Colors.transparent,
                 size: STButtonSize.small,
                 icon: Icon(
-                  STIcons.commonly_close,
+                  STIcons.commonly_close_outline,
                   size: 20,
                   color: ColorConfig.primaryColor,
                 ),
