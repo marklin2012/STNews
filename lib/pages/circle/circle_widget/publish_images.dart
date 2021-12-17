@@ -21,6 +21,10 @@ class PublishImages extends StatefulWidget {
     this.backgroundColor,
     this.padding,
     this.images,
+    this.crossAxisCount = 4,
+    this.imageSize = 80,
+    this.mainAxisSpacing = 5,
+    this.crossAxisSpacing = 5,
   }) : super(key: key);
 
   final Function(List<String>)? sucImgCallBack;
@@ -30,6 +34,14 @@ class PublishImages extends StatefulWidget {
   final EdgeInsets? padding;
 
   final List<String>? images;
+
+  final int crossAxisCount;
+
+  final double imageSize;
+
+  final double mainAxisSpacing;
+
+  final double crossAxisSpacing;
 
   @override
   _PublishImagesState createState() => _PublishImagesState();
@@ -59,7 +71,10 @@ class _PublishImagesState extends State<PublishImages> {
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4, mainAxisSpacing: 5, crossAxisSpacing: 5),
+          crossAxisCount: widget.crossAxisCount,
+          mainAxisSpacing: widget.mainAxisSpacing,
+          crossAxisSpacing: widget.crossAxisSpacing,
+        ),
         itemBuilder: (context, index) {
           if (index == _images.length) {
             return _getAddBtn();
@@ -87,8 +102,8 @@ class _PublishImagesState extends State<PublishImages> {
                 _showDeletePhoto(index);
               },
               child: Container(
-                height: 80,
-                width: 80,
+                height: widget.imageSize,
+                width: widget.imageSize,
                 child: Hero(
                   tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
                   child: STCaCheImage.loadingImage(
@@ -106,9 +121,9 @@ class _PublishImagesState extends State<PublishImages> {
   }
 
   double _getGridViewHeight() {
-    double _rows = (_images.length + 1.0) / 4.0;
+    double _rows = (_images.length + 1.0) / widget.crossAxisCount;
     int _ceil = _rows.ceil();
-    final _height = _ceil * 85.0 + 30;
+    final _height = _ceil * (widget.imageSize + widget.mainAxisSpacing) + 30;
     return _height;
   }
 
@@ -132,8 +147,8 @@ class _PublishImagesState extends State<PublishImages> {
       },
       child: Image(
         image: AssetImage('assets/images/default_add_picture.png'),
-        width: 80,
-        height: 80,
+        width: widget.imageSize,
+        height: widget.imageSize,
       ),
     );
   }

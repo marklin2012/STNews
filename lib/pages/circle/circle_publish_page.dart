@@ -118,6 +118,10 @@ class _CirclePublishPageState extends State<CirclePublishPage> {
         SliverToBoxAdapter(
           child: PublishImages(
             images: _images,
+            crossAxisCount: 3,
+            imageSize: 111,
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 4,
             backgroundColor: Colors.transparent,
             padding: EdgeInsets.symmetric(horizontal: 16),
             sucImgCallBack: (List<String> images) {

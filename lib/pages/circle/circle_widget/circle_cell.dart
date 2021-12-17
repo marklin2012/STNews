@@ -59,7 +59,6 @@ class CircleCell extends StatelessWidget {
         color: ColorConfig.backgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
-      width: NewsScale.sw(181, context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -83,8 +83,8 @@ class _CirclePageState extends State<CirclePage> {
             shrinkWrap: true,
             crossAxisCount: 2,
             itemCount: circleProvider.lists.length,
-            mainAxisSpacing: NewsScale.sh(4, context),
-            crossAxisSpacing: NewsScale.sw(4, context),
+            mainAxisSpacing: 4,
+            crossAxisSpacing: .0,
             itemBuilder: (BuildContext context, int index) {
               return CircleCell(
                 circleModel: circleP.lists[index],

@@ -10,7 +10,6 @@ import 'package:stnews/pages/circle/circle_widget/circle_detail_content.dart';
 import 'package:stnews/pages/circle/circle_widget/circle_detail_nav_header.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_easy_refresh.dart';
-import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_detail_provider.dart';
@@ -304,15 +303,14 @@ class _CircleDetailPageState extends State<CircleDetailPage> {
   }
 
   void _changeFavAuthorStatus(bool value) async {
-    NewsLoading.start(context);
     bool _isFaved = await circleDetailProvider.favouritedUser(isFaved: value);
     _favAuthorNoti.value = _isFaved;
-    NewsLoading.stop();
   }
 
   /// 收藏或取消收藏圈子
   void _favouritedMoment(bool isFav) async {
     bool _isFav = await circleDetailProvider.favouritedMoment(isFav);
+    STToast.show(context: context, message: _isFav ? '收藏成功' : '取消收藏');
     _data = _data.setFavPost(_isFav);
     _detailFooterNoti.value = _data;
   }

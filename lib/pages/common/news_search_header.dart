@@ -17,7 +17,6 @@ class NewsSearchHeader extends StatefulWidget {
     this.placeholder,
     this.btnTitle,
     this.debounceKey,
-    this.ableOnChanged = true,
   }) : super(key: key);
 
   final String? debounceKey;
@@ -31,8 +30,6 @@ class NewsSearchHeader extends StatefulWidget {
   final String? placeholder;
 
   final String? btnTitle;
-
-  final bool ableOnChanged;
 
   @override
   _NewsSearchHeaderState createState() => _NewsSearchHeaderState();
@@ -123,18 +120,13 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
                 if (value.isEmpty || value.length == 0) {
                   return;
                 }
-                if (widget.ableOnChanged) {
-                  _search();
-                }
+                _search();
               },
               onSubmitted: (String value) {
                 if (value.isEmpty || value.length == 0) {
                   return;
                 }
-                // onChanged不可用时，键盘的提交键可操作
-                if (!widget.ableOnChanged) {
-                  _search();
-                }
+                _search();
               },
             ),
           ),
