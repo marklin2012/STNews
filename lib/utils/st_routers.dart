@@ -57,6 +57,9 @@ class STRouters {
           transitionDuration: Duration(milliseconds: 100),
           pageBuilder: (context, animation, secAnimation) => TabbarPage(),
         );
+
+      default:
+        return null;
     }
   };
 }
