@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:stnews/pages/login/login_page.dart';
 import 'package:stnews/pages/tabbar.dart';
 
@@ -9,23 +8,25 @@ class STRouters {
   static Future push(BuildContext context, Widget widget,
       {String? routeName,
       STRoutersDirection direction = STRoutersDirection.material}) async {
-    // return Navigator.of(context).push(MaterialPageRoute(
-    //     builder: (BuildContext buildContext) => widget,
-    //     settings: RouteSettings(name: routeName)));
     switch (direction) {
       case STRoutersDirection.rightToLeft:
         return Navigator.push(
-            context, RightToLeftRouter(child: widget, routeName: routeName));
+          context,
+          RightToLeftRouter(child: widget, routeName: routeName),
+        );
       case STRoutersDirection.bottomToTop:
         return Navigator.push(
-            context, BottomToTopRouter(child: widget, routeName: routeName));
+          context,
+          BottomToTopRouter(child: widget, routeName: routeName),
+        );
       default:
         return Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (ctx) => widget,
-              settings: RouteSettings(name: routeName),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => widget,
+            settings: RouteSettings(name: routeName),
+          ),
+        );
     }
   }
 
@@ -58,27 +59,6 @@ class STRouters {
         );
     }
   };
-}
-
-class BlankPutKeyborad extends StatelessWidget {
-  const BlankPutKeyborad({Key? key, required this.child, this.onTap})
-      : super(key: key);
-
-  final Widget child;
-
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        if (onTap != null) onTap!();
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: child,
-    );
-  }
 }
 
 class RightToLeftRouter<T> extends PageRouteBuilder<T> {
