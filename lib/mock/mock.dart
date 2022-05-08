@@ -8,9 +8,7 @@ class Mock {
   static Future<Map> loadData(String path) async {
     Map res = {"message": "SUCCESS", "code": 1, "data": {}};
     final _json = await rootBundle.loadString('lib/mock/json/$path');
-    if (_json is String) {
-      res = json.decode(_json);
-    }
+    res = json.decode(_json);
     return res;
   }
 }
