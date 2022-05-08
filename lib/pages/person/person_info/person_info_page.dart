@@ -4,7 +4,6 @@ import 'package:http_parser/http_parser.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/news_image_picker.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
+
 import 'package:saturn/saturn.dart';
+
 import 'package:stnews/pages/common/color_config.dart';
 
 class LoadingBase {
