@@ -4,9 +4,13 @@ import 'package:saturn/saturn.dart';
 
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/models/user_model.dart';
+import 'package:stnews/pages/circle/circle_publish_page.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
+import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
+import 'package:stnews/providers/user_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
@@ -21,14 +25,16 @@ const PersonHomeCirclesDebounceThumbupKey =
 const PersonHomeCirclesDebounceImageKey = 'PersonHomeCirclesDebounceImageKey';
 
 class PersonHomeCircles extends StatelessWidget {
-  const PersonHomeCircles(
-      {Key? key,
-      this.userModel,
-      this.moments,
-      this.thumbupTap,
-      this.favourtieTap,
-      this.jumpCommentTap})
-      : super(key: key);
+  const PersonHomeCircles({
+    Key? key,
+    this.userModel,
+    this.moments,
+    this.thumbupTap,
+    this.favourtieTap,
+    this.jumpCommentTap,
+    this.jumpMomentTap,
+    this.deleteMomentTap,
+  }) : super(key: key);
 
   final UserModel? userModel;
 
@@ -39,6 +45,10 @@ class PersonHomeCircles extends StatelessWidget {
   final Function(MomentModel, bool)? favourtieTap;
 
   final Function(MomentModel)? jumpCommentTap;
+
+  final Function(MomentModel)? jumpMomentTap;
+
+  final Function(String)? deleteMomentTap;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +77,16 @@ class PersonHomeCircles extends StatelessWidget {
                 thumbupTap!(model, isFaved);
               }
             },
+            jumpMomentTap: (MomentModel model) {
+              if (jumpMomentTap != null) {
+                jumpMomentTap!(model);
+              }
+            },
+            deleteMomentTap: (String moment) {
+              if (deleteMomentTap != null) {
+                deleteMomentTap!(moment);
+              }
+            },
           );
         },
         childCount: moments?.length,
@@ -83,6 +103,8 @@ class PersonHomeCirclesCell extends StatelessWidget {
     this.thumbupTap,
     this.favourtieTap,
     this.jumpCommentTap,
+    this.jumpMomentTap,
+    this.deleteMomentTap,
   }) : super(key: key);
 
   final UserModel? userModel;
@@ -95,16 +117,33 @@ class PersonHomeCirclesCell extends StatelessWidget {
 
   final Function(MomentModel)? jumpCommentTap;
 
+  final Function(MomentModel)? jumpMomentTap;
+
+  final Function(String)? deleteMomentTap;
+
   @override
   Widget build(BuildContext context) {
     if (userModel == null || model == null) return Container();
+    return InkWell(
+      highlightColor: ColorConfig.fourGrey,
+      onTap: () {
+        if (jumpMomentTap != null) {
+          jumpMomentTap!(model!);
+        }
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(16, 0, 16, 32),
+      color: ColorConfig.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 头像名称时间
-          _buildUserInfo(),
+          _buildUserInfo(context),
           Padding(
             padding: EdgeInsets.only(top: 16.0, bottom: 12.0),
             child: Text(
@@ -132,7 +171,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     );
   }
 
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(BuildContext context) {
     String _publishedDate = '昨天';
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -149,20 +188,57 @@ class PersonHomeCirclesCell extends StatelessWidget {
           ),
         ),
         SizedBox(width: 8),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              userModel?.nickname ?? '林老师',
-              style: NewsTextStyle.style14NormalBlack,
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userModel?.nickname ?? '林老师',
+                style: NewsTextStyle.style14NormalBlack,
+              ),
+              Text(
+                _publishedDate,
+                style: NewsTextStyle.style12NormalThrGrey,
+              ),
+            ],
+          ),
+        ),
+        if (userModel?.id == UserProvider.shared.user.id)
+          STButton.icon(
+            backgroundColor: Colors.transparent,
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              STIcons.commonly_pointmenu_outline,
+              color: ColorConfig.baseFirBule,
             ),
-            Text(
-              _publishedDate,
-              style: NewsTextStyle.style12NormalThrGrey,
-            ),
-          ],
-        )
+            onTap: () {
+              NewsImagePicker.showPicker(
+                  context: context,
+                  firContent: '编辑动态',
+                  secContent: '删除',
+                  galleryTap: () {
+                    /// 编辑动态
+                    STRouters.pop(context);
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      STRouters.push(
+                        context,
+                        CirclePublishPage(model: model),
+                        direction: STRoutersDirection.bottomToTop,
+                      );
+                    });
+                  },
+                  cameraTap: () {
+                    /// 删除动态
+                    STRouters.pop(context);
+                    Future.delayed(Duration(milliseconds: 50), () {
+                      if (deleteMomentTap != null && model?.id != null) {
+                        deleteMomentTap!(model!.id!);
+                      }
+                    });
+                  });
+            },
+          ),
       ],
     );
   }
@@ -171,6 +247,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
     if (model?.images == null || model!.images!.isEmpty) {
       return SizedBox();
     } else if (model!.images!.length == 1) {
+      final _galleryItem = STString.addPrefixHttp(model!.images!.first) ?? '';
       return Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -179,20 +256,21 @@ class PersonHomeCirclesCell extends StatelessWidget {
               STDebounce().start(
                 key: PersonHomeCirclesDebounceImageKey,
                 func: () {
-                  final _galleryItem =
-                      STString.addPrefixHttp(model!.images!.first) ?? '';
                   STRouters.push(
                       context, NewsPhotoView(galleryItems: [_galleryItem]));
                 },
                 time: 200,
               );
             },
-            child: NewsImage.networkImage(
-              path: (model?.images != null && model!.images!.length != 0)
-                  ? model!.images!.first
-                  : null,
-              height: 168,
-              defaultChild: NewsImage.defaultCircle(),
+            child: Hero(
+              tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+              child: NewsImage.networkImage(
+                path: (model?.images != null && model!.images!.length != 0)
+                    ? model!.images!.first
+                    : null,
+                height: 168,
+                defaultChild: NewsImage.defaultCircle(),
+              ),
             ),
           ),
         ],
@@ -206,6 +284,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
       }
       for (var i = 0; i < model!.images!.length; i++) {
         final _url = model!.images![i];
+        final _heroTag = STString.addPrefixHttp(_url) ?? '';
         _widgets.add(
           GestureDetector(
             onTap: () {
@@ -223,11 +302,14 @@ class PersonHomeCirclesCell extends StatelessWidget {
                 time: 200,
               );
             },
-            child: NewsImage.networkImage(
-              path: _url,
-              width: NewsScale.sw(112, context),
-              height: NewsScale.sw(112, context),
-              defaultChild: NewsImage.defaultCircle(height: 50),
+            child: Hero(
+              tag: NewsHeroTags.showPhotoImageTag + _heroTag,
+              child: NewsImage.networkImage(
+                path: _url,
+                width: NewsScale.sw(112, context),
+                height: NewsScale.sw(112, context),
+                defaultChild: NewsImage.defaultCircle(height: 50),
+              ),
             ),
           ),
         );
@@ -250,7 +332,7 @@ class PersonHomeCirclesCell extends StatelessWidget {
             backgroundColor: Colors.transparent,
             padding: EdgeInsets.all(4.0),
             icon: Icon(
-              STIcons.commonly_message,
+              STIcons.commonly_message_outline,
               color: ColorConfig.textSecColor,
             ),
             text: (model?.commentCount ?? 0).toString(),
@@ -263,13 +345,12 @@ class PersonHomeCirclesCell extends StatelessWidget {
             size: STButtonSize.small,
             padding: EdgeInsets.all(4),
             icon: model?.isFavourite ?? false
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/favourited.png'),
+                ? Icon(
+                    STIcons.label_star,
+                    color: ColorConfig.orangeColor,
                   )
                 : Icon(
-                    STIcons.commonly_star,
+                    STIcons.label_star_outline,
                     color: ColorConfig.textSecColor,
                   ),
             onTap: _favouritedAction,
@@ -277,13 +358,12 @@ class PersonHomeCirclesCell extends StatelessWidget {
           SizedBox(width: 16),
           NewsIconTextWidget(
             icon: model?.isThumbUp ?? false
-                ? Image(
-                    width: 24,
-                    height: 24,
-                    image: AssetImage('assets/images/liked.png'),
+                ? Icon(
+                    STIcons.label_like,
+                    color: ColorConfig.redColor,
                   )
                 : Icon(
-                    STIcons.commonly_like,
+                    STIcons.label_like_outline,
                   ),
             unit: (model?.thumbUpCount ?? 0).toString(),
             onTap: _thumbupAction,

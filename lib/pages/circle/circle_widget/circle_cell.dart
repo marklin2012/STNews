@@ -34,16 +34,21 @@ class CircleCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (circleModel == null) return Container();
-    return InkWell(
-      highlightColor: ColorConfig.fourGrey,
-      onTap: () {
-        if (circleTap != null) {
-          circleTap!(circleModel);
-        }
-      },
-      child: Card(
-        elevation: 0,
-        child: _buildContent(context),
+    return Ink(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: InkWell(
+        highlightColor: ColorConfig.fourGrey,
+        onTap: () {
+          if (circleTap != null) {
+            circleTap!(circleModel);
+          }
+        },
+        child: Card(
+          elevation: 0,
+          child: _buildContent(context),
+        ),
       ),
     );
   }
@@ -54,7 +59,6 @@ class CircleCell extends StatelessWidget {
         color: ColorConfig.backgroundColor,
         borderRadius: BorderRadius.circular(4.0),
       ),
-      width: NewsScale.sw(181, context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -155,13 +159,13 @@ class CircleCell extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 circleModel?.isThumbUp ?? false
-                    ? Image(
-                        width: 18,
-                        height: 18,
-                        image: AssetImage('assets/images/liked.png'),
+                    ? Icon(
+                        STIcons.label_like,
+                        size: 18,
+                        color: ColorConfig.redColor,
                       )
                     : Icon(
-                        STIcons.commonly_like,
+                        STIcons.label_like_outline,
                         size: 18,
                       ),
                 SizedBox(width: NewsScale.sw(5.5, context)),

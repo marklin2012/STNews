@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stnews/models/moment_model.dart';
 import 'package:stnews/pages/circle/circle_detail_page.dart';
+import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/empty_view_widget.dart';
-
-import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/common/scroll_header.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_circles.dart';
 import 'package:stnews/pages/person/person_widgets/person_home_header.dart';
@@ -64,6 +63,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       body: SafeArea(
         child: _buildContent(),
       ),
@@ -92,10 +92,17 @@ class _PersonHomePageState extends State<PersonHomePage> {
               );
             },
           ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: ColorConfig.backgroundColor,
+              height: 12.0,
+            ),
+          ),
           if (userHomeP.hasMoments)
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.all(16),
+                color: ColorConfig.primaryColor,
                 child: Text(
                   'TA的作品',
                   style: NewsTextStyle.style17BoldBlack,
@@ -107,7 +114,7 @@ class _PersonHomePageState extends State<PersonHomePage> {
               userModel: userHomeP.infoModel.user,
               moments: userHomeP.infoModel.moments,
               jumpCommentTap: (MomentModel model) {
-                _jumpMomentDetailComment(moment: model);
+                _jumpMomentDetailComment(moment: model, positComment: true);
               },
               favourtieTap: (MomentModel model, bool isFaved) {
                 _changeFavoriteMomentStatus(
@@ -116,6 +123,12 @@ class _PersonHomePageState extends State<PersonHomePage> {
               thumbupTap: (MomentModel model, bool isThumbup) {
                 _changeThumbupMomentStatus(
                     momentID: model.id, isThumbup: isThumbup);
+              },
+              jumpMomentTap: (MomentModel model) {
+                _jumpMomentDetailComment(moment: model);
+              },
+              deleteMomentTap: (String moment) {
+                _deleteMoment(moment);
               },
             ),
           if (!userHomeP.hasMoments)
@@ -136,19 +149,19 @@ class _PersonHomePageState extends State<PersonHomePage> {
   }
 
   void _changeFavouriteStatus(bool isFaved) async {
-    NewsLoading.start(context);
     await userHomeProvider.changeFavouritedUserStatus(isFaved);
-    NewsLoading.stop();
   }
 
-  void _jumpMomentDetailComment({MomentModel? moment}) {
+  void _jumpMomentDetailComment(
+      {MomentModel? moment, bool positComment = false}) {
     if (moment == null) return;
     STRouters.push(
-        context,
-        CircleDetailPage(
-          moment: moment,
-          positComment: true,
-        ));
+      context,
+      CircleDetailPage(
+        moment: moment,
+        positComment: positComment,
+      ),
+    );
   }
 
   void _changeFavoriteMomentStatus({String? momentID, bool? isFaved}) async {
@@ -160,5 +173,9 @@ class _PersonHomePageState extends State<PersonHomePage> {
     if (momentID == null || momentID.isEmpty) return;
     await userHomeProvider.thumbupMoment(
         momentID: momentID, isThumbup: isThumbup);
+  }
+
+  void _deleteMoment(String moment) async {
+    await userHomeProvider.deleteMoment(moment);
   }
 }

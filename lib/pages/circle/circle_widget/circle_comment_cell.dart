@@ -174,13 +174,13 @@ class CircleCommentCell extends StatelessWidget {
                 ),
               ),
             commentModel.isUserFavourite ?? false
-                ? Image(
-                    width: 18,
-                    height: 18,
-                    image: AssetImage('assets/images/liked.png'),
+                ? Icon(
+                    STIcons.label_like,
+                    size: 18,
+                    color: ColorConfig.redColor,
                   )
                 : Icon(
-                    STIcons.commonly_like,
+                    STIcons.label_like_outline,
                     size: 18,
                   ),
           ],

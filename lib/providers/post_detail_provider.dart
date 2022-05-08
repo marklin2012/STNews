@@ -4,6 +4,7 @@ import 'package:stnews/models/post_model.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
 import 'package:stnews/pages/common/news_perpage.dart';
+import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/list+.dart';
@@ -123,7 +124,8 @@ class PostDetailProvider extends ChangeNotifier {
     if (result.success) {
       Map<String, dynamic> _comment = result.data['comment'];
       CommentModel? _model = CommentModel.fromJson(_comment);
-      comments.add(_model);
+      _model.user = UserProvider.shared.user;
+      comments.insert(0, _model);
       notifyListeners();
       return true;
     }

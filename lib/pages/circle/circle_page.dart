@@ -14,6 +14,7 @@ import 'package:stnews/pages/common/news_easy_refresh.dart';
 import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/circle_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/st_scale.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -38,10 +39,14 @@ class _CirclePageState extends State<CirclePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.primaryColor,
       appBar: AppBar(
         leading: STButton.icon(
           backgroundColor: Colors.transparent,
-          icon: Icon(STIcons.commonly_search),
+          icon: Hero(
+            tag: NewsHeroTags.searchHeaderTag,
+            child: Icon(STIcons.commonly_search_outline),
+          ),
           onTap: () {
             STRouters.push(context, SearchCirclePage());
           },
@@ -78,39 +83,34 @@ class _CirclePageState extends State<CirclePage> {
             shrinkWrap: true,
             crossAxisCount: 2,
             itemCount: circleProvider.lists.length,
-            mainAxisSpacing: NewsScale.sh(4, context),
-            crossAxisSpacing: NewsScale.sw(4, context),
+            mainAxisSpacing: 4,
+            crossAxisSpacing: .0,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                // margin: index == 1
-                //     ? EdgeInsets.only(top: NewsScale.sh(40, context))
-                //     : EdgeInsets.zero,
-                child: CircleCell(
-                  circleModel: circleP.lists[index],
-                  authorTap: (String? authorID) {
-                    if (authorID == null) return;
-                    // 去个人圈子主页
-                    STRouters.push(
-                      context,
-                      PersonHomePage(
-                        userID: authorID,
-                        type: PersonHomeShowType.PersonHomeShowCircle,
-                      ),
-                    );
-                  },
-                  thumbupedTap: (bool? thumbuped) async {
-                    await circleProvider.thumbupMoment(
-                        index: index, isThumbup: thumbuped);
-                  },
-                  circleTap: (MomentModel? model) {
-                    if (model == null) return;
-                    // 去圈子详情页
-                    STRouters.push(
-                      context,
-                      CircleDetailPage(moment: model),
-                    );
-                  },
-                ),
+              return CircleCell(
+                circleModel: circleP.lists[index],
+                authorTap: (String? authorID) {
+                  if (authorID == null) return;
+                  // 去个人圈子主页
+                  STRouters.push(
+                    context,
+                    PersonHomePage(
+                      userID: authorID,
+                      type: PersonHomeShowType.PersonHomeShowCircle,
+                    ),
+                  );
+                },
+                thumbupedTap: (bool? thumbuped) async {
+                  await circleProvider.thumbupMoment(
+                      index: index, isThumbup: thumbuped);
+                },
+                circleTap: (MomentModel? model) {
+                  if (model == null) return;
+                  // 去圈子详情页
+                  STRouters.push(
+                    context,
+                    CircleDetailPage(moment: model),
+                  );
+                },
               );
             },
             staggeredTileBuilder: (int index) {
@@ -128,7 +128,11 @@ class _CirclePageState extends State<CirclePage> {
       foregroundColor: ColorConfig.accentColor,
       onPressed: () {
         // 去发布页
-        STRouters.push(context, CirclePublishPage());
+        STRouters.push(
+          context,
+          CirclePublishPage(),
+          direction: STRoutersDirection.bottomToTop,
+        );
       },
       child: Icon(
         STIcons.commonly_camera,

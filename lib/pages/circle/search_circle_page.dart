@@ -62,7 +62,6 @@ class _SearchCirclePageState extends State<SearchCirclePage> {
                   child: NewsSearchHeader(
                     debounceKey: SearchCirclePage.searchCircleDebounceKey,
                     controller: _searchController,
-                    ableOnChanged: false,
                     searchTap: (String value) {
                       _search(value);
                     },

@@ -27,7 +27,7 @@ class AreaCodePage extends StatelessWidget {
         leading: STButton.icon(
           backgroundColor: Colors.transparent,
           icon: Icon(
-            STIcons.commonly_close,
+            STIcons.commonly_close_outline,
             color: ColorConfig.textFirColor,
           ),
           onTap: () {

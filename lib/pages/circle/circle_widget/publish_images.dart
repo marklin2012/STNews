@@ -8,21 +8,40 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_photo_view.dart';
 import 'package:stnews/service/api.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/st_cache_image.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
 
 class PublishImages extends StatefulWidget {
   static const publishImagesDebounceKey = '_publishImagesDebounceKey';
-  const PublishImages(
-      {Key? key, this.sucImgCallBack, this.backgroundColor, this.padding})
-      : super(key: key);
+  const PublishImages({
+    Key? key,
+    this.sucImgCallBack,
+    this.backgroundColor,
+    this.padding,
+    this.images,
+    this.crossAxisCount = 4,
+    this.imageSize = 80,
+    this.mainAxisSpacing = 5,
+    this.crossAxisSpacing = 5,
+  }) : super(key: key);
 
   final Function(List<String>)? sucImgCallBack;
 
   final Color? backgroundColor;
 
   final EdgeInsets? padding;
+
+  final List<String>? images;
+
+  final int crossAxisCount;
+
+  final double imageSize;
+
+  final double mainAxisSpacing;
+
+  final double crossAxisSpacing;
 
   @override
   _PublishImagesState createState() => _PublishImagesState();
@@ -36,7 +55,7 @@ class _PublishImagesState extends State<PublishImages> {
   @override
   void initState() {
     super.initState();
-    _images = [];
+    _images = widget.images ?? [];
     _backgroundColor = widget.backgroundColor ?? ColorConfig.backgroundColor;
     _padding = widget.padding ?? EdgeInsets.all(16.0);
   }
@@ -52,11 +71,15 @@ class _PublishImagesState extends State<PublishImages> {
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4, mainAxisSpacing: 5, crossAxisSpacing: 5),
+          crossAxisCount: widget.crossAxisCount,
+          mainAxisSpacing: widget.mainAxisSpacing,
+          crossAxisSpacing: widget.crossAxisSpacing,
+        ),
         itemBuilder: (context, index) {
           if (index == _images.length) {
             return _getAddBtn();
           }
+          final _galleryItem = STString.addPrefixHttp(_images[index]) ?? '';
           return GestureDetector(
             onTap: () {
               STDebounce().start(
@@ -74,12 +97,20 @@ class _PublishImagesState extends State<PublishImages> {
                 time: 200,
               );
             },
-            child: Container(
-              height: 80,
-              width: 80,
-              child: STCaCheImage.loadingImage(
-                imageUrl: _images[index],
-                placeholder: STCaCheImage.publishPlaceHolder(),
+            child: GestureDetector(
+              onLongPress: () {
+                _showDeletePhoto(index);
+              },
+              child: Container(
+                height: widget.imageSize,
+                width: widget.imageSize,
+                child: Hero(
+                  tag: NewsHeroTags.showPhotoImageTag + _galleryItem,
+                  child: STCaCheImage.loadingImage(
+                    imageUrl: _images[index],
+                    placeholder: STCaCheImage.publishPlaceHolder(),
+                  ),
+                ),
               ),
             ),
           );
@@ -90,9 +121,9 @@ class _PublishImagesState extends State<PublishImages> {
   }
 
   double _getGridViewHeight() {
-    double _rows = (_images.length + 1.0) / 4.0;
+    double _rows = (_images.length + 1.0) / widget.crossAxisCount;
     int _ceil = _rows.ceil();
-    final _height = _ceil * 85.0 + 30;
+    final _height = _ceil * (widget.imageSize + widget.mainAxisSpacing) + 30;
     return _height;
   }
 
@@ -105,6 +136,8 @@ class _PublishImagesState extends State<PublishImages> {
           func: () {
             FocusScope.of(context).requestFocus(FocusNode());
             NewsImagePicker.showPicker(
+              firContent: '从相册选择图片',
+              secContent: '拍照',
               context: context,
               galleryTap: _openGallery,
               cameraTap: _useCamera,
@@ -114,9 +147,28 @@ class _PublishImagesState extends State<PublishImages> {
       },
       child: Image(
         image: AssetImage('assets/images/default_add_picture.png'),
-        width: 80,
-        height: 80,
+        width: widget.imageSize,
+        height: widget.imageSize,
       ),
+    );
+  }
+
+  // 长按删除
+  void _showDeletePhoto(int index) {
+    STDebounce().start(
+      key: PublishImages.publishImagesDebounceKey,
+      func: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+        NewsImagePicker.showPicker(
+          context: context,
+          firContent: '删除',
+          galleryTap: () {
+            STRouters.pop(context);
+            _images.removeAt(index);
+            setState(() {});
+          },
+        );
+      },
     );
   }
 

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/news_toast.dart';
 import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
@@ -32,6 +35,9 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
   TextEditingController _phoneCon = TextEditingController();
   TextEditingController _codeCon = TextEditingController();
   late ValueNotifier<bool> _btnNotifier;
+  int _limitLength = 11;
+  FocusNode _phoneNode = FocusNode(debugLabel: 'phone');
+  FocusNode _codeNode = FocusNode(debugLabel: 'code');
 
   @override
   void initState() {
@@ -157,19 +163,28 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
           onTap: () {
             final areaCodePage = AreaCodePage(
               onChanged: (Map<String, String> selected) {
-                setState(() {
-                  _selectedArea = selected;
-                });
+                _switchAreaCode(selected);
               },
             );
             STRouters.push(context, areaCodePage);
           },
           controller: _phoneCon,
+          focusNode: _phoneNode,
+          phoneLength: _limitLength,
+          onChanged: (String value) {
+            if (value.length == _limitLength) {
+              if (!_checkPhoneNumber(value)) return;
+              Future.delayed(Duration(milliseconds: 50), () {
+                FocusScope.of(context).requestFocus(_codeNode);
+              });
+            }
+          },
         ),
         SizedBox(height: NewsLoginConstant.horFix16),
         STInput(
           key: Key('code'),
           controller: _codeCon,
+          focusNode: _codeNode,
           inputType: TextInputType.number,
           textStyle: NewsTextStyle.style16NormalBlack,
           backgoundColor: ColorConfig.primaryColor,
@@ -179,8 +194,34 @@ class _CodeLoginWidgetState extends State<CodeLoginWidget> {
             mobile: _phoneCon.text,
           ),
           placeholder: '输入验证码',
+          onChanged: (value) {
+            if (value.length == 6) {
+              FocusScope.of(context).requestFocus(FocusNode());
+            }
+          },
         ),
       ],
     );
+  }
+
+  Future _switchAreaCode(Map<String, String> selected) async {
+    _selectedArea = selected;
+    final _selectedKey = _selectedArea.keys.first;
+    final lengthValue = await DefaultAssetBundle.of(context)
+        .loadString('assets/json/worldcodelength.json');
+    final _temps = json.decode(lengthValue);
+    _limitLength = int.tryParse(_temps[_selectedKey]) ?? 11;
+    setState(() {});
+  }
+
+  bool _checkPhoneNumber(String value) {
+    if (!NewsLoginConstant.checkPhoneNumber(
+      value: value,
+      area: _selectedArea.values.first,
+    )) {
+      Newstoast.showToast(msg: '手机号输入错误');
+      return false;
+    }
+    return true;
   }
 }

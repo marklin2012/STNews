@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/models/user_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/pages/common/news_toast.dart';
 import 'package:stnews/pages/common/token_invalid.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/find_password_page.dart';
@@ -32,6 +35,9 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
   TextEditingController _phoneCon = TextEditingController();
   TextEditingController _passwordCon = TextEditingController();
   late ValueNotifier<bool> _btnNotifier;
+  int _limitLength = 11;
+  FocusNode _phoneNode = FocusNode(debugLabel: 'phone');
+  FocusNode _passwordNode = FocusNode(debugLabel: 'password');
 
   @override
   void initState() {
@@ -153,14 +159,22 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           onTap: () {
             final areaCodePage = AreaCodePage(
               onChanged: (Map<String, String> selected) {
-                setState(() {
-                  _selectedArea = selected;
-                });
+                _switchAreaCode(selected);
               },
             );
             STRouters.push(context, areaCodePage);
           },
           controller: _phoneCon,
+          focusNode: _phoneNode,
+          phoneLength: _limitLength,
+          onChanged: (String value) {
+            if (value.length == _limitLength) {
+              if (!_checkPhoneNumber(value)) return;
+              Future.delayed(Duration(milliseconds: 50), () {
+                FocusScope.of(context).requestFocus(_passwordNode);
+              });
+            }
+          },
         ),
         SizedBox(height: NewsLoginConstant.horFix16),
         STInput.password(
@@ -169,8 +183,33 @@ class _PasswordLoginWidgetState extends State<PasswordLoginWidget> {
           textStyle: NewsTextStyle.style16NormalBlack,
           backgoundColor: ColorConfig.primaryColor,
           inputFormatters: [LengthLimitingTextInputFormatter(20)],
+          focusNode: _passwordNode,
+          onSubmitted: (String value) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
         ),
       ],
     );
+  }
+
+  Future _switchAreaCode(Map<String, String> selected) async {
+    _selectedArea = selected;
+    final _selectedKey = _selectedArea.keys.first;
+    final lengthValue = await DefaultAssetBundle.of(context)
+        .loadString('assets/json/worldcodelength.json');
+    final _temps = json.decode(lengthValue);
+    _limitLength = int.tryParse(_temps[_selectedKey]) ?? 11;
+    setState(() {});
+  }
+
+  bool _checkPhoneNumber(String value) {
+    if (!NewsLoginConstant.checkPhoneNumber(
+      value: value,
+      area: _selectedArea.values.first,
+    )) {
+      Newstoast.showToast(msg: '手机号输入错误');
+      return false;
+    }
+    return true;
   }
 }

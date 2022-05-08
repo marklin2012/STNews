@@ -22,6 +22,8 @@ const textFourColorKey = "textFourColor";
 const shadeFirColorKey = "shadeFirColor";
 const shadeSecColorKey = "shadeSecColor";
 const shadeThrColorKey = "shadeThrColor";
+const orangeColorKey = 'orangeColorKey';
+const redColorKey = 'redColorKey';
 
 Map<String, Color> lightColorMap = {
   primaryColorKey: Colors.white,
@@ -45,6 +47,8 @@ Map<String, Color> lightColorMap = {
   shadeFirColorKey: Color.fromRGBO(0, 0, 0, 0.8),
   shadeSecColorKey: Color.fromRGBO(0, 0, 0, 0.6),
   shadeThrColorKey: Color.fromRGBO(0, 0, 0, 0.5),
+  orangeColorKey: Color(0xFFFFA927),
+  redColorKey: Color(0xFFFF4141),
 };
 
 /// 尚未完成深色模式下的页面配置
@@ -70,6 +74,8 @@ Map<String, Color> darkColorMap = {
   shadeFirColorKey: Color.fromRGBO(0, 0, 0, 0.8),
   shadeSecColorKey: Color.fromRGBO(0, 0, 0, 0.6),
   shadeThrColorKey: Color.fromRGBO(0, 0, 0, 0.5),
+  orangeColorKey: Color(0xFFFFA927),
+  redColorKey: Color(0xFFFF4141),
 };
 
 class ColorConfig {
@@ -103,4 +109,6 @@ class ColorConfig {
   static get shadeFirColor => ColorConfig.colorFromName(shadeFirColorKey);
   static get shadeSecColor => ColorConfig.colorFromName(shadeSecColorKey);
   static get shadeThrColor => ColorConfig.colorFromName(shadeThrColorKey);
+  static get orangeColor => ColorConfig.colorFromName(orangeColorKey);
+  static get redColor => ColorConfig.colorFromName(redColorKey);
 }

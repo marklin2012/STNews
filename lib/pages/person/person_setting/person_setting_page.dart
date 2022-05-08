@@ -16,10 +16,10 @@ import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
 const _datas = [
-  {'icon': STIcons.commonly_safetycertificate, 'title': '账号安全'},
-  {'icon': STIcons.commonly_bell, 'title': '消息设置'},
-  {'icon': STIcons.commonly_editsquare, 'title': '反馈与建议'},
-  {'icon': STIcons.commonly_usergroup, 'title': '关于我们'}
+  {'icon': STIcons.label_safetycertificate_outline, 'title': '账号安全'},
+  {'icon': STIcons.commonly_bell_outline, 'title': '消息设置'},
+  {'icon': STIcons.commonly_edit_outline, 'title': '反馈与建议'},
+  {'icon': STIcons.commonly_usergroup_outline, 'title': '关于我们'}
 ];
 
 class PersonSetingPage extends StatelessWidget {
@@ -126,20 +126,36 @@ class PersonSetingPage extends StatelessWidget {
     switch (index) {
       case 0:
         // 账号安全
-        STRouters.push(context, AccountSecurityPage(),
-            routeName: AccountSecurityPage.routeName);
+        STRouters.push(
+          context,
+          AccountSecurityPage(),
+          routeName: AccountSecurityPage.routeName,
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 1:
         //消息设置
-        STRouters.push(context, MessageSettingPage());
+        STRouters.push(
+          context,
+          MessageSettingPage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 2:
         //反馈与建议
-        STRouters.push(context, FeedbackSuggestionPage());
+        STRouters.push(
+          context,
+          FeedbackSuggestionPage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 3:
         //关于我们
-        STRouters.push(context, AboutMePage());
+        STRouters.push(
+          context,
+          AboutMePage(),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       default:
         break;

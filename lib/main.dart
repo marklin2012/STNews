@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,9 +36,9 @@ void main() {
   /// ignore: invalid_use_of_visible_for_testing_member
   // SharedPreferences.setMockInitialValues({
   //   'token':
-  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjM2MjA2NDM0fQ.zNMZjix-ztgHXaZWGFE8hRWzTrFOmQQnbqgttJlPrJw',
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM3NTQ4MjcyfQ.Umh6-tlYXxGoIDa4_2w7sKwFNAqU_n09YM28LWUKaYI',
   //   'user':
-  //       '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"用户8888990","sex":0}'
+  //       '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"curry","sex":0}'
   // });
 
   runApp(
@@ -58,6 +60,15 @@ void main() {
       child: MyApp(),
     ),
   );
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  if (Platform.isAndroid) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: ColorConfig.primaryColor,
+      ),
+    );
+  }
 }
 
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
@@ -80,9 +91,10 @@ class MyApp extends StatelessWidget {
             ),
             elevation: 0.1,
             centerTitle: true,
+            toolbarHeight: 44,
           ),
           primaryColor: ColorConfig.primaryColor,
-          backgroundColor: ColorConfig.backgroundColor,
+          backgroundColor: ColorConfig.primaryColor,
           scaffoldBackgroundColor: ColorConfig.primaryColor,
           colorScheme: ColorScheme.fromSwatch()
               .copyWith(secondary: ColorConfig.accentColor),

@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/news_image_picker.dart';
@@ -91,17 +89,27 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
       case 0:
         NewsImagePicker.showPicker(
           context: context,
+          firContent: '从相册选择图片',
+          secContent: '拍照',
           galleryTap: _openGallery,
           cameraTap: _useCamera,
         );
         break;
       case 1:
         // 修改昵称
-        STRouters.push(context, ChangeInfoPage(isChangeSex: false));
+        STRouters.push(
+          context,
+          ChangeInfoPage(isChangeSex: false),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
       case 2:
         // 修改性别
-        STRouters.push(context, ChangeInfoPage(isChangeSex: true));
+        STRouters.push(
+          context,
+          ChangeInfoPage(isChangeSex: true),
+          direction: STRoutersDirection.rightToLeft,
+        );
         break;
 
       default:

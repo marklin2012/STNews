@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
@@ -94,6 +97,9 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
               builder: (context, index) {
                 return PhotoViewGalleryPageOptions(
                   imageProvider: _setupImageProvider(index),
+                  heroAttributes: PhotoViewHeroAttributes(
+                      tag: NewsHeroTags.showPhotoImageTag +
+                          widget.galleryItems[index]),
                 );
               },
               pageController: PageController(initialPage: _defaultSelected),
@@ -117,7 +123,7 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
                 backgroundColor: Colors.transparent,
                 size: STButtonSize.small,
                 icon: Icon(
-                  STIcons.commonly_close,
+                  STIcons.commonly_close_outline,
                   size: 20,
                   color: ColorConfig.primaryColor,
                 ),
@@ -141,7 +147,7 @@ class _NewsPhotoViewState extends State<NewsPhotoView> {
     if (_imageSource == PhotoViewImageSource.imageSourceLocal) {
       return AssetImage(url);
     } else {
-      return NetworkImage(url);
+      return CachedNetworkImageProvider(url);
     }
   }
 }

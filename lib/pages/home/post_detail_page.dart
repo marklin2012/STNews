@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
+import 'package:saturn/saturn.dart';
 import 'package:stnews/models/post_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/common/easy_refresh/news_refresh_result.dart';
@@ -16,6 +14,8 @@ import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
+import 'package:stnews/utils/hero_tags.dart';
+import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -109,6 +109,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConfig.backgroundColor,
       body: BlankPutKeyborad(
         child: buildChildWidget(),
         onTap: () {
@@ -162,15 +163,31 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           });
                     },
                   ),
+                  // 文章的头部图片
+                  SliverToBoxAdapter(
+                    child: Container(
+                      height: 168,
+                      margin: EdgeInsets.only(top: 16.0),
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Hero(
+                        tag: NewsHeroTags.postDetailImageTag +
+                            (widget.model?.id ?? ''),
+                        child: NewsImage.networkImage(
+                          path: widget.model?.coverImage ??
+                              'http://via.placeholder.com/343x168',
+                          width: 343,
+                          height: 168,
+                          defaultChild: Container(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                   // 文章内容
-
                   SliverToBoxAdapter(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 8),
-                      // child: Container(
-                      //   height: 500,
-                      //   color: Colors.yellow,
-                      // ),
                       child: Html(
                         data: postDetailProvider.postModel.article,
                         style: {
@@ -312,12 +329,16 @@ class _PostDetailPageState extends State<PostDetailPage> {
       int count = postDetailProvider.comments.length;
       _footerData = _footerData.setCommentAndCommited(count.toString());
       _detailFooterNoti.value = _footerData;
+      Future.delayed(Duration(milliseconds: 800), () {
+        _scrollToComments();
+      });
     }
   }
 
   /// 收藏或取消收藏该文章
   void _favouritedPost(bool isFav) async {
     bool _isFav = await postDetailProvider.favouritedPost(isFav);
+    STToast.show(context: context, message: _isFav ? '收藏成功' : '取消收藏');
     _footerData = _footerData.setFavPost(_isFav);
     _detailFooterNoti.value = _footerData;
   }
@@ -332,11 +353,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
   /// 关注或取消关注该用户
   void _favouritedUser(bool isFav) async {
     if (_headerData.authorId == null) return;
-    NewsLoading.start(context);
     bool _isFav = await postDetailProvider.favouritedUser(
         authorId: _headerData.authorId!, isFaved: isFav);
     _headerData = _headerData.setFavedUser(_isFav);
     _detailHeaderNoti.value = _headerData;
-    NewsLoading.stop();
   }
 }

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 
@@ -16,7 +14,6 @@ class NewsSearchHeader extends StatefulWidget {
     this.placeholder,
     this.btnTitle,
     this.debounceKey,
-    this.ableOnChanged = true,
   }) : super(key: key);
 
   final String? debounceKey;
@@ -30,8 +27,6 @@ class NewsSearchHeader extends StatefulWidget {
   final String? placeholder;
 
   final String? btnTitle;
-
-  final bool ableOnChanged;
 
   @override
   _NewsSearchHeaderState createState() => _NewsSearchHeaderState();
@@ -79,6 +74,7 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
   Widget build(BuildContext context) {
     return Container(
       height: _height,
+      color: ColorConfig.primaryColor,
       child: Row(
         children: [
           GestureDetector(
@@ -101,10 +97,13 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
               padding: EdgeInsets.zero,
               cursorHeight: 24.0,
               contentPadding: EdgeInsets.only(bottom: 18.0),
-              prefixIcon: Icon(
-                STIcons.commonly_search,
-                color: ColorConfig.textFourColor,
-                size: 20.0,
+              prefixIcon: Hero(
+                tag: NewsHeroTags.searchHeaderTag,
+                child: Icon(
+                  STIcons.commonly_search_outline,
+                  color: ColorConfig.textFourColor,
+                  size: 20.0,
+                ),
               ),
               decoration: BoxDecoration(
                 color: ColorConfig.fourGrey,
@@ -118,18 +117,13 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
                 if (value.isEmpty || value.length == 0) {
                   return;
                 }
-                if (widget.ableOnChanged) {
-                  _search();
-                }
+                _search();
               },
               onSubmitted: (String value) {
                 if (value.isEmpty || value.length == 0) {
                   return;
                 }
-                // onChanged不可用时，键盘的提交键可操作
-                if (!widget.ableOnChanged) {
-                  _search();
-                }
+                _search();
               },
             ),
           ),

@@ -103,10 +103,12 @@ class _AboutMePageState extends State<AboutMePage> {
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
                         STRouters.push(
-                            context,
-                            WebViewPage(
-                              title: '软件许可及服务协议',
-                            ));
+                          context,
+                          WebViewPage(
+                            title: '软件许可及服务协议',
+                          ),
+                          direction: STRoutersDirection.rightToLeft,
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 16),
