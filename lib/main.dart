@@ -30,16 +30,16 @@ void main() {
   Api.initAPI();
 
   // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({});
+  // SharedPreferences.setMockInitialValues({});
 
   /// 服务器token
   /// ignore: invalid_use_of_visible_for_testing_member
-  // SharedPreferences.setMockInitialValues({
-  //   'token':
-  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM3NTQ4MjcyfQ.Umh6-tlYXxGoIDa4_2w7sKwFNAqU_n09YM28LWUKaYI',
-  //   'user':
-  //       '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"curry","sex":0}'
-  // });
+  SharedPreferences.setMockInitialValues({
+    'token':
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM3NTQ4MjcyfQ.Umh6-tlYXxGoIDa4_2w7sKwFNAqU_n09YM28LWUKaYI',
+    'user':
+        '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"curry","sex":0}'
+  });
 
   runApp(
     MultiProvider(

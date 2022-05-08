@@ -7,7 +7,6 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/area_code_page.dart';
 import 'package:stnews/pages/login/new_password_page.dart';
 import 'package:stnews/pages/login/phone_input.dart';
-import 'package:stnews/utils/blank_put_keyborad.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/pages/common/valid_code_button.dart';

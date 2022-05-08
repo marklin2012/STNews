@@ -15,7 +15,6 @@ import 'package:stnews/pages/home/detail_widget/detail_comment_cell.dart';
 import 'package:stnews/pages/home/detail_widget/detail_footer.dart';
 import 'package:stnews/pages/person/person_home/person_home_page.dart';
 import 'package:stnews/providers/post_detail_provider.dart';
-import 'package:stnews/utils/blank_put_keyborad.dart';
 import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
