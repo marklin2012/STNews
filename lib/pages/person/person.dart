@@ -13,6 +13,7 @@ import 'package:stnews/pages/person/person_info/show_avatar_page.dart';
 import 'package:stnews/pages/person/person_notice/person_notice_page.dart';
 import 'package:stnews/pages/person/person_setting/person_setting_page.dart';
 import 'package:stnews/pages/person/person_widgets/person_header.dart';
+import 'package:stnews/pages/person/person_widgets/person_logged_menu.dart';
 import 'package:stnews/pages/person/person_widgets/person_tile.dart';
 import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/hero_tags.dart';
@@ -90,6 +91,12 @@ class _PersonPageState extends State<PersonPage> {
                 );
               }),
               SizedBox(height: 50),
+              Consumer<UserProvider>(builder: (context, userProvider, child) {
+                if (userProvider.isLogin) {
+                  return PersonLoggedMenu();
+                }
+                return SizedBox();
+              }),
               Container(
                 height: 52.0 * _datas.length,
                 child: ListView.builder(

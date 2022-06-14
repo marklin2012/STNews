@@ -4,7 +4,6 @@ import 'package:http_parser/http_parser.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:saturn/saturn.dart';
 
 import 'package:stnews/pages/common/news_image_picker.dart';
 import 'package:stnews/pages/common/news_loading.dart';
@@ -14,6 +13,7 @@ import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/service/result_data.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class PersonInfoPage extends StatefulWidget {
   const PersonInfoPage({Key? key}) : super(key: key);
@@ -33,13 +33,7 @@ class _PersonInfoPageState extends State<PersonInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('个人信息'),
       ),
       body: Container(

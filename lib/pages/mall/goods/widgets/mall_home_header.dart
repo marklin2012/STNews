@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/common/color_config.dart';
+import 'package:stnews/utils/hero_tags.dart';
+import 'package:stnews/utils/news_text_style.dart';
 
 class MallHomeHeader extends StatefulWidget {
   const MallHomeHeader({
     Key? key,
     this.height,
-    this.controller,
     this.shoppingCartNum,
-    this.searchTap,
-    this.ordersTap,
-    this.shoppingCartTap,
+    this.triggerSearch,
+    this.triggerOrders,
+    this.triggerShppingCart,
   }) : super(key: key);
 
   final double? height;
 
-  final TextEditingController? controller;
-
   final int? shoppingCartNum;
 
-  final Function(String)? searchTap;
+  final Function? triggerSearch;
 
-  final Function? ordersTap;
+  final Function? triggerOrders;
 
-  final Function? shoppingCartTap;
+  final Function? triggerShppingCart;
 
   @override
   State<MallHomeHeader> createState() => _MallHomeHeaderState();
@@ -31,25 +30,15 @@ class MallHomeHeader extends StatefulWidget {
 
 class _MallHomeHeaderState extends State<MallHomeHeader> {
   late double _height;
-  late TextEditingController _controller;
-  late FocusNode _focusNode;
   bool _shoppingCartIsClear = true;
 
   @override
   void initState() {
     super.initState();
     _height = widget.height ?? 44.0;
-    _controller = widget.controller ?? TextEditingController();
-    _focusNode = FocusNode();
     if (widget.shoppingCartNum != null && widget.shoppingCartNum! > 0) {
       _shoppingCartIsClear = false;
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -60,36 +49,37 @@ class _MallHomeHeaderState extends State<MallHomeHeader> {
       child: Row(
         children: [
           Expanded(
-            child: STInput(
-              height: 32.0,
-              padding: EdgeInsets.zero,
-              cursorHeight: 24.0,
-              contentPadding: EdgeInsets.only(bottom: 18.0),
-              prefixIcon: Icon(
-                STIcons.commonly_search_outline,
-                color: ColorConfig.textFourColor,
-                size: 20.0,
+            child: GestureDetector(
+              onTap: _searchTap,
+              child: Container(
+                height: 32.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  color: ColorConfig.fourGrey,
+                ),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(8, 4, 0, 4),
+                      child: Hero(
+                        tag: NewsHeroTags.searchHeaderTag,
+                        child: Icon(
+                          STIcons.commonly_search_outline,
+                          color: ColorConfig.textFourColor,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      child: Text(
+                        '搜索',
+                        style: NewsTextStyle.style16NormalFourGrey,
+                      ),
+                    )
+                  ],
+                ),
               ),
-              decoration: BoxDecoration(
-                color: ColorConfig.fourGrey,
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              placeholder: '搜索',
-              controller: _controller,
-              focusNode: _focusNode,
-              inputType: TextInputType.text,
-              onChanged: (String value) {
-                if (value.isEmpty || value.length == 0) {
-                  return;
-                }
-                _searchTap();
-              },
-              onSubmitted: (String value) {
-                if (value.isEmpty || value.length == 0) {
-                  return;
-                }
-                _searchTap();
-              },
             ),
           ),
           GestureDetector(
@@ -123,15 +113,11 @@ class _MallHomeHeaderState extends State<MallHomeHeader> {
   }
 
   void _searchTap() {
-    if (_controller.text.isEmpty || _controller.text.length == 0) {
-      STToast.show(context: context, message: '搜索内容不能为空');
-      return;
-    }
-    if (widget.searchTap != null) {
+    if (widget.triggerSearch != null) {
       STDebounce().start(
         key: '_mallHomeHeaderDebounceKey',
         func: () async {
-          widget.searchTap!(_controller.text);
+          widget.triggerSearch!();
         },
         time: 600,
       );
@@ -139,11 +125,11 @@ class _MallHomeHeaderState extends State<MallHomeHeader> {
   }
 
   void _ordersTap() {
-    if (widget.ordersTap != null) {
+    if (widget.triggerOrders != null) {
       STDebounce().start(
         key: '_mallHomeHeaderDebounceKey',
         func: () async {
-          widget.ordersTap!();
+          widget.triggerOrders!();
         },
         time: 600,
       );
@@ -151,11 +137,11 @@ class _MallHomeHeaderState extends State<MallHomeHeader> {
   }
 
   void _shoppingCartTap() {
-    if (widget.shoppingCartTap != null) {
+    if (widget.triggerShppingCart != null) {
       STDebounce().start(
         key: '_mallHomeHeaderDebounceKey',
         func: () async {
-          widget.shoppingCartTap!();
+          widget.triggerShppingCart!();
         },
         time: 600,
       );

@@ -10,6 +10,7 @@ import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/phone_input_formatter.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class FeedbackSuggestionPage extends StatefulWidget {
   static const feedbackSuggestionDebounceKey = '_feedbackSuggestionDebounceKey';
@@ -50,13 +51,7 @@ class _FeedbackSuggestionPageState extends State<FeedbackSuggestionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('反馈与建议'),
       ),
       body: BlankPutKeyborad(child: _buildCustomW()),

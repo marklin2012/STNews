@@ -24,6 +24,7 @@ const shadeSecColorKey = "shadeSecColor";
 const shadeThrColorKey = "shadeThrColor";
 const orangeColorKey = 'orangeColorKey';
 const redColorKey = 'redColorKey';
+const deepBlackColorKey = 'deepBlackColorKey';
 
 Map<String, Color> lightColorMap = {
   primaryColorKey: Colors.white,
@@ -49,6 +50,7 @@ Map<String, Color> lightColorMap = {
   shadeThrColorKey: Color.fromRGBO(0, 0, 0, 0.5),
   orangeColorKey: Color(0xFFFFA927),
   redColorKey: Color(0xFFFF4141),
+  deepBlackColorKey: Color(0xFF333333),
 };
 
 /// 尚未完成深色模式下的页面配置
@@ -76,6 +78,7 @@ Map<String, Color> darkColorMap = {
   shadeThrColorKey: Color.fromRGBO(0, 0, 0, 0.5),
   orangeColorKey: Color(0xFFFFA927),
   redColorKey: Color(0xFFFF4141),
+  deepBlackColorKey: Color(0xFF333333),
 };
 
 class ColorConfig {
@@ -111,4 +114,5 @@ class ColorConfig {
   static get shadeThrColor => ColorConfig.colorFromName(shadeThrColorKey);
   static get orangeColor => ColorConfig.colorFromName(orangeColorKey);
   static get redColor => ColorConfig.colorFromName(redColorKey);
+  static get deepBlackColor => ColorConfig.colorFromName(deepBlackColorKey);
 }

@@ -9,7 +9,7 @@ import 'package:stnews/pages/common/news_loading.dart';
 import 'package:stnews/providers/favourited_user_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
-import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class MyFavouriteUserPage extends StatefulWidget {
   const MyFavouriteUserPage({Key? key}) : super(key: key);
@@ -32,13 +32,7 @@ class _MyFavouriteUserPageState extends State<MyFavouriteUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('我的关注'),
       ),
       body: _buildContent(),

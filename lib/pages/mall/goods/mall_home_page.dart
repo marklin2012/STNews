@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:saturn/utils/blank_keyborad.dart';
+import 'package:stnews/models/test_model.dart';
 import 'package:stnews/pages/common/color_config.dart';
-import 'package:stnews/pages/mall/goods/widgets/mall_home_good_cell.dart';
+import 'package:stnews/pages/mall/goods/goods_detail_page.dart';
+import 'package:stnews/pages/mall/goods/search_goods_page.dart';
+import 'package:stnews/pages/mall/goods/widgets/goods_grid_view.dart';
+import 'package:stnews/pages/mall/goods/widgets/mall_home_goods_cell.dart';
 import 'package:stnews/pages/mall/goods/widgets/mall_home_header.dart';
 import 'package:stnews/pages/mall/goods/widgets/mall_home_menu.dart';
+import 'package:stnews/pages/mall/mock/goods_lists_mock.dart';
+import 'package:stnews/pages/mall/orders/my_orders_page.dart';
+import 'package:stnews/pages/mall/shoppingCart/shopping_cart_page.dart';
+import 'package:stnews/utils/st_routers.dart';
 
 class MallHomePage extends StatefulWidget {
   const MallHomePage({Key? key}) : super(key: key);
@@ -15,13 +22,14 @@ class MallHomePage extends StatefulWidget {
 
 class _MallHomePageState extends State<MallHomePage> {
   late TextEditingController _searchController;
-  List<MallHomeGoodModel> _goodLists = [];
+  List<MallHomeGoodsModel> _goodLists = [];
 
   @override
   void initState() {
     super.initState();
+    getGoodsMode();
     _searchController = TextEditingController();
-    _setMock();
+    _goodLists = GoodsListsMock.setMock();
   }
 
   @override
@@ -30,36 +38,21 @@ class _MallHomePageState extends State<MallHomePage> {
     super.dispose();
   }
 
-  void _setMock() {
-    for (int i = 0; i < 10; i++) {
-      final _model = MallHomeGoodModel(
-        id: i.toString(),
-        title: '爱只为你 音乐盒木质八音盒旋转木马',
-        presentPrice: '289.0',
-      );
-      if (i % 2 == 0) {
-        _model.type = MallHomeGoodTagType.fullMinus;
-      } else {
-        _model.type = MallHomeGoodTagType.seckill;
-        _model.originalPrice = '320';
-      }
-      if (i == 2) {
-        _model.type = MallHomeGoodTagType.none;
-      }
-      _goodLists.add(_model);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConfig.primaryColor,
       appBar: AppBar(
         title: MallHomeHeader(
-          controller: _searchController,
-          searchTap: (String search) {},
-          ordersTap: () {},
-          shoppingCartTap: () {},
+          triggerSearch: () {
+            STRouters.push(context, SearchGoodsPage());
+          },
+          triggerOrders: () {
+            STRouters.push(context, MyOrdersPage());
+          },
+          triggerShppingCart: () {
+            STRouters.push(context, ShoppingCartPage());
+          },
         ),
       ),
       body: BlankPutKeyborad(
@@ -68,32 +61,15 @@ class _MallHomePageState extends State<MallHomePage> {
             SliverToBoxAdapter(
               child: MallHomeMenu(),
             ),
-            _buildContent(),
+            GoodsGridView(
+              items: _goodLists,
+              goodOnTap: (MallHomeGoodsModel? model) {
+                STRouters.push(context, GoodsDetailPage());
+              },
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildContent() {
-    return SliverStaggeredGrid.countBuilder(
-      crossAxisCount: 2,
-      itemCount: _goodLists.length,
-      mainAxisSpacing: 4.0,
-      crossAxisSpacing: 4.0,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          padding: EdgeInsets.only(
-              left: index % 2 == 0 ? 16.0 : 0,
-              right: index % 2 == 0 ? 0 : 16.0),
-          child: MallHomeGoodCell(
-            model: _goodLists[index],
-          ),
-        );
-      },
-      staggeredTileBuilder: (int index) {
-        return StaggeredTile.fit(1);
-      },
     );
   }
 }

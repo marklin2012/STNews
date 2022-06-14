@@ -14,6 +14,7 @@ import 'package:stnews/pages/person/person_widgets/person_notice_cell.dart';
 import 'package:stnews/providers/notice_provider.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class PersonNoticePage extends StatefulWidget {
   const PersonNoticePage({Key? key}) : super(key: key);
@@ -36,13 +37,7 @@ class _PersonNoticePageState extends State<PersonNoticePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('消息中心'),
         actions: [
           Consumer<NoticeProvider>(builder: (context, noticeProvider, _) {

@@ -7,6 +7,7 @@ import 'package:stnews/pages/login/phone_input.dart';
 import 'package:stnews/pages/person/person_setting/account_security/change_password/check_code_page.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class NewMobilePage extends StatefulWidget {
   const NewMobilePage({Key? key}) : super(key: key);
@@ -36,13 +37,7 @@ class _NewMobilePageState extends State<NewMobilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('新的手机号'),
       ),
       body: Container(

@@ -99,6 +99,7 @@ class NewsActionSheet extends StatefulWidget {
     this.acitons,
     this.closeable,
     this.backgroundColor,
+    this.isScrollControlled,
   }) : super(key: key);
 
   final String? title;
@@ -111,6 +112,8 @@ class NewsActionSheet extends StatefulWidget {
 
   final Color? backgroundColor;
 
+  final bool? isScrollControlled;
+
   static void show({
     required BuildContext context,
     String? title,
@@ -118,6 +121,7 @@ class NewsActionSheet extends StatefulWidget {
     List<Widget>? actions,
     bool closeable = true,
     Color? backgroundCoplor,
+    bool isScrollControlled = false,
   }) {
     final actionSheet = NewsActionSheet(
       title: title,
@@ -129,6 +133,7 @@ class NewsActionSheet extends StatefulWidget {
     showModalBottomSheet(
       context: context,
       enableDrag: false,
+      isScrollControlled: isScrollControlled,
       isDismissible: closeable,
       backgroundColor: Colors.transparent,
       builder: (context) {

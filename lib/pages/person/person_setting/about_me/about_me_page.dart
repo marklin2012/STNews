@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/pages/login/webview_page.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class AboutMePage extends StatefulWidget {
   const AboutMePage({Key? key}) : super(key: key);
@@ -29,13 +30,7 @@ class _AboutMePageState extends State<AboutMePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('关于我们'),
       ),
       body: Center(

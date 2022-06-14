@@ -8,6 +8,7 @@ import 'package:stnews/pages/common/news_avatar_widget.dart';
 import 'package:stnews/pages/common/news_icon_text_widget.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_cache_image.dart';
+import 'package:stnews/utils/utils+.dart';
 
 const PersonHomeHeaderHeight = 172.0;
 
@@ -62,20 +63,7 @@ class _PersonHomeHeaderState extends State<PersonHomeHeader> {
             top: 0,
             child: Container(
               height: 44,
-              child: Row(
-                children: [
-                  IconButton(
-                    iconSize: 24,
-                    icon: Icon(
-                      STIcons.direction_leftoutlined,
-                      color: ColorConfig.textFirColor,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
+              child: NewsPopBtn.popBtn(context),
             ),
           ),
           Positioned(

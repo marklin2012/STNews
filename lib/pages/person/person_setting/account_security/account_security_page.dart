@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:saturn/saturn.dart';
 import 'package:stnews/pages/person/person_widgets/person_tile.dart';
+import 'package:stnews/utils/utils+.dart';
 
 import './change_mobile/change_mobile_page.dart';
 import 'change_password/check_code_page.dart';
@@ -26,13 +25,7 @@ class AccountSecurityPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('账号安全'),
       ),
       body: Container(

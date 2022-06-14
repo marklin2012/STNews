@@ -136,9 +136,10 @@ class _NewsSearchHeaderState extends State<NewsSearchHeader> {
                   return STButton(
                     text: _btnTitle,
                     disabled: value,
-                    textStyle: NewsTextStyle.style17NormalFirBlue,
+                    textStyle: value
+                        ? NewsTextStyle.style17NormalFourGrey
+                        : NewsTextStyle.style17NormalFirBlue,
                     type: STButtonType.text,
-                    backgroundColor: Colors.transparent,
                     onTap: _search,
                   );
                 }),

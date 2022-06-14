@@ -9,6 +9,7 @@ import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class ChangeInfoPage extends StatefulWidget {
   const ChangeInfoPage({Key? key, required this.isChangeSex}) : super(key: key);
@@ -50,13 +51,7 @@ class _ChangeInfoPageState extends State<ChangeInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: ColorConfig.primaryColor,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text(_title),
         actions: [
           Container(

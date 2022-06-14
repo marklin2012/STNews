@@ -3,22 +3,22 @@ import 'package:stnews/pages/common/color_config.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/st_scale.dart';
 
-enum MallHomeGoodTagType {
+enum MallHomeGoodsTagType {
   none,
   seckill,
   fullMinus,
 }
 
-class MallHomeGoodModel {
+class MallHomeGoodsModel {
   String? id;
   List<String>? images;
   List<String>? visibles;
   String? title;
-  MallHomeGoodTagType? type;
+  MallHomeGoodsTagType? type;
   String? originalPrice;
   String? presentPrice;
 
-  MallHomeGoodModel({
+  MallHomeGoodsModel({
     this.id,
     this.type,
     this.originalPrice,
@@ -32,9 +32,9 @@ class MallHomeGoodModel {
 class MallHomeGoodCell extends StatelessWidget {
   const MallHomeGoodCell({Key? key, this.model, this.onTap}) : super(key: key);
 
-  final MallHomeGoodModel? model;
+  final MallHomeGoodsModel? model;
 
-  final Function(MallHomeGoodModel? selModel)? onTap;
+  final Function(MallHomeGoodsModel? selModel)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +123,11 @@ class MallHomeGoodCell extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       maxLines: 3,
     );
-    if (model?.type == MallHomeGoodTagType.seckill ||
-        model?.type == MallHomeGoodTagType.fullMinus) {
+    if (model?.type == MallHomeGoodsTagType.seckill ||
+        model?.type == MallHomeGoodsTagType.fullMinus) {
       String _textString = '';
       Color _textBGColor;
-      if (model?.type == MallHomeGoodTagType.seckill) {
+      if (model?.type == MallHomeGoodsTagType.seckill) {
         _textString = ' 秒杀 ';
         _textBGColor = ColorConfig.assistRed;
       } else {

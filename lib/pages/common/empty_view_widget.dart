@@ -10,8 +10,9 @@ class EmptyViewWidget extends StatefulWidget {
     this.fixTop,
     this.image,
     this.content,
-    this.imageBGSize,
     this.textStyle,
+    this.imageBGSize,
+    this.descript,
     this.backgroundColor,
     this.isLoading = false,
     this.onTap,
@@ -32,6 +33,9 @@ class EmptyViewWidget extends StatefulWidget {
   /// 文字的textStyle
   final TextStyle? textStyle;
 
+  /// descript
+  final Widget? descript;
+
   /// 背景颜色
   final Color? backgroundColor;
 
@@ -48,6 +52,7 @@ class EmptyViewWidget extends StatefulWidget {
     this.image,
     this.content = '内容加载中',
     this.textStyle,
+    this.descript,
     this.backgroundColor,
     this.isLoading = true,
     this.onTap,
@@ -123,7 +128,8 @@ class _EmptyViewWidgetState extends State<EmptyViewWidget> {
                 builder: (context, String value, child) {
                   return Text(value, style: _textStyle);
                 },
-              )
+              ),
+            if (widget.descript != null) widget.descript!,
           ],
         ),
       ),

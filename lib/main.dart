@@ -34,11 +34,20 @@ void main() {
 
   /// 服务器token
   /// ignore: invalid_use_of_visible_for_testing_member
+  // SharedPreferences.setMockInitialValues({
+  //   'token':
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM3NTQ4MjcyfQ.Umh6-tlYXxGoIDa4_2w7sKwFNAqU_n09YM28LWUKaYI',
+  //   'user':
+  //       '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"curry","sex":0}'
+  // });
+
+  /// 本地token
+  /// ignore: invalid_use_of_visible_for_testing_member
   SharedPreferences.setMockInitialValues({
     'token':
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE1NTFlMTdjNjI4ODMyYjBjMjIyZDlkIiwiaWF0IjoxNjM3NTQ4MjcyfQ.Umh6-tlYXxGoIDa4_2w7sKwFNAqU_n09YM28LWUKaYI',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIxNTg4ODg4ODg4OCIsImlkIjoiNjE0NmYwNWFjNjcxOWY4NTc1NjgzMDUwIiwiaWF0IjoxNjUyMzM1Mzc4fQ.av8-UPJ1AVEEni7C0JtZQtyCLkccGsom-f0_F0iR3rY',
     'user':
-        '{"_id":"61551e17c628832b0c222d9d","mobile":"15888888888","__v":0,"nickname":"curry","sex":0}'
+        '{"_id":"6146f05ac6719f8575683050","mobile":"15888888888","__v":0,"nickname":"harry","sex":0}'
   });
 
   runApp(

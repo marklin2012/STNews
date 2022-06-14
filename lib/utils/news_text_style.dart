@@ -37,6 +37,12 @@ class NewsTextStyle {
         fontWeight: FONTWEIGHT400,
       );
 
+  static get style12NormalWhite => TextStyle(
+        fontSize: FONTSIZE12,
+        fontWeight: FONTWEIGHT400,
+        color: ColorConfig.primaryColor,
+      );
+
   static get style14NormalSecGrey => TextStyle(
         color: ColorConfig.textSecColor,
         fontSize: FONTSIZE14,
@@ -68,6 +74,12 @@ class NewsTextStyle {
         fontWeight: FONTWEIGHT400,
       );
 
+  static get style14NormalDeepBlack => TextStyle(
+        color: ColorConfig.deepBlackColor,
+        fontSize: FONTSIZE14,
+        fontWeight: FONTWEIGHT400,
+      );
+
   static get style14NormalFourGrey => TextStyle(
         color: ColorConfig.textFourColor,
         fontSize: FONTSIZE14,
@@ -80,10 +92,34 @@ class NewsTextStyle {
         fontWeight: FONTWEIGHT400,
       );
 
+  static get style14NormalRed => TextStyle(
+        fontSize: FONTSIZE14,
+        fontWeight: FONTWEIGHT400,
+        color: ColorConfig.assistRed,
+      );
+
+  static get style14NormalYellow => TextStyle(
+        fontSize: FONTSIZE14,
+        fontWeight: FONTWEIGHT400,
+        color: ColorConfig.assistYellow,
+      );
+
   static get style16BoldBlack => TextStyle(
         fontSize: FONTSIZE16,
         fontWeight: FONTWEIGHT500,
         color: ColorConfig.textFirColor,
+      );
+
+  static get style16BoldRed => TextStyle(
+        fontSize: FONTSIZE16,
+        fontWeight: FONTWEIGHT500,
+        color: ColorConfig.assistRed,
+      );
+
+  static get style16BoldDeepBlack => TextStyle(
+        fontSize: FONTSIZE16,
+        fontWeight: FONTWEIGHT500,
+        color: ColorConfig.deepBlackColor,
       );
 
   static get style16NormalWhite => TextStyle(
@@ -144,6 +180,12 @@ class NewsTextStyle {
         fontSize: FONTSIZE17,
         fontWeight: FONTWEIGHT400,
         color: ColorConfig.baseFirBule,
+      );
+
+  static get style17NormalSecGrey => TextStyle(
+        fontSize: FONTSIZE17,
+        fontWeight: FONTWEIGHT400,
+        color: ColorConfig.textSecColor,
       );
 
   static get style17NormalFourGrey => TextStyle(

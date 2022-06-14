@@ -12,6 +12,7 @@ import 'package:stnews/service/api.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
 import 'package:stnews/utils/string+.dart';
+import 'package:stnews/utils/utils+.dart';
 
 enum checkCodeType {
   changeMobile,
@@ -50,13 +51,7 @@ class _CheckCodePageState extends State<CheckCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text(_type == checkCodeType.changePassword ? '验证码' : '校验手机号'),
       ),
       body: Padding(

@@ -14,6 +14,7 @@ import 'package:stnews/utils/hero_tags.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/st_routers.dart';
+import 'package:stnews/utils/utils+.dart';
 
 const _selectWidth = 48.0;
 
@@ -44,13 +45,7 @@ class _MyFavouritePostPageState extends State<MyFavouritePostPage> {
     _width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        leading: STButton.icon(
-          icon: Icon(STIcons.direction_leftoutlined),
-          backgroundColor: Colors.transparent,
-          onTap: () {
-            STRouters.pop(context);
-          },
-        ),
+        leading: NewsPopBtn.popBtn(context),
         title: Text('我的收藏'),
         actions: [
           Container(

@@ -6,6 +6,7 @@ import 'package:stnews/providers/user_provider.dart';
 import 'package:stnews/utils/image+.dart';
 import 'package:stnews/utils/news_text_style.dart';
 import 'package:stnews/utils/string+.dart';
+import 'package:stnews/utils/utils+.dart';
 
 class PostDetailHeaderData {
   String? publishedDate;
@@ -88,20 +89,7 @@ class _DetailHeaderState extends State<DetailHeader> {
             right: 0,
             child: Container(
               height: 44,
-              child: Row(
-                children: [
-                  IconButton(
-                    iconSize: 24,
-                    icon: Icon(
-                      STIcons.direction_leftoutlined,
-                      color: ColorConfig.textFirColor,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
+              child: NewsPopBtn.popBtn(context),
             ),
           ),
           Positioned(

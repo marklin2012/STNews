@@ -12,10 +12,10 @@ const TimeoutReceive = 8000;
 const TimeoutSend = 3000;
 
 // iOS
-// const String BaseUrl = 'http://localhost:7001/';
+const String BaseUrl = 'http://localhost:7001/';
 // andriod
 // const String BaseUrl = 'http://192.168.2.138:7001/';
-const String BaseUrl = 'http://120.78.145.47:7001/';
+// const String BaseUrl = 'http://120.78.145.47:7001/';
 
 Dio dio = Dio();
 
